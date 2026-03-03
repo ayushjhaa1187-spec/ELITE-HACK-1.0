@@ -5,10 +5,22 @@
             "includeFiles": "prisma/**,swagger.yaml,public/**"
         }
     },
-    "rewrites": [
+    "routes": [
         {
-            "source": "/(.*)",
-            "destination": "/api/server"
+            "src": "/api/(.*)",
+            "dest": "/api/server.ts"
+        },
+        {
+            "src": "/api-docs(.*)",
+            "dest": "/api/server.ts"
+        },
+        {
+            "src": "/dashboard",
+            "dest": "/api/server.ts"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/server.ts"
         }
     ]
 }
