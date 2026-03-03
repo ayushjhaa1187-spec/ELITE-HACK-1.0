@@ -2,7 +2,7 @@
     "version": 2,
     "functions": {
         "api/index.ts": {
-            "includeFiles": "prisma/**,swagger.yaml"
+            "includeFiles": "prisma/**,swagger.yaml,public/**"
         }
     },
     "rewrites": [
@@ -15,12 +15,8 @@
             "destination": "/api/index.ts"
         },
         {
-            "source": "/dashboard",
-            "destination": "/Dashboard.html"
-        },
-        {
-            "source": "/",
-            "destination": "/index.html"
+            "source": "/(.*)",
+            "destination": "/api/index.ts"
         }
     ]
 }
