@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  role          String         @default("PARTICIPANT") // "ADMIN" or "PARTICIPANT"
+  profile       Profile?
+  teams         TeamMember[]
+  events        Event[]        @relation("CreatedEvents") // Because a user can create events (admin)
+  registrations Registration[]
+  notifications Notification[]
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Profile {
+  id     String  @id @default(uuid())
+  name   String
+  bio    String?
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id])
+}
+
+model Event {
+  id            String         @id @default(uuid())
+  title         String
+  description   String
+  startDate     DateTime
+  endDate       DateTime
+  venue         String?
+  maxTeamSize       Int            @default(1)
+  registrationStart DateTime
+  registrationEnd   DateTime
+  domain            String?        // e.g., "Web", "AI", "Blockchain"
+  tags              String?        // Comma-separated or JSON string
+  creatorId         String
+  creator       User           @relation("CreatedEvents", fields: [creatorId], references: [id])
+  teams         Team[]
+  registrations Registration[]
+  announcements Announcement[]
+  schedules     ScheduleItem[]
+  customFields  CustomField[]
+}
+
+model ScheduleItem {
+  id          String   @id @default(uuid())
+  eventId     String
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  venue       String?
+  event       Event    @relation(fields: [eventId], references: [id])
+}
+
+model CustomField {
+  id      String       @id @default(uuid())
+  eventId String
+  label   String
+  type    String       @default("TEXT") // "TEXT", "NUMBER", "BOOLEAN"
+  required Boolean     @default(true)
+  event   Event        @relation(fields: [eventId], references: [id])
+  values  FieldValue[]
+}
+
+model FieldValue {
+  id             String      @id @default(uuid())
+  registrationId String?
+  teamId         String?    // In case we want team-specific fields later
+  fieldId        String
+  value          String
+  registration   Registration? @relation(fields: [registrationId], references: [id])
+  field          CustomField   @relation(fields: [fieldId], references: [id])
+}
+
+model Team {
+  id         String       @id @default(uuid())
+  name       String
+  inviteCode String       @unique
+  eventId    String
+  event      Event        @relation(fields: [eventId], references: [id])
+  members    TeamMember[]
+}
+
+model TeamMember {
+  id     String @id @default(uuid())
+  userId String
+  teamId String
+  role   String @default("MEMBER") // "LEADER" or "MEMBER"
+  user   User   @relation(fields: [userId], references: [id])
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  @@unique([userId, teamId])
+}
+
+model Registration {
+  id      String @id @default(uuid())
+  userId  String
+  eventId String
+  status  String @default("REGISTERED") // "REGISTERED" or "CHECKED_IN"
+  user    User   @relation(fields: [userId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id])
+  fieldValues FieldValue[]
+
+  @@unique([userId, eventId])
+}
+
+model Announcement {
+  id        String   @id @default(uuid())
+  eventId   String
+  message   String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id])
+}

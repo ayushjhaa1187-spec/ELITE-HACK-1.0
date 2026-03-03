@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circles — Run Live Events Like a Control Room.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="Landingpage.css" />
+
+</head>
+
+<body>
+
+  <!-- ══════════════════ NAV ══════════════════ -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg class="logo-svg" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg-nav" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#9b7cff" />
+            <stop offset="1" stop-color="#1a96d8" />
+          </linearGradient>
+        </defs>
+        <circle cx="13" cy="13" r="10.5" stroke="url(#lg-nav)" stroke-width="1.6" />
+        <circle cx="13" cy="13" r="6" stroke="url(#lg-nav)" stroke-width="1.2" opacity="0.55" />
+        <circle cx="13" cy="13" r="2.2" fill="url(#lg-nav)" />
+      </svg>
+      Circles
+    </a>
+    <div class="nav-actions">
+      <button class="btn-ghost-sm">Sign In</button>
+      <button class="btn-fill-sm" onclick="window.location.href='/dashboard'">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════ HERO ══════════════════ -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-depth"></div>
+
+
+    <h1 class="hero-h1">
+      Run Live Events<br />Like a <em>Control Room.</em>
+    </h1>
+
+    <p class="hero-kicker">The operating system for live events.</p>
+
+    <p class="hero-sub">
+      Real-time check-ins. <strong>Live dashboards.</strong> Instant data visibility.<br />
+      Know exactly what's happening — the moment it happens.
+    </p>
+
+    <div class="hero-ctas">
+      <button class="btn-hero-p" onclick="window.location.href='/dashboard'">
+        Create Your Event
+        <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 7h9M7 2.5L11.5 7 7 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="btn-hero-s">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="7" cy="7" r="5.6" stroke="currentColor" stroke-width="1.3" opacity="0.55" />
+          <path d="M5.8 5.1l3.8 1.9-3.8 1.9V5.1z" fill="currentColor" opacity="0.7" />
+        </svg>
+        See It Live
+      </button>
+    </div>
+
+    <!-- ── DASHBOARD MOCKUP ── -->
+    <div class="dashboard-scene" id="dashScene">
+      <div class="dashboard-halo"></div>
+      <div class="dashboard">
+
+        <div class="db-chrome">
+          <div class="db-dots">
+            <div class="db-dot"></div>
+            <div class="db-dot"></div>
+            <div class="db-dot"></div>
+          </div>
+          <div class="db-titlebar">circles.so — Event Command</div>
+          <div class="db-live">
+            <span class="live-dot"></span>
+            Live
+          </div>
+        </div>
+
+        <div class="db-body">
+          <div class="db-stats">
+            <div class="db-stat">
+              <div class="db-stat-label">Total Registrations</div>
+              <div class="db-stat-val v">3,124</div>
+              <div class="db-stat-sub"><span class="up">↑ 8%</span> &nbsp;vs yesterday</div>
+            </div>
+            <div class="db-stat">
+              <div class="db-stat-label">Live Check-ins</div>
+              <div class="db-stat-val a">1,487</div>
+              <div class="db-stat-sub">47.6% attendance rate</div>
+            </div>
+            <div class="db-stat">
+              <div class="db-stat-label">Active Now</div>
+              <div class="db-stat-val e">512</div>
+              <div class="db-stat-sub">In venue right now</div>
+            </div>
+          </div>
+
+          <div class="db-graph-card">
+            <div class="db-graph-header">
+              <span class="db-graph-label">Check-in activity — Today</span>
+              <div class="db-legend">
+                <div class="legend-i">
+                  <div class="pip v"></div>Registrations
+                </div>
+                <div class="legend-i">
+                  <div class="pip a"></div>Check-ins
+                </div>
+              </div>
+            </div>
+            <svg class="db-graph-svg" viewBox="0 0 860 118" preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="fv" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6040f0" stop-opacity="0.18" />
+                  <stop offset="100%" stop-color="#6040f0" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="fa" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1a96d8" stop-opacity="0.14" />
+                  <stop offset="100%" stop-color="#1a96d8" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+
+              <!-- Grid -->
+              <line x1="0" y1="29" x2="860" y2="29" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+              <line x1="0" y1="59" x2="860" y2="59" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+              <line x1="0" y1="89" x2="860" y2="89" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+
+              <!-- Registrations fill + line -->
+              <path
+                d="M0,110 C70,110 90,86 160,70 C230,54 272,32 342,22 C410,12 456,16 522,14 C586,12 642,9 712,6 C774,4 822,3 860,2 L860,118 L0,118Z"
+                fill="url(#fv)" />
+              <path class="graph-line"
+                d="M0,110 C70,110 90,86 160,70 C230,54 272,32 342,22 C410,12 456,16 522,14 C586,12 642,9 712,6 C774,4 822,3 860,2"
+                fill="none" stroke="#6040f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+              <!-- Check-ins fill + line -->
+              <path
+                d="M0,116 C88,116 122,98 192,86 C262,74 302,56 372,46 C442,36 482,40 548,36 C612,32 662,26 732,20 C792,15 832,13 860,12 L860,118 L0,118Z"
+                fill="url(#fa)" />
+              <path class="graph-line-2"
+                d="M0,116 C88,116 122,98 192,86 C262,74 302,56 372,46 C442,36 482,40 548,36 C612,32 662,26 732,20 C792,15 832,13 860,12"
+                fill="none" stroke="#1a96d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+              <!-- Live data points -->
+              <circle cx="860" cy="2" r="4" fill="#6040f0" />
+              <circle cx="860" cy="2" r="8" fill="none" stroke="#6040f0" stroke-width="1" opacity="0.25" />
+              <circle cx="860" cy="12" r="3.5" fill="#1a96d8" />
+              <circle cx="860" cy="12" r="7" fill="none" stroke="#1a96d8" stroke-width="1" opacity="0.2" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ CREDIBILITY STRIP ══════════════════ -->
+  <div class="cred-strip">
+    <div class="cred-inner">
+      <div class="cred-item">
+        <span class="cred-dot"></span>
+        Built for conferences, concerts &amp; festivals
+      </div>
+      <div class="cred-item">
+        <span class="cred-dot"></span>
+        Works offline. Syncs instantly.
+      </div>
+      <div class="cred-item">
+        <span class="cred-dot"></span>
+        Zero configuration. Up in 5 minutes.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ WHY CIRCLES WINS ══════════════════ -->
+  <div class="divider-full"></div>
+  <div class="wins-section">
+    <div class="wins-header">
+      <span class="eyebrow">Why Circles Wins</span>
+      <h2>We don't patch the gap.<br />We replace the stack.</h2>
+      <p>Three things we refuse to compromise on — because your events can't afford it.</p>
+    </div>
+    <div class="wins-grid">
+      <div class="win-item">
+        <span class="win-num">01</span>
+        <div class="win-title">Real-time. Not near-time.</div>
+        <p class="win-desc">Every scan, every entry, every movement — reflected across your dashboard in under one
+          second. Not polling. Not batch. Actual real-time.</p>
+      </div>
+      <div class="win-item">
+        <span class="win-num">02</span>
+        <div class="win-title">QR scanning, no apps required.</div>
+        <p class="win-desc">Native QR scanning baked into the platform. Works on any device. Works offline. No
+          downloads, no third-party bloat, no excuses.</p>
+      </div>
+      <div class="win-item">
+        <span class="win-num">03</span>
+        <div class="win-title">One system. Full control.</div>
+        <p class="win-desc">Registration, check-in, analytics — consolidated. Stop duct-taping five tools and guessing
+          which spreadsheet is current. There is no spreadsheet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ FEATURES ══════════════════ -->
+  <div class="divider-full"></div>
+  <section class="section">
+    <div class="features-header">
+      <span class="eyebrow">Platform</span>
+      <h2>Control the chaos.</h2>
+      <p>Four pillars that replace every legacy tool your team is using right now.</p>
+    </div>
+    <div class="features-grid">
+
+      <!-- Card 1: Dashboard -->
+      <div class="feat-card">
+        <div class="feat-icon v">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="7" height="7" rx="1.5" stroke="#6040f0" stroke-width="1.5" />
+            <rect x="11" y="2" width="7" height="7" rx="1.5" stroke="#6040f0" stroke-width="1.5" opacity="0.6" />
+            <rect x="2" y="11" width="7" height="7" rx="1.5" stroke="#6040f0" stroke-width="1.5" opacity="0.6" />
+            <rect x="11" y="11" width="7" height="7" rx="1.5" stroke="#6040f0" stroke-width="1.5" opacity="0.4" />
+          </svg>
+        </div>
+        <div class="feat-title">Real-Time Dashboard</div>
+        <p class="feat-desc">One command view. Capacity, velocity, session analytics — all streaming live. No refresh.
+          No lag. The whole picture, always current.</p>
+      </div>
+
+      <!-- Card 2: QR -->
+      <div class="feat-card">
+        <div class="feat-icon a">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="6.5" height="6.5" rx="1" stroke="#1a96d8" stroke-width="1.5" />
+            <rect x="3.5" y="3.5" width="3.5" height="3.5" rx="0.5" fill="#1a96d8" opacity="0.5" />
+            <rect x="11.5" y="2" width="6.5" height="6.5" rx="1" stroke="#1a96d8" stroke-width="1.5" />
+            <rect x="13" y="3.5" width="3.5" height="3.5" rx="0.5" fill="#1a96d8" opacity="0.5" />
+            <rect x="2" y="11.5" width="6.5" height="6.5" rx="1" stroke="#1a96d8" stroke-width="1.5" />
+            <rect x="3.5" y="13" width="3.5" height="3.5" rx="0.5" fill="#1a96d8" opacity="0.5" />
+            <path d="M11.5 12h2.5M11.5 14.5h2.5M11.5 17h2.5M16 12v5M16 12h2" stroke="#1a96d8" stroke-width="1.5"
+              stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="feat-title">QR Check-In Engine</div>
+        <p class="feat-desc">Sub-second scanning. Native, built-in, no app required. Unique codes per attendee,
+          duplicate rejection, graceful offline fallback.</p>
+      </div>
+
+      <!-- Card 3: Analytics -->
+      <div class="feat-card">
+        <div class="feat-icon e">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="2,15 6,9 10,11 14,5 18,7" stroke="#0aaa6e" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <line x1="2" y1="17" x2="18" y2="17" stroke="#0aaa6e" stroke-width="1.5" stroke-linecap="round"
+              opacity="0.3" />
+            <circle cx="14" cy="5" r="1.5" fill="#0aaa6e" opacity="0.8" />
+          </svg>
+        </div>
+        <div class="feat-title">Live Analytics</div>
+        <p class="feat-desc">Attendance curves, peak heatmaps, no-show forecasting. Exportable reports, zero
+          spreadsheets. Data that's alive, not archived.</p>
+      </div>
+
+      <!-- Card 4: Alerts -->
+      <div class="feat-card">
+        <div class="feat-icon r">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2.5C7 2.5 4.5 5 4.5 8v4l-1.5 2.5h14L15.5 12V8C15.5 5 13 2.5 10 2.5z" stroke="#b030d8"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8 15a2 2 0 004 0" stroke="#b030d8" stroke-width="1.5" stroke-linecap="round" />
+            <circle cx="15" cy="4" r="2" fill="#b030d8" />
+          </svg>
+        </div>
+        <div class="feat-title">Smart Alerts</div>
+        <p class="feat-desc">Capacity thresholds, VIP arrival triggers, anomaly detection. You get notified exactly when
+          it matters — and only then.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════ FINAL CTA ══════════════════ -->
+  <div class="divider-full"></div>
+  <div class="final-cta">
+    <div class="final-cta-bg"></div>
+    <div class="final-cta-inner">
+      <h2>
+        Your next event<br />
+        deserves a <em>control room.</em>
+      </h2>
+      <p>Up in 5 minutes. First event free. No credit card.</p>
+      <button class="btn-cta-xl">
+        Create Your Event
+        <svg class="arrow" width="15" height="15" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 7h9M7 2.5L11.5 7 7 11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <footer>
+    <div class="footer-logo">
+      <svg width="18" height="18" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg-ft" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#9b7cff" />
+            <stop offset="1" stop-color="#1a96d8" />
+          </linearGradient>
+        </defs>
+        <circle cx="13" cy="13" r="10.5" stroke="url(#lg-ft)" stroke-width="1.5" />
+        <circle cx="13" cy="13" r="6" stroke="url(#lg-ft)" stroke-width="1.2" opacity="0.45" />
+        <circle cx="13" cy="13" r="2.2" fill="url(#lg-ft)" />
+      </svg>
+      Circles
+    </div>
+    <ul class="footer-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Status</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 Circles, Inc.</div>
+  </footer>
+
+  <!-- ══════════════════ JS: PARALLAX ONLY ══════════════════ -->
+  <script>
+    // Subtle parallax on dashboard — mouse tracking
+    (function () {
+      const scene = document.getElementById('dashScene');
+      if (!scene) return;
+
+      let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+      const MAX = 6; // max px shift
+      let raf;
+
+      document.addEventListener('mousemove', function (e) {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        targetX = ((e.clientX - cx) / cx) * MAX;
+        targetY = ((e.clientY - cy) / cy) * MAX * 0.5;
+      });
+
+      function tick() {
+        currentX += (targetX - currentX) * 0.06;
+        currentY += (targetY - currentY) * 0.06;
+        scene.style.transform = `perspective(1200px) rotateY(${currentX * 0.25}deg) rotateX(${-currentY * 0.25}deg) translateX(${currentX * 0.3}px) translateY(${currentY * 0.3}px)`;
+        raf = requestAnimationFrame(tick);
+      }
+      tick();
+
+      // On mobile: no parallax
+      if (window.matchMedia('(max-width: 860px)').matches) {
+        cancelAnimationFrame(raf);
+        scene.style.transform = 'none';
+      }
+    })();
+  </script>
+
+</body>
+
+</html>

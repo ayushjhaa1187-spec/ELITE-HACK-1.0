@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circles — Dashboard 2026</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="Dashboard.css">
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="/" class="nav-logo">
+        <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+          <defs>
+            <linearGradient id="lg-nav" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6040f0" />
+              <stop offset="1" stop-color="#1a96d8" />
+            </linearGradient>
+          </defs>
+          <circle cx="13" cy="13" r="10.5" stroke="url(#lg-nav)" stroke-width="1.6" />
+          <circle cx="13" cy="13" r="6" stroke="url(#lg-nav)" stroke-width="1.2" opacity="0.55" />
+          <circle cx="13" cy="13" r="2.2" fill="url(#lg-nav)" />
+        </svg>
+        Circles
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-lbl">Main</div>
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        Dashboard
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Events <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>
+        Attendees
+      </div>
+      <div class="nav-lbl">Management</div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Analytics
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68V9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        Settings
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sb-user">
+        <div class="av-sm">CK</div>
+        <div style="flex:1;min-width:0">
+          <div class="u-name">Champion Kumar</div>
+          <div class="u-role">Event Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-ev">
+        <div class="ev-sel">
+          <span>Design Summit 2026</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        <div class="live-badge">
+          <div class="live-dot"></div>Live
+        </div>
+        <div class="ev-meta">
+          March 8, 2026 <span class="ev-meta-sep">•</span> Bharat Mandapam, New Delhi
+        </div>
+      </div>
+      <div class="tb-actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub">Operational overview · Live view</div>
+        </div>
+        <div class="hdr-actions">
+          <button class="btn btn-sec">Export CSV</button>
+          <button class="btn btn-pri">Check-in Mode</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-hdr">
+            <div class="kpi-ico" style="background:rgba(96,64,240,0.15);color:var(--violet)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+              </svg>
+            </div>
+          </div>
+          <div class="kpi-val">4,821</div>
+          <div class="kpi-lbl">Total Registrations</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-hdr">
+            <div class="kpi-ico" style="background:rgba(10,170,110,0.15);color:var(--emerald)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 11 12 14 22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+            </div>
+          </div>
+          <div class="kpi-val">2,942</div>
+          <div class="kpi-lbl">Live Check-ins</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-hdr">
+            <div class="kpi-ico" style="background:rgba(26,150,216,0.15);color:var(--azure)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+          </div>
+          <div class="kpi-val">1,102</div>
+          <div class="kpi-lbl">Active Now</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-hdr">
+            <div class="kpi-ico" style="background:rgba(176,48,216,0.15);color:var(--rose)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
+            </div>
+          </div>
+          <div class="kpi-val">84.2%</div>
+          <div class="kpi-lbl">Attendance Rate</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title">Check-in Activity</div>
+            <div class="chart-tabs">
+              <button class="chart-tab active">Live</button>
+              <button class="chart-tab">Hourly</button>
+              <button class="chart-tab">Daily</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div style="position:relative;height:220px"><canvas id="chart"></canvas></div>
+            <div class="stat-row">
+              <div><span class="sm-val">243</span><span class="sm-lbl">Peak hour</span></div>
+              <div><span class="sm-val">38/min</span><span class="sm-lbl">Current rate</span></div>
+              <div><span class="sm-val">~58 min</span><span class="sm-lbl">Est. finish</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title">Recent Check-ins</div>
+            <span class="feed-live-lbl">LIVE FEED</span>
+          </div>
+          <div class="feed-list">
+            <div class="feed-item">
+              <div class="feed-av" style="background:var(--grad)">AR</div>
+              <div class="feed-info">
+                <div class="feed-name">Arjun Reddy</div>
+                <div class="feed-detail">Ticket #4821 • General</div>
+              </div>
+              <div class="feed-r">
+                <span class="feed-time">now</span>
+                <span class="pill ci">Checked In</span>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-av" style="background:var(--azure)">SL</div>
+              <div class="feed-info">
+                <div class="feed-name">Sana Luthra</div>
+                <div class="feed-detail">Ticket #4820 • VIP</div>
+              </div>
+              <div class="feed-r">
+                <span class="feed-time">1m ago</span>
+                <span class="pill vip">VIP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-grid">
+        <div class="ac-card">
+          <div class="ac-ico" style="background:rgba(96,64,240,0.15);color:var(--violet)"><svg width="18" height="18"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 11 12 14 22 4" />
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+            </svg></div>
+          <div>
+            <div class="ac-title">Scanner Mode</div>
+            <div class="ac-desc">Launch QR Kiosk</div>
+          </div>
+        </div>
+        <div class="ac-card">
+          <div class="ac-ico" style="background:rgba(10,170,110,0.15);color:var(--emerald)"><svg width="18" height="18"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg></div>
+          <div>
+            <div class="ac-title">Export Data</div>
+            <div class="ac-desc">Download CSV/PDF</div>
+          </div>
+        </div>
+        <div class="ac-card">
+          <div class="ac-ico" style="background:rgba(96,64,240,0.15);color:var(--violet)"><svg width="18" height="18"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0" />
+            </svg></div>
+          <div>
+            <div class="ac-title">Broadcast</div>
+            <div class="ac-desc">Notify Attendees</div>
+          </div>
+        </div>
+        <div class="ac-card">
+          <div class="ac-ico" style="background:rgba(26,150,216,0.15);color:var(--azure)"><svg width="18" height="18"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <line x1="23" y1="11" x2="17" y2="11" />
+              <line x1="20" y1="8" x2="20" y2="14" />
+            </svg></div>
+          <div>
+            <div class="ac-title">Add Team</div>
+            <div class="ac-desc">Manage Permissions</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, 0, 240);
+    g.addColorStop(0, 'rgba(96,102,240,0.15)');
+    g.addColorStop(1, 'rgba(96,102,240,0)');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm'],
+        datasets: [{
+          data: [28, 112, 243, 198, 156, 87, 134],
+          borderColor: '#6040f0',
+          borderWidth: 2.5,
+          fill: true,
+          backgroundColor: g,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 12, weight: 600 }, color: '#6e6e7d' } },
+          y: { grid: { color: 'rgba(13,12,26,0.06)' }, ticks: { font: { size: 11.5 }, color: '#6e6e7d', maxTicksLimit: 5 } }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

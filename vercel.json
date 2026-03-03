@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "src/index.ts",
+            "use": "@vercel/node",
+            "config": {
+                "includeFiles": [
+                    "prisma/**",
+                    "node_modules/.prisma/client/**",
+                    "swagger.yaml"
+                ]
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "src/index.ts"
+        },
+        {
+            "src": "/api-docs(.*)",
+            "dest": "src/index.ts"
+        },
+        {
+            "src": "/dashboard",
+            "dest": "Frontend/Dashboard.html"
+        },
+        {
+            "src": "/",
+            "dest": "Frontend/index.html"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "Frontend/$1"
+        }
+    ]
+}

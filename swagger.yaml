@@ -1,0 +1,401 @@
+openapi: 3.0.0
+info:
+  title: Multi-Event Management Platform API
+  description: Backend engine for a multi-event management platform
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Local development server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /auth/register:
+    post:
+      summary: Create new user account
+      tags:
+        - Auth & Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, name]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                role:
+                  type: string
+                  enum: [ADMIN, PARTICIPANT]
+      responses:
+        '201':
+          description: User successfully registered
+  /auth/login:
+    post:
+      summary: Authenticate and receive JWT
+      tags:
+        - Auth & Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: JWT token received
+  /users/me:
+    get:
+      summary: Get current user profile
+      tags:
+        - Auth & Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved
+  /admin/events:
+    get:
+      summary: List all events managed by the admin
+      tags:
+        - Events (Admin)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of events
+    post:
+      summary: Create a new event
+      tags:
+        - Events (Admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, description, startDate, endDate, maxTeamSize]
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                startDate:
+                  type: string
+                  format: date-time
+                endDate:
+                  type: string
+                  format: date-time
+                venue:
+                  type: string
+                maxTeamSize:
+                  type: integer
+                registrationStart:
+                  type: string
+                  format: date-time
+                registrationEnd:
+                  type: string
+                  format: date-time
+                schedules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title: { type: string }
+                      startTime: { type: string, format: date-time }
+                      endTime: { type: string, format: date-time }
+                      venue: { type: string }
+                customFields:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      label: { type: string }
+                      type: { type: string, enum: [TEXT, NUMBER, BOOLEAN] }
+                      required: { type: boolean }
+      responses:
+        '201':
+          description: Event created
+  /admin/events/{id}:
+    put:
+      summary: Update event schedule/venue
+      tags:
+        - Events (Admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event updated
+    delete:
+      summary: Cancel/Delete event
+      tags:
+        - Events (Admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event deleted
+  /events:
+    get:
+      summary: List all upcoming events
+      tags:
+        - Events (Public/Participant)
+      parameters:
+        - name: domain
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of upcoming events
+  /events/{id}/ticket:
+    get:
+      summary: Get user registration ticket for an event
+      tags:
+        - Registrations & Teams (Participant)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticket details retrieved
+  /users/me/notifications:
+    get:
+      summary: Get current user in-app notifications
+      tags:
+        - Notifications & Dashboards
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Notifications retrieved
+  /admin/events/{id}/stats:
+    get:
+      summary: Get live event statistics (registrations/check-ins)
+      tags:
+        - Notifications & Dashboards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event statistics retrieved
+  /admin/events/{id}/reminders:
+    post:
+      summary: Send a reminder notification to all registered users
+      tags:
+        - Notifications & Dashboards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reminders sent
+  /events/{id}:
+    get:
+      summary: Get specific event details
+      tags:
+        - Events (Public/Participant)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event details
+  /events/{id}/register:
+    post:
+      summary: Register for an event (Individual)
+      tags:
+        - Registrations & Teams (Participant)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Successfully registered
+  /events/{id}/teams:
+    post:
+      summary: Create a new team for an event
+      tags:
+        - Registrations & Teams (Participant)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Team created
+  /teams/join:
+    post:
+      summary: Join a team using an inviteCode
+      tags:
+        - Registrations & Teams (Participant)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [inviteCode]
+              properties:
+                inviteCode:
+                  type: string
+      responses:
+        '200':
+          description: Joined team successfully
+  /users/me/registrations:
+    get:
+      summary: List user's registered events/teams
+      tags:
+        - Registrations & Teams (Participant)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of user registrations
+  /events/{id}/announcements:
+    get:
+      summary: Fetch web announcements for an event
+      tags:
+        - Notifications & Dashboards
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of announcements
+  /admin/events/{id}/announcements:
+    post:
+      summary: Create an announcement (triggers mock Email/WhatsApp)
+      tags:
+        - Notifications & Dashboards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message:
+                  type: string
+      responses:
+        '201':
+          description: Announcement created
+  /admin/events/{id}/attendees:
+    get:
+      summary: Dashboard - Get list of registered users and teams
+      tags:
+        - Notifications & Dashboards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of attendees
+  /admin/registrations/{id}/checkin:
+    post:
+      summary: Dashboard - Mark user as checked-in
+      tags:
+        - Notifications & Dashboards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Registration checked in
