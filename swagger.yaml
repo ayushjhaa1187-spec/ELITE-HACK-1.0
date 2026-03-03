@@ -4,6 +4,8 @@ info:
   description: Backend engine for a multi-event management platform
   version: 1.0.0
 servers:
+  - url: https://jan-two.vercel.app/api
+    description: Production server
   - url: http://localhost:5000/api
     description: Local development server
 components:

@@ -11,6 +11,16 @@ import eventRoutes from './routes/eventRoutes';
 import adminEventRoutes from './routes/adminEventRoutes';
 import teamRoutes from './routes/teamRoutes';
 import adminRegistrationRoutes from './routes/adminRegistrationRoutes';
+import prisma from './utils/prisma';
+
+// Environment Validation
+const REQUIRED_ENV = ['DATABASE_URL', 'JWT_SECRET'];
+REQUIRED_ENV.forEach(name => {
+    if (!process.env[name]) {
+        console.error(`[Error] Missing required environment variable: ${name}`);
+        if (process.env.NODE_ENV === 'production') process.exit(1);
+    }
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,7 +31,8 @@ app.use(express.json());
 
 // Load Swagger document
 try {
-    const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
+    const swaggerPath = path.join(process.cwd(), 'swagger.yaml');
+    const swaggerDocument = YAML.load(swaggerPath);
     // Swagger UI Endpoint
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 } catch (error) {
@@ -43,8 +54,23 @@ app.use('/api/teams', teamRoutes);
 app.use('/api/admin/registrations', adminRegistrationRoutes);
 
 // Health Check
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'OK', message: 'API is running' });
+app.get('/api/health', async (req, res) => {
+    try {
+        // Simple DB probe
+        await prisma.$queryRaw`SELECT 1`;
+        res.json({
+            status: 'OK',
+            message: 'API and Database are healthy',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('[HealthCheck Error]', error);
+        res.status(503).json({
+            status: 'Error',
+            message: 'Database connection failed',
+            timestamp: new Date().toISOString()
+        });
+    }
 });
 
 // 404 Handler for API
@@ -58,6 +84,23 @@ app.use('/api', (req: express.Request, res: express.Response) => {
 // Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(`[Error] ${err.name}: ${err.message}`);
+
+    // Handle Prisma Errors
+    if (err.code && err.code.startsWith('P')) {
+        if (err.code === 'P2002') {
+            return res.status(409).json({
+                error: 'Conflict',
+                message: `Unique constraint failed on field: ${err.meta?.target || 'unknown'}`
+            });
+        }
+        if (err.code === 'P2025') {
+            return res.status(404).json({
+                error: 'NotFound',
+                message: 'Record not found'
+            });
+        }
+    }
+
     const statusCode = err.status || 500;
     res.status(statusCode).json({
         error: err.name || 'InternalServerError',
