@@ -50,16 +50,16 @@ export const createAnnouncement = async (req: Request, res: Response) => {
             where: { eventId },
             include: { user: true }
         });
-        const individualUsers = registrations.map(reg => ({ email: reg.user.email }));
+        const individualUsers = registrations.map(reg => ({ id: reg.user.id, email: reg.user.email }));
 
         const teamMembers = await prisma.teamMember.findMany({
             where: { team: { eventId } },
             include: { user: true }
         });
-        const teamUsers = teamMembers.map(member => ({ email: member.user.email }));
+        const teamUsers = teamMembers.map(member => ({ id: member.user.id, email: member.user.email }));
 
         // Dedup users who might be in both (shouldn't happen per business logic, but safe)
-        const allUsersMap = new Map();
+        const allUsersMap = new Map<string, { id: string; email: string }>();
         [...individualUsers, ...teamUsers].forEach(u => allUsersMap.set(u.email, u));
 
         notifyUsers(

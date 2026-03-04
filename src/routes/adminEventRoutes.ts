@@ -10,6 +10,7 @@ import {
     createAnnouncement,
     getEventAttendees,
     getEventStats,
+    sendEventReminder,
 } from '../controllers/dashboardController';
 
 const router = Router();
@@ -22,5 +23,6 @@ router.delete('/:id', authenticate, requireAdmin, deleteEvent);
 router.post('/:id/announcements', authenticate, requireAdmin, createAnnouncement);
 router.get('/:id/attendees', authenticate, requireAdmin, getEventAttendees);
 router.get('/:id/stats', authenticate, requireAdmin, getEventStats);
+router.post('/:id/reminders', authenticate, requireAdmin, sendEventReminder);
 
 export default router;

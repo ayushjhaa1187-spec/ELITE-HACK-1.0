@@ -284,6 +284,278 @@
   </div>
 
   <script>
+    // ── Auth Check ──
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!token || !user) {
+      window.location.href = '/';
+    }
+
+    // ── Show logged-in user in sidebar ──
+    (function () {
+      if (user) {
+        const uName = document.querySelector('.u-name');
+        const uRole = document.querySelector('.u-role');
+        const avSm = document.querySelector('.av-sm');
+        if (uName) uName.textContent = user.name || user.email;
+        if (uRole) uRole.textContent = user.role === 'ADMIN' ? 'Event Admin' : 'Participant';
+        if (avSm && user.name) avSm.textContent = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      }
+    })();
+
+    // ── State ──
+    let adminEvents = [];
+    let currentEventId = null;
+
+    // ── Load admin events ──
+    async function loadEvents() {
+      try {
+        const res = await fetch('/api/admin/events', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.status === 403 || res.status === 401) {
+          // Not an admin - load public events instead
+          const pubRes = await fetch('/api/events');
+          adminEvents = await pubRes.json();
+        } else {
+          adminEvents = await res.json();
+        }
+        const evSel = document.querySelector('.ev-sel span');
+        if (adminEvents.length > 0) {
+          currentEventId = adminEvents[0].id;
+          evSel.textContent = adminEvents[0].title;
+          const meta = document.querySelector('.ev-meta');
+          if (meta) {
+            const d = new Date(adminEvents[0].startDate);
+            meta.innerHTML = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
+              ' <span class="ev-meta-sep">•</span> ' + (adminEvents[0].venue || 'Virtual');
+          }
+          loadStats(currentEventId);
+          loadRecentCheckins(currentEventId);
+        } else {
+          evSel.textContent = 'No events yet';
+          document.querySelector('.ev-meta').textContent = 'Create your first event!';
+        }
+      } catch (e) {
+        console.error('Failed to load events:', e);
+      }
+    }
+
+    // ── Load stats for event ──
+    async function loadStats(eventId) {
+      try {
+        const res = await fetch('/api/admin/events/' + eventId + '/stats', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) return;
+        const stats = await res.json();
+
+        const kpiVals = document.querySelectorAll('.kpi-val');
+        if (kpiVals[0]) kpiVals[0].textContent = (stats.totalRegistrations || 0).toLocaleString();
+        if (kpiVals[1]) kpiVals[1].textContent = (stats.checkedIn || 0).toLocaleString();
+        if (kpiVals[2]) kpiVals[2].textContent = (stats.totalRegistrations - (stats.checkedIn || 0)).toLocaleString();
+        if (kpiVals[3]) kpiVals[3].textContent = (stats.attendanceRate || 0).toFixed(1) + '%';
+      } catch (e) {
+        console.error('Stats load error:', e);
+      }
+    }
+
+    // ── Load recent check-ins ──
+    async function loadRecentCheckins(eventId) {
+      try {
+        const res = await fetch('/api/admin/events/' + eventId + '/attendees', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const feedList = document.querySelector('.feed-list');
+        if (!feedList || !data.registrations) return;
+
+        if (data.registrations.length === 0) {
+          feedList.innerHTML = '<div style="text-align:center;padding:24px;color:#6e6e7d">No registrations yet</div>';
+          return;
+        }
+
+        feedList.innerHTML = data.registrations.slice(0, 6).map(reg => {
+          const name = reg.user?.profile?.name || reg.user?.email || 'Unknown';
+          const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+          const isCheckedIn = reg.status === 'CHECKED_IN';
+          const colors = ['#6040f0', '#1a96d8', '#0aaa6e', '#b030d8'];
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          return `
+            <div class="feed-item">
+              <div class="feed-av" style="background:${color}">${initials}</div>
+              <div class="feed-info">
+                <div class="feed-name">${name}</div>
+                <div class="feed-detail">ID: ${reg.id.slice(0, 8)}...</div>
+              </div>
+              <div class="feed-r">
+                <span class="pill ${isCheckedIn ? 'ci' : 'reg'}">${isCheckedIn ? 'Checked In' : 'Registered'}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error('Feed load error:', e);
+      }
+    }
+
+    // ── Button: Check-in Mode → Scanner ──
+    document.querySelector('.btn-pri').addEventListener('click', function () {
+      window.location.href = '/scanner';
+    });
+
+    // ── Button: Export CSV ──
+    document.querySelector('.btn-sec').addEventListener('click', async function () {
+      if (!currentEventId) return alert('No event selected');
+      this.textContent = 'Exporting...';
+      try {
+        const res = await fetch('/api/admin/events/' + currentEventId + '/attendees', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (!data.registrations || data.registrations.length === 0) {
+          alert('No registrations to export');
+          this.textContent = 'Export CSV';
+          return;
+        }
+
+        let csv = 'Name,Email,Status,Registration ID\n';
+        data.registrations.forEach(reg => {
+          const name = reg.user?.profile?.name || 'N/A';
+          const email = reg.user?.email || 'N/A';
+          csv += `"${name}","${email}","${reg.status}","${reg.id}"\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'attendees_export.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        alert('Export failed: ' + e.message);
+      }
+      this.textContent = 'Export CSV';
+    });
+
+    // ── Action Cards ──
+    const acCards = document.querySelectorAll('.ac-card');
+    // Scanner Mode
+    if (acCards[0]) acCards[0].style.cursor = 'pointer';
+    if (acCards[0]) acCards[0].addEventListener('click', () => window.location.href = '/scanner');
+
+    // Export Data
+    if (acCards[1]) acCards[1].style.cursor = 'pointer';
+    if (acCards[1]) acCards[1].addEventListener('click', () => document.querySelector('.btn-sec').click());
+
+    // Broadcast
+    if (acCards[2]) acCards[2].style.cursor = 'pointer';
+    if (acCards[2]) acCards[2].addEventListener('click', async () => {
+      if (!currentEventId) return alert('No event selected');
+      const msg = prompt('Enter announcement message to broadcast to all registrants:');
+      if (!msg || msg.trim().length < 5) return alert('Message must be at least 5 characters');
+      try {
+        const res = await fetch('/api/admin/events/' + currentEventId + '/announcements', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg.trim() })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('✅ Announcement sent successfully!');
+        } else {
+          alert('Failed: ' + (data.error || 'Unknown error'));
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    });
+
+    // Add Team (info)
+    if (acCards[3]) acCards[3].style.cursor = 'pointer';
+    if (acCards[3]) acCards[3].addEventListener('click', () => {
+      alert('Teams are managed per-event. Share your event link with participants so they can create and join teams!');
+    });
+
+    // ── Sidebar Navigation ──
+    const navItems = document.querySelectorAll('.nav-item');
+    // Dashboard (index 0) - already active
+    // Events (index 1)
+    if (navItems[1]) {
+      navItems[1].style.cursor = 'pointer';
+      navItems[1].addEventListener('click', function () {
+        navItems.forEach(n => n.classList.remove('active'));
+        this.classList.add('active');
+        if (adminEvents.length > 0) {
+          alert('Your events:\n' + adminEvents.map((e, i) => `${i + 1}. ${e.title}`).join('\n'));
+        } else {
+          alert('No events created yet.');
+        }
+      });
+    }
+    // Attendees (index 2)
+    if (navItems[2]) {
+      navItems[2].style.cursor = 'pointer';
+      navItems[2].addEventListener('click', function () {
+        if (!currentEventId) return alert('No event selected');
+        navItems.forEach(n => n.classList.remove('active'));
+        this.classList.add('active');
+        // Show attendee count
+        fetch('/api/admin/events/' + currentEventId + '/attendees', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        }).then(r => r.json()).then(data => {
+          const list = (data.registrations || []).map(r => {
+            const name = r.user?.profile?.name || r.user?.email || 'Unknown';
+            return `${name} - ${r.status}`;
+          }).join('\n');
+          alert('Attendees:\n' + (list || 'None yet'));
+        });
+      });
+    }
+    // Analytics (index 3)
+    if (navItems[3]) {
+      navItems[3].style.cursor = 'pointer';
+      navItems[3].addEventListener('click', function () {
+        navItems.forEach(n => n.classList.remove('active'));
+        this.classList.add('active');
+        if (currentEventId) loadStats(currentEventId);
+        alert('Analytics loaded — check the dashboard KPI cards for live stats.');
+      });
+    }
+    // Settings (index 4)
+    if (navItems[4]) {
+      navItems[4].style.cursor = 'pointer';
+      navItems[4].addEventListener('click', function () {
+        if (confirm('Do you want to log out?')) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+        }
+      });
+    }
+
+    // ── Event Selector Dropdown ──
+    document.querySelector('.ev-sel').style.cursor = 'pointer';
+    document.querySelector('.ev-sel').addEventListener('click', function () {
+      if (adminEvents.length <= 1) return;
+      const names = adminEvents.map((e, i) => `${i + 1}. ${e.title}`).join('\n');
+      const choice = prompt('Select event number:\n' + names);
+      const idx = parseInt(choice) - 1;
+      if (idx >= 0 && idx < adminEvents.length) {
+        currentEventId = adminEvents[idx].id;
+        this.querySelector('span').textContent = adminEvents[idx].title;
+        const meta = document.querySelector('.ev-meta');
+        const d = new Date(adminEvents[idx].startDate);
+        meta.innerHTML = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
+          ' <span class="ev-meta-sep">•</span> ' + (adminEvents[idx].venue || 'Virtual');
+        loadStats(currentEventId);
+        loadRecentCheckins(currentEventId);
+      }
+    });
+
+    // ── Chart ──
     const ctx = document.getElementById('chart').getContext('2d');
     const g = ctx.createLinearGradient(0, 0, 0, 240);
     g.addColorStop(0, 'rgba(96,102,240,0.15)');
@@ -313,6 +585,26 @@
         }
       }
     });
+
+    // ── Notification bell ──
+    document.querySelector('[aria-label="Notifications"]').addEventListener('click', async function () {
+      try {
+        const res = await fetch('/api/users/me/notifications', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const notifs = await res.json();
+        if (notifs.length === 0) {
+          alert('No new notifications');
+        } else {
+          alert('Notifications:\n' + notifs.slice(0, 5).map(n => `• ${n.title}: ${n.message}`).join('\n'));
+        }
+      } catch (e) {
+        alert('Could not load notifications');
+      }
+    });
+
+    // ── Init ──
+    loadEvents();
   </script>
 </body>
 

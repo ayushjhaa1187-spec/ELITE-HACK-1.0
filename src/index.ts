@@ -68,6 +68,10 @@ app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(publicPath, 'Dashboard.html'));
 });
 
+app.get('/scanner', (req, res) => {
+    res.sendFile(path.join(publicPath, 'Scanner.html'));
+});
+
 // Health Check
 app.get('/api/health', async (req, res) => {
     try {

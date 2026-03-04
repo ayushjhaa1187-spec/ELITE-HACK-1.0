@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import prisma from '../utils/prisma';
 import { createTeamSchema, joinTeamSchema } from '../utils/validation';
 import crypto from 'crypto';
+import QRCode from 'qrcode';
 
 export const registerForEvent = async (req: Request, res: Response) => {
     try {
@@ -227,6 +228,56 @@ export const getRegistrationTicket = async (req: Request, res: Response) => {
             participantName: registration.user.profile?.name,
             eventName: registration.event.title,
             checkInStatus: registration.status
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+export const getRegistrationQR = async (req: Request, res: Response) => {
+    try {
+        const eventId = req.params.id as string;
+        const userId = req.user?.id;
+        if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+
+        const registration = await prisma.registration.findFirst({
+            where: { eventId, userId },
+            include: {
+                user: { select: { profile: true, email: true } },
+                event: { select: { title: true, startDate: true } }
+            }
+        });
+
+        if (!registration) {
+            return res.status(404).json({ error: 'You are not registered for this event.' });
+        }
+
+        // Encode check-in data into the QR code
+        const qrPayload = JSON.stringify({
+            registrationId: registration.id,
+            eventId: registration.eventId,
+            userId: registration.userId,
+            eventName: registration.event.title,
+            participantName: registration.user.profile?.name || registration.user.email,
+            checkInStatus: registration.status,
+        });
+
+        const qrDataUrl = await QRCode.toDataURL(qrPayload, {
+            width: 300,
+            margin: 2,
+            color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+            }
+        });
+
+        res.json({
+            ticketId: registration.id,
+            participantName: registration.user.profile?.name,
+            eventName: registration.event.title,
+            eventDate: registration.event.startDate,
+            checkInStatus: registration.status,
+            qrCode: qrDataUrl,
         });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });

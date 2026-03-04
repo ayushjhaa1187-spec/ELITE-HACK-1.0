@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CoCreate QR Scanner — Scan participant QR codes for event check-in.">
+    <title>QR Scanner — CoCreate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.8);
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.3);
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --error-glow: rgba(239, 68, 68, 0.3);
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background ambience */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, var(--accent-glow), transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.15), transparent 40%);
+            z-index: 0;
+            animation: ambientFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes ambientFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-30px, 20px);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header__logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-bottom: 16px;
+        }
+
+        .header__logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .header__logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Scanner Card */
+        .scanner-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .scanner-card__title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .scanner-card__title span {
+            font-size: 20px;
+        }
+
+        #reader {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        #reader video {
+            border-radius: 12px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn--primary {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: #fff;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px var(--accent-glow);
+        }
+
+        .btn--secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn--secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Manual Input */
+        .manual-input {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            margin-bottom: 24px;
+        }
+
+        .manual-input__title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .manual-input__row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .manual-input__field {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .manual-input__field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .manual-input__field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        /* Result Card */
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            margin-bottom: 24px;
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+
+        .result-card.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card--success {
+            border-color: var(--success);
+            box-shadow: 0 0 30px var(--success-glow);
+        }
+
+        .result-card--error {
+            border-color: var(--error);
+            box-shadow: 0 0 30px var(--error-glow);
+        }
+
+        .result-card--warning {
+            border-color: var(--warning);
+        }
+
+        .result-card__status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .result-card__icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .result-card__icon--success {
+            background: rgba(16, 185, 129, 0.15);
+        }
+
+        .result-card__icon--error {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .result-card__icon--warning {
+            background: rgba(245, 158, 11, 0.15);
+        }
+
+        .result-card__label {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .result-card__sublabel {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .result-card__details {
+            display: grid;
+            gap: 12px;
+        }
+
+        .result-card__detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .result-card__detail-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .result-card__detail-value {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* History */
+        .history {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+        }
+
+        .history__title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .history__list {
+            list-style: none;
+            display: grid;
+            gap: 8px;
+        }
+
+        .history__item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            animation: slideUp 0.3s ease;
+        }
+
+        .history__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .history__dot--success {
+            background: var(--success);
+        }
+
+        .history__dot--error {
+            background: var(--error);
+        }
+
+        .history__text {
+            flex: 1;
+            font-size: 13px;
+        }
+
+        .history__time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .history__empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 340px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast--success {
+            background: var(--success);
+        }
+
+        .toast--error {
+            background: var(--error);
+        }
+
+        .toast--warning {
+            background: var(--warning);
+            color: #000;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .manual-input__row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="/" class="header__logo">
+                <div class="header__logo-icon">⚡</div>
+                <span class="header__logo-text">CoCreate</span>
+            </a>
+            <h1>QR Check-in Scanner</h1>
+            <p>Scan participant QR codes to check them in instantly</p>
+        </div>
+
+        <!-- Scanner -->
+        <div class="scanner-card" id="scanner-card">
+            <div class="scanner-card__title">
+                <span>📷</span> Camera Scanner
+            </div>
+            <div id="reader"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn btn--primary" id="btn-start" onclick="startScanner()">
+                <span>📷</span> Start Scanner
+            </button>
+            <button class="btn btn--secondary" id="btn-stop" onclick="stopScanner()" disabled>
+                <span>⏹️</span> Stop
+            </button>
+        </div>
+
+        <!-- Manual Input -->
+        <div class="manual-input">
+            <div class="manual-input__title">Manual Check-in</div>
+            <div class="manual-input__row">
+                <input type="text" id="manual-reg-id" class="manual-input__field"
+                    placeholder="Enter Registration ID...">
+                <button class="btn btn--primary" style="flex:0; padding: 12px 24px;" onclick="manualCheckIn()">
+                    Check In
+                </button>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div class="result-card" id="result-card">
+            <div class="result-card__status">
+                <div class="result-card__icon" id="result-icon"></div>
+                <div>
+                    <div class="result-card__label" id="result-label"></div>
+                    <div class="result-card__sublabel" id="result-sublabel"></div>
+                </div>
+            </div>
+            <div class="result-card__details" id="result-details"></div>
+        </div>
+
+        <!-- History -->
+        <div class="history">
+            <div class="history__title">Scan History</div>
+            <ul class="history__list" id="history-list">
+                <li class="history__empty">No scans yet. Start the scanner to begin check-ins.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ─── State ──────────────────────
+        let html5QrCode = null;
+        let isScanning = false;
+        const scanHistory = [];
+
+        // ─── Auth ──────────────────────
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        function checkAuth() {
+            const token = getToken();
+            if (!token) {
+                showToast('Please log in first to use the scanner.', 'error');
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+                return false;
+            }
+            return true;
+        }
+
+        // ─── Scanner ──────────────────────
+        async function startScanner() {
+            if (!checkAuth()) return;
+            if (isScanning) return;
+
+            const btnStart = document.getElementById('btn-start');
+            const btnStop = document.getElementById('btn-stop');
+
+            try {
+                html5QrCode = new Html5Qrcode("reader");
+                await html5QrCode.start(
+                    { facingMode: "environment" },
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 },
+                        aspectRatio: 1.0
+                    },
+                    onScanSuccess,
+                    onScanFailure
+                );
+                isScanning = true;
+                btnStart.disabled = true;
+                btnStop.disabled = false;
+                showToast('Scanner active — point at a QR code', 'success');
+            } catch (err) {
+                showToast('Camera access denied or not available', 'error');
+                console.error('Scanner error:', err);
+            }
+        }
+
+        async function stopScanner() {
+            if (!isScanning || !html5QrCode) return;
+
+            try {
+                await html5QrCode.stop();
+                html5QrCode.clear();
+            } catch (e) {
+                console.warn('Stop error:', e);
+            }
+
+            isScanning = false;
+            document.getElementById('btn-start').disabled = false;
+            document.getElementById('btn-stop').disabled = true;
+            showToast('Scanner stopped', 'warning');
+        }
+
+        async function onScanSuccess(decodedText) {
+            // Pause scanning while processing
+            if (html5QrCode && isScanning) {
+                await html5QrCode.pause(true);
+            }
+
+            try {
+                const data = JSON.parse(decodedText);
+                if (data.registrationId) {
+                    await performCheckIn(data.registrationId, data);
+                } else {
+                    showResult('error', 'Invalid QR Code', 'QR code does not contain valid registration data.');
+                    addToHistory('Invalid QR code scanned', false);
+                }
+            } catch (e) {
+                // Try treating it as a plain registration ID
+                if (decodedText.length > 10) {
+                    await performCheckIn(decodedText.trim(), null);
+                } else {
+                    showResult('error', 'Invalid QR Code', 'Could not parse QR code data.');
+                    addToHistory('Invalid QR code format', false);
+                }
+            }
+
+            // Resume scanning after processing
+            setTimeout(async () => {
+                if (html5QrCode && isScanning) {
+                    try { await html5QrCode.resume(); } catch (e) { }
+                }
+            }, 3000);
+        }
+
+        function onScanFailure(error) {
+            // Ignore — this fires on every frame without a QR
+        }
+
+        // ─── Check-in API ──────────────────────
+        async function performCheckIn(registrationId, qrData) {
+            const token = getToken();
+            if (!token) {
+                showResult('error', 'Not Authenticated', 'Please log in to perform check-ins.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/admin/registrations/${registrationId}/checkin`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    const name = qrData?.participantName || 'Participant';
+                    const event = qrData?.eventName || '';
+                    showResult('success', '✓ Checked In!', `${name} has been successfully checked in.`, [
+                        { label: 'Participant', value: name },
+                        { label: 'Event', value: event },
+                        { label: 'Registration ID', value: registrationId.substring(0, 12) + '...' },
+                        { label: 'Time', value: new Date().toLocaleTimeString() },
+                    ]);
+                    addToHistory(`${name} checked in`, true);
+                    showToast('Check-in successful! ✓', 'success');
+                } else {
+                    const errorMsg = result.error || result.message || 'Check-in failed';
+                    showResult('error', 'Check-in Failed', errorMsg, [
+                        { label: 'Registration ID', value: registrationId.substring(0, 12) + '...' },
+                        { label: 'Reason', value: errorMsg },
+                    ]);
+                    addToHistory(`Check-in failed: ${errorMsg}`, false);
+                    showToast(errorMsg, 'error');
+                }
+            } catch (err) {
+                showResult('error', 'Network Error', 'Could not reach the server. Check your connection.');
+                addToHistory('Network error during check-in', false);
+                showToast('Network error — please retry', 'error');
+            }
+        }
+
+        // ─── Manual Check-in ──────────────────────
+        async function manualCheckIn() {
+            if (!checkAuth()) return;
+
+            const regId = document.getElementById('manual-reg-id').value.trim();
+            if (!regId) {
+                showToast('Please enter a registration ID', 'warning');
+                return;
+            }
+
+            await performCheckIn(regId, null);
+            document.getElementById('manual-reg-id').value = '';
+        }
+
+        // ─── UI Helpers ──────────────────────
+        function showResult(type, label, sublabel, details) {
+            const card = document.getElementById('result-card');
+            const icon = document.getElementById('result-icon');
+            const labelEl = document.getElementById('result-label');
+            const sublabelEl = document.getElementById('result-sublabel');
+            const detailsEl = document.getElementById('result-details');
+
+            // Reset classes
+            card.className = 'result-card show result-card--' + type;
+            icon.className = 'result-card__icon result-card__icon--' + type;
+
+            icon.textContent = type === 'success' ? '✓' : type === 'error' ? '✗' : '⚠';
+            labelEl.textContent = label;
+            sublabelEl.textContent = sublabel;
+
+            if (details && details.length > 0) {
+                detailsEl.innerHTML = details.map(d => `
+                    <div class="result-card__detail">
+                        <span class="result-card__detail-label">${d.label}</span>
+                        <span class="result-card__detail-value">${d.value}</span>
+                    </div>
+                `).join('');
+            } else {
+                detailsEl.innerHTML = '';
+            }
+        }
+
+        function addToHistory(text, success) {
+            scanHistory.unshift({ text, success, time: new Date().toLocaleTimeString() });
+
+            const list = document.getElementById('history-list');
+            list.innerHTML = scanHistory.slice(0, 20).map(item => `
+                <li class="history__item">
+                    <div class="history__dot history__dot--${item.success ? 'success' : 'error'}"></div>
+                    <span class="history__text">${item.text}</span>
+                    <span class="history__time">${item.time}</span>
+                </li>
+            `).join('');
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast toast--${type} show`;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ─── Enter key for manual input ──────────────────────
+        document.getElementById('manual-reg-id').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') manualCheckIn();
+        });
+    </script>
+</body>
+
+</html>

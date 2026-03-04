@@ -201,6 +201,44 @@ paths:
       responses:
         '200':
           description: Ticket details retrieved
+  /events/{id}/ticket/qr:
+    get:
+      summary: Get registration ticket with QR code data URL
+      description: Returns ticket details along with a base64 QR code image (data URL) encoding the registration ID for check-in scanning.
+      tags:
+        - Registrations & Teams (Participant)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticket with QR code retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticketId:
+                    type: string
+                  participantName:
+                    type: string
+                  eventName:
+                    type: string
+                  eventDate:
+                    type: string
+                    format: date-time
+                  checkInStatus:
+                    type: string
+                  qrCode:
+                    type: string
+                    description: Base64 data URL of the QR code image
+        '404':
+          description: Not registered for this event
   /users/me/notifications:
     get:
       summary: Get current user in-app notifications

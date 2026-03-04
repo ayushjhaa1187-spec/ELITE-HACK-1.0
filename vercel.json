@@ -19,6 +19,10 @@
             "dest": "/api/server.ts"
         },
         {
+            "src": "/scanner",
+            "dest": "/api/server.ts"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/server.ts"
         }

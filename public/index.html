@@ -34,8 +34,8 @@
       CoCreate
     </a>
     <div class="nav-actions">
-      <button class="btn-ghost-sm">Sign In</button>
-      <button class="btn-fill-sm" onclick="window.location.href='/dashboard'">Get Started</button>
+      <button class="btn-ghost-sm" onclick="openAuthModal('login')">Sign In</button>
+      <button class="btn-fill-sm" onclick="openAuthModal('register')">Get Started</button>
     </div>
   </nav>
 
@@ -64,7 +64,7 @@
             stroke-linejoin="round" />
         </svg>
       </button>
-      <button class="btn-hero-s">
+      <button class="btn-hero-s" onclick="document.getElementById('dashScene').scrollIntoView({behavior:'smooth'})">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="7" cy="7" r="5.6" stroke="currentColor" stroke-width="1.3" opacity="0.55" />
           <path d="M5.8 5.1l3.8 1.9-3.8 1.9V5.1z" fill="currentColor" opacity="0.7" />
@@ -304,7 +304,7 @@
         deserves a <em>control room.</em>
       </h2>
       <p>Up in 5 minutes. First event free. No credit card.</p>
-      <button class="btn-cta-xl">
+      <button class="btn-cta-xl" onclick="openAuthModal('register')">
         Create Your Event
         <svg class="arrow" width="15" height="15" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2.5 7h9M7 2.5L11.5 7 7 11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
@@ -338,7 +338,44 @@
     <div class="footer-copy">© 2026 CoCreate, Inc.</div>
   </footer>
 
-  <!-- ══════════════════ JS: PARALLAX ONLY ══════════════════ -->
+  <!-- ══════════════════ AUTH MODAL ══════════════════ -->
+  <div id="authOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);align-items:center;justify-content:center">
+    <div id="authModal" style="background:#fff;border-radius:16px;padding:40px;max-width:420px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,0.2);position:relative;animation:modalIn 0.3s ease">
+      <button onclick="closeAuthModal()" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#999">✕</button>
+      <h2 id="authTitle" style="font-family:'Instrument Serif',serif;font-size:28px;margin:0 0 6px;color:#1a1a2e">Sign In</h2>
+      <p id="authSubtitle" style="color:#6e6e7d;font-size:14px;margin:0 0 24px">Welcome back to CoCreate</p>
+      <div id="authError" style="display:none;background:#fee;color:#c00;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px"></div>
+      <div id="nameGroup" style="display:none;margin-bottom:14px">
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Full Name</label>
+        <input id="authName" type="text" placeholder="Enter your name" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s" onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Email</label>
+        <input id="authEmail" type="email" placeholder="you@example.com" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s" onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Password</label>
+        <input id="authPassword" type="password" placeholder="Min 6 characters" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s" onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
+      </div>
+      <div id="roleGroup" style="display:none;margin-bottom:14px">
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">I am a</label>
+        <select id="authRole" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;background:#fff">
+          <option value="ADMIN">Event Organizer (Admin)</option>
+          <option value="PARTICIPANT">Participant</option>
+        </select>
+      </div>
+      <button id="authSubmit" onclick="submitAuth()" style="width:100%;padding:12px;background:linear-gradient(135deg,#6040f0,#1a96d8);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;transition:opacity 0.2s" onmouseenter="this.style.opacity='0.9'" onmouseleave="this.style.opacity='1'">Sign In</button>
+      <p style="text-align:center;margin-top:16px;font-size:13px;color:#6e6e7d">
+        <span id="authToggleText">Don't have an account?</span>
+        <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)" style="color:#6040f0;font-weight:600;text-decoration:none">Register</a>
+      </p>
+    </div>
+  </div>
+  <style>
+    @keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+  </style>
+
+  <!-- ══════════════════ JS: PARALLAX + AUTH ══════════════════ -->
   <script>
     // Subtle parallax on dashboard — mouse tracking
     (function () {
@@ -346,7 +383,7 @@
       if (!scene) return;
 
       let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-      const MAX = 6; // max px shift
+      const MAX = 6;
       let raf;
 
       document.addEventListener('mousemove', function (e) {
@@ -364,10 +401,136 @@
       }
       tick();
 
-      // On mobile: no parallax
       if (window.matchMedia('(max-width: 860px)').matches) {
         cancelAnimationFrame(raf);
         scene.style.transform = 'none';
+      }
+    })();
+
+    // ── Auth Modal Logic ──
+    let authMode = 'login';
+
+    function openAuthModal(mode) {
+      authMode = mode;
+      const overlay = document.getElementById('authOverlay');
+      overlay.style.display = 'flex';
+      document.getElementById('authError').style.display = 'none';
+      document.getElementById('authEmail').value = '';
+      document.getElementById('authPassword').value = '';
+      document.getElementById('authName').value = '';
+      updateAuthUI();
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authOverlay').style.display = 'none';
+    }
+
+    function toggleAuthMode(e) {
+      e.preventDefault();
+      authMode = authMode === 'login' ? 'register' : 'login';
+      updateAuthUI();
+    }
+
+    function updateAuthUI() {
+      const isLogin = authMode === 'login';
+      document.getElementById('authTitle').textContent = isLogin ? 'Sign In' : 'Create Account';
+      document.getElementById('authSubtitle').textContent = isLogin ? 'Welcome back to CoCreate' : 'Get started with CoCreate';
+      document.getElementById('authSubmit').textContent = isLogin ? 'Sign In' : 'Create Account';
+      document.getElementById('authToggleText').textContent = isLogin ? "Don't have an account? " : 'Already have an account? ';
+      document.getElementById('authToggleLink').textContent = isLogin ? 'Register' : 'Sign In';
+      document.getElementById('nameGroup').style.display = isLogin ? 'none' : 'block';
+      document.getElementById('roleGroup').style.display = isLogin ? 'none' : 'block';
+      document.getElementById('authError').style.display = 'none';
+    }
+
+    async function submitAuth() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const errEl = document.getElementById('authError');
+      const btn = document.getElementById('authSubmit');
+
+      if (!email || !password) {
+        errEl.textContent = 'Please fill in all fields.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      btn.textContent = 'Please wait...';
+      btn.disabled = true;
+
+      try {
+        let url, body;
+        if (authMode === 'login') {
+          url = '/api/auth/login';
+          body = { email, password };
+        } else {
+          const name = document.getElementById('authName').value.trim();
+          const role = document.getElementById('authRole').value;
+          if (!name) {
+            errEl.textContent = 'Please enter your name.';
+            errEl.style.display = 'block';
+            btn.textContent = 'Create Account';
+            btn.disabled = false;
+            return;
+          }
+          url = '/api/auth/register';
+          body = { email, password, name, role };
+        }
+
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || data.errors?.[0]?.message || 'Something went wrong');
+        }
+
+        // Save token and user info
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        closeAuthModal();
+
+        // Redirect based on role
+        if (data.user.role === 'ADMIN') {
+          window.location.href = '/dashboard';
+        } else {
+          window.location.href = '/dashboard';
+        }
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.style.display = 'block';
+      } finally {
+        btn.textContent = authMode === 'login' ? 'Sign In' : 'Create Account';
+        btn.disabled = false;
+      }
+    }
+
+    // Close modal on overlay click
+    document.getElementById('authOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeAuthModal();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeAuthModal();
+    });
+
+    // If already logged in, update nav
+    (function() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || 'null');
+      if (token && user) {
+        const navActions = document.querySelector('.nav-actions');
+        navActions.innerHTML = `
+          <span style="font-size:14px;color:#333;font-weight:500">Hi, ${user.name || user.email}</span>
+          <button class="btn-fill-sm" onclick="window.location.href='/dashboard'">Dashboard</button>
+          <button class="btn-ghost-sm" onclick="localStorage.removeItem('token');localStorage.removeItem('user');window.location.reload()">Logout</button>
+        `;
       }
     })();
   </script>
