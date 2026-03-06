@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Circles — Settings</title>
+  <link rel="stylesheet" href="Settings.css">
+</head>
+<body>
+
+<!-- ════════════════════════ SIDEBAR ════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="#" class="nav-logo">
+      <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+        <defs>
+          <linearGradient id="lg-sb" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6040f0"/><stop offset="1" stop-color="#1a96d8"/>
+          </linearGradient>
+        </defs>
+        <circle cx="13" cy="13" r="10.5" stroke="url(#lg-sb)" stroke-width="1.6"/>
+        <circle cx="13" cy="13" r="6"    stroke="url(#lg-sb)" stroke-width="1.2" opacity=".55"/>
+        <circle cx="13" cy="13" r="2.2"  fill="url(#lg-sb)"/>
+      </svg>
+      Circles
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-lbl">Main</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Dashboard
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Events <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+      </svg>
+      Attendees
+    </div>
+    <div class="nav-lbl">Management</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Analytics
+    </div>
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Settings
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sb-user">
+      <div class="av-sm">CK</div>
+      <div style="flex:1;min-width:0">
+        <div class="u-name">Champion Kumar</div>
+        <div class="u-role">Event Admin</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ════════════════════════ MAIN ════════════════════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="ev-sel">
+        <span>Design Summit 2026</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="live-badge"><div class="live-dot"></div>Live</div>
+      <div class="ev-meta">March 8, 2026 &nbsp;·&nbsp; Bharat Mandapam, New Delhi</div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="notif-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- Page header -->
+    <div class="page-hdr">
+      <h1 class="page-title">Settings</h1>
+      <p class="page-sub">Manage event configuration and platform preferences</p>
+    </div>
+
+    <!-- Settings body -->
+    <div class="settings-wrap">
+
+      <!-- ══ LEFT NAV ══ -->
+      <nav class="settings-nav" aria-label="Settings navigation">
+
+        <div class="snav-item active" onclick="showSection('general', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          General
+        </div>
+
+        <div class="snav-item" onclick="showSection('event', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Event Settings
+        </div>
+
+        <div class="snav-item" onclick="showSection('registration', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/>
+          </svg>
+          Registration
+        </div>
+
+        <div class="snav-item" onclick="showSection('checkin', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+          Check-in
+        </div>
+
+        <div class="snav-item" onclick="showSection('notifications', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          Notifications
+        </div>
+
+        <div class="snav-item" onclick="showSection('team', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          Team &amp; Permissions
+        </div>
+
+      </nav>
+      <!-- /settings-nav -->
+
+      <!-- ══ PANELS ══ -->
+      <div class="settings-panels">
+
+        <!-- ─────────────── SECTION: GENERAL ─────────────── -->
+        <section id="sec-general" class="settings-section active">
+
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">General</div>
+                <div class="card-sub">Basic information about your event</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="form-row">
+                <label class="f-label" for="ev-name">Event Name</label>
+                <input class="f-input" id="ev-name" type="text" value="Design Summit 2026" placeholder="Enter event name">
+              </div>
+
+              <div class="form-row form-grid">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <label class="f-label" for="ev-location">Location</label>
+                  <input class="f-input" id="ev-location" type="text" value="Bharat Mandapam, New Delhi" placeholder="Venue or city">
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <label class="f-label" for="ev-date">Event Date</label>
+                  <input class="f-input" id="ev-date" type="date" value="2026-03-08">
+                </div>
+              </div>
+
+              <div class="form-row" style="border-bottom:none">
+                <label class="f-label" for="ev-desc">Event Description</label>
+                <div class="f-hint">Shown on your event registration page.</div>
+                <textarea class="f-textarea" id="ev-desc" placeholder="Describe your event…">India's premier design and technology conference bringing together 5,000 designers, developers and product thinkers for two days of talks, workshops and deep-dive sessions.</textarea>
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-confirm" id="sc-general">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Saved
+              </span>
+              <button class="btn btn-secondary btn-sm" onclick="resetGeneral()">Discard changes</button>
+              <button class="btn btn-primary btn-sm" onclick="save('general')">Save changes</button>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="danger-zone">
+            <div class="danger-zone-hdr">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2.5">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span class="dz-title">Danger Zone</span>
+            </div>
+            <div class="dz-row">
+              <div>
+                <div class="dz-label">Archive event</div>
+                <div class="dz-sub">Hide this event from all active views. It can be restored later.</div>
+              </div>
+              <button class="btn btn-danger btn-sm">Archive event</button>
+            </div>
+            <div class="dz-row">
+              <div>
+                <div class="dz-label">Delete event</div>
+                <div class="dz-sub">Permanently delete this event and all associated data. This cannot be undone.</div>
+              </div>
+              <button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete event</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ─────────────── SECTION: EVENT SETTINGS ─────────────── -->
+        <section id="sec-event" class="settings-section">
+
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Event Configuration</div>
+                <div class="card-sub">Control visibility, capacity and waitlist behaviour</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="form-row">
+                <div class="f-label">Event Visibility</div>
+                <div class="f-hint" style="margin-bottom:10px">Controls who can discover and register for this event.</div>
+                <div class="vis-group" id="visGroup">
+                  <button class="vis-opt active" data-val="public" onclick="setVisibility(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="2" y1="12" x2="22" y2="12"/>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    Public
+                  </button>
+                  <button class="vis-opt" data-val="private" onclick="setVisibility(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    Private
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="f-label" for="ev-cap">Event Capacity</label>
+                <div class="f-hint" style="margin-bottom:8px">Maximum number of registered attendees.</div>
+                <div class="cap-row">
+                  <input class="f-input" id="ev-cap" type="number" value="5000" min="1" step="100">
+                  <span class="cap-unit">attendees</span>
+                </div>
+              </div>
+
+              <div class="form-row" style="border-bottom:none">
+                <div class="toggle-row" style="padding-top:0;padding-bottom:0;border:none">
+                  <div class="tr-left">
+                    <div class="tr-label">Allow waitlist</div>
+                    <div class="tr-desc">When capacity is reached, new registrants are automatically added to a waitlist.</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="t-track"></span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-confirm" id="sc-event"></span>
+              <button class="btn btn-primary btn-sm" onclick="save('event')">Save changes</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ─────────────── SECTION: REGISTRATION ─────────────── -->
+        <section id="sec-registration" class="settings-section">
+
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Registration Options</div>
+                <div class="card-sub">Configure how attendees sign up for your event</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Enable online registration</div>
+                  <div class="tr-desc">Allow attendees to register through your public event page.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Require email verification</div>
+                  <div class="tr-desc">Attendees must verify their email before registration is confirmed.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Allow group registrations</div>
+                  <div class="tr-desc">Let a single user register multiple attendees in one transaction.</div>
+                </div>
+                <label class="toggle"><input type="checkbox"><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Allow ticket upgrades</div>
+                  <div class="tr-desc">Attendees can upgrade from General to VIP after completing registration.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-confirm" id="sc-registration"></span>
+              <button class="btn btn-primary btn-sm" onclick="save('registration')">Save changes</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ─────────────── SECTION: CHECK-IN ─────────────── -->
+        <section id="sec-checkin" class="settings-section">
+
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Check-in Settings</div>
+                <div class="card-sub">Configure how attendees check in on the day</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Enable QR code check-in</div>
+                  <div class="tr-desc">Each confirmed attendee receives a unique QR code for contactless entry.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Allow manual check-in</div>
+                  <div class="tr-desc">Staff can search by name or registration ID to check in attendees manually.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Enable VIP fast-track check-in</div>
+                  <div class="tr-desc">Opens a dedicated priority lane for VIP ticket holders at the venue entrance.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <!-- QR generate zone -->
+              <div class="qr-zone">
+                <div class="qr-icon-box">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <rect x="16" y="16" width="2" height="2"/>
+                    <rect x="19" y="16" width="2" height="2"/>
+                    <rect x="16" y="19" width="2" height="2"/>
+                    <rect x="19" y="19" width="2" height="2"/>
+                  </svg>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div class="qr-text-title">Attendee QR Codes</div>
+                  <div class="qr-text-sub">Generate unique, scannable QR codes for all 4,821 registered attendees. Codes are sent via email automatically.</div>
+                  <button class="btn btn-secondary btn-sm" id="qrBtn" onclick="generateQR()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                    </svg>
+                    Generate QR Codes
+                  </button>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-confirm" id="sc-checkin"></span>
+              <button class="btn btn-primary btn-sm" onclick="save('checkin')">Save changes</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ─────────────── SECTION: NOTIFICATIONS ─────────────── -->
+        <section id="sec-notifications" class="settings-section">
+
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Notifications</div>
+                <div class="card-sub">Automated emails sent to your registered attendees</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Send confirmation email</div>
+                  <div class="tr-desc">Immediately send a confirmation with QR code when registration is complete.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Send reminder before event</div>
+                  <div class="tr-desc">Send a reminder 24 hours before the event starts with schedule and venue details.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Send post-event feedback request</div>
+                  <div class="tr-desc">Automatically email a feedback survey to attendees 24 hours after the event ends.</div>
+                </div>
+                <label class="toggle"><input type="checkbox"><span class="t-track"></span></label>
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-confirm" id="sc-notifications"></span>
+              <button class="btn btn-primary btn-sm" onclick="save('notifications')">Save changes</button>
+            </div>
+          </div>
+
+          <!-- Sender settings -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Email Sender</div>
+                <div class="card-sub">The from name and reply-to address used for all outgoing emails</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <label class="f-label" for="sender-name">Sender Name</label>
+                <input class="f-input" id="sender-name" type="text" value="Design Summit 2026">
+              </div>
+              <div class="form-row" style="border-bottom:none">
+                <label class="f-label" for="sender-email">Reply-to Email</label>
+                <div class="f-hint" style="margin-bottom:6px">Attendees who reply to emails will reach this address.</div>
+                <input class="f-input" id="sender-email" type="email" value="hello@designsummit.in">
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="save-confirm" id="sc-sender"></span>
+              <button class="btn btn-primary btn-sm" onclick="save('sender')">Save changes</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ─────────────── SECTION: TEAM ─────────────── -->
+        <section id="sec-team" class="settings-section">
+
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Team Members</div>
+                <div class="card-sub">People with access to manage this event</div>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="openInvite()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Invite member
+              </button>
+            </div>
+
+            <table class="team-table" id="teamTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="teamBody">
+                <!-- injected by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Role permissions reference -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Role Permissions</div>
+                <div class="card-sub">What each role is allowed to do</div>
+              </div>
+            </div>
+            <table class="perm-table">
+              <thead>
+                <tr>
+                  <th>Permission</th>
+                  <th>Admin</th>
+                  <th>Organizer</th>
+                  <th>Staff</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Manage event settings</td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-no">—</span></td>
+                  <td><span class="perm-no">—</span></td>
+                </tr>
+                <tr>
+                  <td>View analytics</td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-no">—</span></td>
+                </tr>
+                <tr>
+                  <td>Manage attendees</td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-no">—</span></td>
+                </tr>
+                <tr>
+                  <td>Perform check-ins</td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-yes">✓</span></td>
+                </tr>
+                <tr>
+                  <td>Invite team members</td>
+                  <td><span class="perm-yes">✓</span></td>
+                  <td><span class="perm-no">—</span></td>
+                  <td><span class="perm-no">—</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="height:4px"></div>
+          </div>
+
+        </section>
+
+      </div>
+      <!-- /settings-panels -->
+
+    </div>
+    <!-- /settings-wrap -->
+
+  </main>
+</div>
+
+<!-- ════════════════════════ INVITE MODAL ════════════════════════ -->
+<div class="modal-backdrop" id="inviteModal" onclick="handleBackdropClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+
+    <div class="modal-hdr">
+      <span class="modal-title" id="modal-heading">Invite team member</span>
+      <button class="modal-close" onclick="closeInvite()" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-field">
+        <label class="f-label" for="inv-name">Full name</label>
+        <input class="f-input" id="inv-name" type="text" placeholder="e.g. Priya Sharma" autocomplete="off">
+      </div>
+      <div class="modal-field">
+        <label class="f-label" for="inv-email">Email address</label>
+        <input class="f-input" id="inv-email" type="email" placeholder="name@company.com" autocomplete="off">
+      </div>
+      <div class="modal-field">
+        <div class="f-label" style="margin-bottom:8px">Role</div>
+        <div class="role-picker" id="rolePicker">
+          <button class="rp-choice" data-role="admin"     onclick="pickRole(this)">Admin</button>
+          <button class="rp-choice active" data-role="organizer" onclick="pickRole(this)">Organizer</button>
+          <button class="rp-choice" data-role="staff"     onclick="pickRole(this)">Staff</button>
+        </div>
+        <div class="f-hint" style="margin-top:8px" id="role-hint">Can view analytics and manage attendees.</div>
+      </div>
+    </div>
+
+    <div class="modal-ftr">
+      <button class="btn btn-secondary btn-sm" onclick="closeInvite()">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="sendInvite()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+        Send invite
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════ JAVASCRIPT ════════════════════════ -->
+<script>
+'use strict';
+
+/* ── TEAM DATA ──────────────────────────────────────────── */
+let TEAM = [
+  { id:1, name:'Champion Kumar', email:'champion@circles.app', role:'admin',     status:'active',  color:'#6040f0' },
+  { id:2, name:'Neha Joshi',     email:'neha@designhub.in',   role:'organizer',  status:'active',  color:'#1a96d8' },
+  { id:3, name:'Arjun Reddy',    email:'arjun.reddy@mail.com',role:'staff',      status:'active',  color:'#0aaa6e' },
+  { id:4, name:'Priya Sharma',   email:'priya@techpulse.com', role:'organizer',  status:'pending', color:'#b030d8' },
+];
+let nextId = 5;
+
+function initials(name) {
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+const ROLE_META = {
+  admin:     { cls:'rp-admin', label:'Admin' },
+  organizer: { cls:'rp-org',   label:'Organizer' },
+  staff:     { cls:'rp-staff', label:'Staff' },
+};
+
+function renderTeam() {
+  const tbody = document.getElementById('teamBody');
+  if (!TEAM.length) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--ink-3)">No team members yet.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = TEAM.map(m => {
+    const r = ROLE_META[m.role] || ROLE_META.staff;
+    return `
+      <tr>
+        <td>
+          <div class="member-cell">
+            <div class="m-av" style="background:${m.color}">${initials(m.name)}</div>
+            <div class="m-name">${escHtml(m.name)}</div>
+          </div>
+        </td>
+        <td><span class="role-pill ${r.cls}">${r.label}</span></td>
+        <td class="m-email-cell">${escHtml(m.email)}</td>
+        <td><span class="status-dot ${m.status}">${m.status === 'active' ? 'Active' : 'Pending invite'}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="ra-btn" onclick="cycleRole(${m.id})">Change role</button>
+            <button class="ra-btn danger" onclick="removeMember(${m.id})">Remove</button>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function cycleRole(id) {
+  const m = TEAM.find(x => x.id === id);
+  if (!m) return;
+  const order = ['admin','organizer','staff'];
+  m.role = order[(order.indexOf(m.role) + 1) % order.length];
+  renderTeam();
+}
+
+function removeMember(id) {
+  const m = TEAM.find(x => x.id === id);
+  if (!m) return;
+  if (!confirm(`Remove ${m.name} from this event?`)) return;
+  TEAM = TEAM.filter(x => x.id !== id);
+  renderTeam();
+}
+
+renderTeam();
+
+/* ── SETTINGS NAV ───────────────────────────────────────── */
+function showSection(id, navEl) {
+  document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.snav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) sec.classList.add('active');
+  navEl.classList.add('active');
+}
+
+/* ── VISIBILITY TOGGLE ──────────────────────────────────── */
+function setVisibility(btn) {
+  document.querySelectorAll('#visGroup .vis-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ── SAVE FEEDBACK ──────────────────────────────────────── */
+function save(key) {
+  const el = document.getElementById('sc-' + key);
+  if (!el) return;
+  el.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved`;
+  el.classList.add('visible');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('visible'), 2600);
+}
+
+function resetGeneral() {
+  document.getElementById('ev-name').value     = 'Design Summit 2026';
+  document.getElementById('ev-location').value = 'Bharat Mandapam, New Delhi';
+  document.getElementById('ev-date').value     = '2026-03-08';
+  document.getElementById('ev-desc').value     = "India's premier design and technology conference bringing together 5,000 designers, developers and product thinkers for two days of talks, workshops and deep-dive sessions.";
+}
+
+function confirmDelete() {
+  if (confirm('Are you sure? This will permanently delete the event and all its data.')) {
+    alert('Event deleted. (Demo only — no data was actually removed.)');
+  }
+}
+
+/* ── QR CODE GENERATE ───────────────────────────────────── */
+function generateQR() {
+  const btn = document.getElementById('qrBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><path d="M21 12a9 9 0 1 1-9-9"/></svg> Generating…`;
+  setTimeout(() => {
+    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--emerald)"><polyline points="20 6 9 17 4 12"/></svg> 4,821 codes ready`;
+    btn.disabled = false;
+    setTimeout(() => {
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg> Generate QR Codes`;
+    }, 3000);
+  }, 1800);
+}
+
+/* ── INVITE MODAL ───────────────────────────────────────── */
+const ROLE_HINTS = {
+  admin:     'Full access: manage settings, analytics, attendees and team.',
+  organizer: 'Can view analytics and manage attendees.',
+  staff:     'Can only perform check-ins on event day.',
+};
+
+function openInvite() {
+  document.getElementById('inviteModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('inv-name').focus(), 220);
+}
+function closeInvite() {
+  document.getElementById('inviteModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleBackdropClick(e) {
+  if (e.target === document.getElementById('inviteModal')) closeInvite();
+}
+
+function pickRole(btn) {
+  document.querySelectorAll('.rp-choice').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('role-hint').textContent = ROLE_HINTS[btn.dataset.role] || '';
+}
+
+function sendInvite() {
+  const name  = document.getElementById('inv-name').value.trim();
+  const email = document.getElementById('inv-email').value.trim();
+  const role  = document.querySelector('.rp-choice.active')?.dataset.role || 'staff';
+
+  if (!name)  { document.getElementById('inv-name').focus();  return; }
+  if (!email || !email.includes('@')) { document.getElementById('inv-email').focus(); return; }
+
+  const palette = ['#6040f0','#1a96d8','#0aaa6e','#b030d8','#d97706','#dc2626'];
+  TEAM.push({ id: nextId++, name, email, role, status:'pending', color: palette[TEAM.length % palette.length] });
+  renderTeam();
+
+  document.getElementById('inv-name').value  = '';
+  document.getElementById('inv-email').value = '';
+  closeInvite();
+
+  // Scroll to team section and flash a confirmation
+  document.getElementById('sec-team').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ── KEYBOARD SHORTCUTS ─────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeInvite();
+});
+
+/* ── INJECT SPIN KEYFRAME ───────────────────────────────── */
+const style = document.createElement('style');
+style.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>
