@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circles — Events</title>
+  <link rel="stylesheet" href="Events.css">
+</head>
+<body>
+
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="/" class="nav-logo">
+      <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+        <defs>
+          <linearGradient id="lg-nav" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6040f0"/>
+            <stop offset="1" stop-color="#1a96d8"/>
+          </linearGradient>
+        </defs>
+        <circle cx="13" cy="13" r="10.5" stroke="url(#lg-nav)" stroke-width="1.6"/>
+        <circle cx="13" cy="13" r="6"    stroke="url(#lg-nav)" stroke-width="1.2" opacity="0.55"/>
+        <circle cx="13" cy="13" r="2.2"  fill="url(#lg-nav)"/>
+      </svg>
+      Circles
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-lbl">Main</div>
+    <div class="nav-item" onclick="window.location.href='/'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Dashboard
+    </div>
+
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8"  y1="2" x2="8"  y2="6"/>
+        <line x1="3"  y1="10" x2="21" y2="10"/>
+      </svg>
+      Events <span class="nav-badge">3</span>
+    </div>
+
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+      </svg>
+      Attendees
+    </div>
+
+    <div class="nav-lbl">Management</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Analytics
+    </div>
+
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Settings
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sb-user">
+      <div class="av-sm">CK</div>
+      <div style="flex:1;min-width:0">
+        <div class="u-name">Champion Kumar</div>
+        <div class="u-role">Event Admin</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<div class="main">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-ev">
+      <div class="ev-sel">
+        <span>Design Summit 2026</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="live-badge">
+        <div class="live-dot"></div>Live
+      </div>
+      <div class="ev-meta">
+        March 8, 2026 <span class="ev-meta-sep">•</span> Bharat Mandapam, New Delhi
+      </div>
+    </div>
+    <div class="tb-actions">
+      <button class="icon-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="notif-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- Page Header -->
+    <div class="page-hdr">
+      <div>
+        <div class="page-title">Events</div>
+        <div class="page-sub">Create and manage your events</div>
+      </div>
+      <div class="hdr-actions">
+        <button class="btn btn-sec" onclick="openModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5"  y1="12" x2="19" y2="12"/>
+          </svg>
+          Create Event
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all"       onclick="setFilter(this)">All Events</button>
+        <button class="filter-tab"        data-filter="live"      onclick="setFilter(this)">Live</button>
+        <button class="filter-tab"        data-filter="upcoming"  onclick="setFilter(this)">Upcoming</button>
+        <button class="filter-tab"        data-filter="completed" onclick="setFilter(this)">Completed</button>
+      </div>
+      <span class="filter-count" id="filterCount">3 events</span>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="events-grid" id="eventsGrid">
+
+      <!-- Create New Event Card -->
+      <div class="create-card" onclick="openModal()">
+        <div class="create-card-ico">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5"  y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <div class="create-card-title">Create New Event</div>
+        <div class="create-card-sub">Start planning your next event — set a date, venue, and open registrations</div>
+      </div>
+
+      <!-- ── Card 1: Live ── -->
+      <div class="event-card" data-status="live">
+        <div class="event-card-accent"></div>
+        <div class="event-card-body">
+          <div class="event-card-top">
+            <div class="event-title">Design Summit 2026</div>
+            <span class="status-badge status-live">
+              <span style="display:inline-block;width:6px;height:6px;background:#0aaa6e;border-radius:50%;margin-right:5px;animation:pulse 2s infinite;vertical-align:middle"></span>Live
+            </span>
+          </div>
+          <div class="event-meta">
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8"  y1="2" x2="8"  y2="6"/>
+                <line x1="3"  y1="10" x2="21" y2="10"/>
+              </svg>
+              <span><strong>March 8, 2026</strong> · 9:00 AM – 6:00 PM</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>Bharat Mandapam, New Delhi</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <span><strong>4,821</strong> registrations · 5,000 capacity</span>
+            </div>
+          </div>
+          <div class="event-progress">
+            <div class="progress-header">
+              <span class="progress-label">Check-in Progress</span>
+              <span class="progress-value">2,942 / 4,821</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:61%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="event-card-footer">
+          <button class="card-btn primary-btn" onclick="event.stopPropagation()">Dashboard</button>
+          <button class="card-btn"             onclick="event.stopPropagation()">Attendees</button>
+          <button class="card-btn"             onclick="event.stopPropagation()">Settings</button>
+        </div>
+      </div>
+
+      <!-- ── Card 2: Upcoming ── -->
+      <div class="event-card" data-status="upcoming">
+        <div class="event-card-accent azure"></div>
+        <div class="event-card-body">
+          <div class="event-card-top">
+            <div class="event-title">ProductCon Spring 2026</div>
+            <span class="status-badge status-upcoming">Upcoming</span>
+          </div>
+          <div class="event-meta">
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8"  y1="2" x2="8"  y2="6"/>
+                <line x1="3"  y1="10" x2="21" y2="10"/>
+              </svg>
+              <span><strong>April 18, 2026</strong> · 10:00 AM – 5:00 PM</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>NSCI Dome, Mumbai</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <span><strong>1,240</strong> registrations · 3,000 capacity</span>
+            </div>
+          </div>
+          <div class="event-progress">
+            <div class="progress-header">
+              <span class="progress-label">Registration Fill</span>
+              <span class="progress-value">1,240 / 3,000</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill azure" style="width:41%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="event-card-footer">
+          <button class="card-btn primary-btn" onclick="event.stopPropagation()">Dashboard</button>
+          <button class="card-btn"             onclick="event.stopPropagation()">Attendees</button>
+          <button class="card-btn"             onclick="event.stopPropagation()">Settings</button>
+        </div>
+      </div>
+
+      <!-- ── Card 3: Completed ── -->
+      <div class="event-card" data-status="completed">
+        <div class="event-card-accent rose"></div>
+        <div class="event-card-body">
+          <div class="event-card-top">
+            <div class="event-title">UX Research Bootcamp</div>
+            <span class="status-badge status-completed">Completed</span>
+          </div>
+          <div class="event-meta">
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8"  y1="2" x2="8"  y2="6"/>
+                <line x1="3"  y1="10" x2="21" y2="10"/>
+              </svg>
+              <span><strong>Feb 12, 2026</strong> · 9:00 AM – 4:00 PM</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>ITC Gardenia, Bengaluru</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <span><strong>680</strong> attended · 700 capacity</span>
+            </div>
+          </div>
+          <div class="event-progress">
+            <div class="progress-header">
+              <span class="progress-label">Final Attendance</span>
+              <span class="progress-value" style="color:var(--emerald)">97.1%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill rose" style="width:97%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="event-card-footer">
+          <button class="card-btn primary-btn" onclick="event.stopPropagation()">View Report</button>
+          <button class="card-btn"             onclick="event.stopPropagation()">Attendees</button>
+          <button class="card-btn"             onclick="event.stopPropagation()">Export</button>
+        </div>
+      </div>
+
+    </div><!-- /events-grid -->
+  </main>
+</div>
+
+<!-- ══════════════════════ MODAL ══════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Create New Event</div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6"  x2="6"  y2="18"/>
+          <line x1="6"  y1="6"  x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label class="form-label">Event Title</label>
+        <input class="form-input" type="text" placeholder="e.g. Design Summit 2027" />
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Date</label>
+          <input class="form-input" type="date" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Capacity</label>
+          <input class="form-input" type="number" placeholder="e.g. 500" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Venue</label>
+        <input class="form-input" type="text" placeholder="e.g. Convention Centre, New Delhi" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Description</label>
+        <textarea class="form-input" placeholder="Describe your event — agenda, speakers, what to expect…"></textarea>
+      </div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn btn-sec" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-pri" onclick="handleCreate()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5"  y1="12" x2="19" y2="12"/>
+        </svg>
+        Create Event
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── Filter ── */
+  function setFilter(btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    const cards = document.querySelectorAll('.event-card[data-status]');
+    let visible = 0;
+    cards.forEach(c => {
+      const show = f === 'all' || c.dataset.status === f;
+      c.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('filterCount').textContent =
+      visible + (visible === 1 ? ' event' : ' events');
+  }
+
+  /* ── Modal ── */
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  function handleCreate() {
+    const title = document.querySelector('.modal-body input[type="text"]').value.trim();
+    if (!title) {
+      document.querySelector('.modal-body input[type="text"]').focus();
+      return;
+    }
+    closeModal();
+    alert('✅ Event "' + title + '" created! (UI demo)');
+  }
+</script>
+</body>
+</html>
