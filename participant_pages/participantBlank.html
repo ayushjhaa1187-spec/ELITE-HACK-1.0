@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>My Events — Circles</title>
+  <style>
+/* ══════════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════════ */
+:root {
+  --ink-0:     #0d0c1a;
+  --ink-1:     rgba(13,12,26,0.85);
+  --ink-2:     rgba(13,12,26,0.65);
+  --ink-3:     rgba(13,12,26,0.46);
+  --ink-4:     rgba(13,12,26,0.08);
+  --base:      #f4f3fb;
+  --base-2:    #eceaf7;
+  --surface:   rgba(255,255,255,0.80);
+  --surface-2: rgba(255,255,255,0.97);
+  --edge:      rgba(13,12,26,0.08);
+  --edge-2:    rgba(13,12,26,0.14);
+  --violet:    #6040f0;
+  --violet-l:  rgba(96,64,240,0.09);
+  --azure:     #1a96d8;
+  --emerald:   #0aaa6e;
+  --amber:     #d97706;
+  --grad:      linear-gradient(128deg, #6040f0 0%, #1a96d8 100%);
+  --grad-soft: linear-gradient(160deg, #f0eeff 0%, #e8f4ff 100%);
+  --font-d:    'Instrument Serif', Georgia, serif;
+  --font-u:    'Geist', system-ui, sans-serif;
+  --nav-h:     68px;
+  --radius:    14px;
+  --shadow-sm: 0 1px 4px rgba(13,12,26,0.06);
+  --shadow-md: 0 4px 20px rgba(13,12,26,0.09);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-u);
+  background: var(--base); color: var(--ink-0);
+  font-size: 13px; line-height: 1.55; min-height: 100vh;
+}
+
+/* noise */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px; opacity: 0.015;
+}
+
+/* ══════════════════════════════════════════════
+   TOP NAV
+══════════════════════════════════════════════ */
+.topnav {
+  height: var(--nav-h);
+  background: rgba(244,243,251,0.93);
+  backdrop-filter: blur(28px);
+  border-bottom: 1px solid var(--edge);
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center;
+  padding: 0 max(24px, calc(50vw - 580px));
+  gap: 16px;
+}
+
+.nav-brand {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+  color: var(--ink-0); font-weight: 700; font-size: 15px; letter-spacing: -0.02em;
+}
+.nav-brand:hover { opacity: .85; }
+.logo-svg { width: 26px; height: 26px; flex-shrink: 0; }
+.nav-spacer { flex: 1; }
+
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-link {
+  display: flex; align-items: center; gap: 7px; padding: 7px 13px;
+  border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2);
+  cursor: pointer; text-decoration: none; background: none; border: none;
+  font-family: inherit; transition: background .12s, color .12s;
+}
+.nav-link svg { width: 15px; height: 15px; }
+.nav-link:hover  { background: var(--base-2); color: var(--ink-0); }
+.nav-link.active { color: var(--violet); background: var(--violet-l); }
+
+.nav-notif {
+  position: relative; width: 38px; height: 38px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--ink-2); border: none; background: transparent;
+  transition: background .1s;
+}
+.nav-notif:hover { background: var(--base-2); }
+.nav-notif svg { width: 18px; height: 18px; }
+
+.nav-av {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(96,64,240,0.25);
+  border: 2px solid rgba(255,255,255,0.6);
+  transition: transform .15s, box-shadow .15s;
+}
+.nav-av:hover { transform: scale(1.06); box-shadow: 0 4px 14px rgba(96,64,240,.35); }
+
+/* ══════════════════════════════════════════════
+   PAGE
+══════════════════════════════════════════════ */
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* ══════════════════════════════════════════════
+   WELCOME HEADER
+══════════════════════════════════════════════ */
+.welcome-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+  flex-wrap: wrap;
+}
+.welcome-left {}
+.welcome-eyebrow {
+  font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--violet); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.welcome-eyebrow::before {
+  content: ''; width: 18px; height: 2px; background: var(--violet); border-radius: 1px;
+}
+.welcome-title {
+  font-family: var(--font-d);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400; line-height: 1.08;
+  letter-spacing: -0.025em; color: var(--ink-0);
+  margin-bottom: 12px;
+}
+.welcome-title span {
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.welcome-sub {
+  font-size: 14px; color: var(--ink-2); line-height: 1.65; max-width: 480px;
+}
+
+.welcome-actions {
+  display: flex; align-items: center; gap: 10px; margin-top: 24px; flex-wrap: wrap;
+}
+
+/* ══════════════════════════════════════════════
+   HERO EMPTY STATE — MAIN ILLUSTRATION ZONE
+══════════════════════════════════════════════ */
+.hero-empty {
+  background: var(--grad-soft);
+  border: 1px solid rgba(96,64,240,0.12);
+  border-radius: 20px;
+  padding: 56px 40px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0;
+  position: relative; overflow: hidden;
+}
+
+/* decorative blobs */
+.hero-empty::before {
+  content: '';
+  position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(96,64,240,0.08) 0%, transparent 70%);
+  top: -80px; left: -60px; pointer-events: none;
+}
+.hero-empty::after {
+  content: '';
+  position: absolute; width: 240px; height: 240px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,150,216,0.07) 0%, transparent 70%);
+  bottom: -60px; right: -40px; pointer-events: none;
+}
+
+/* Floating illustration */
+.empty-illustration {
+  position: relative; width: 180px; height: 180px;
+  margin-bottom: 32px; z-index: 1;
+  animation: floatUp 3s ease-in-out infinite;
+}
+@keyframes floatUp {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+/* orbit ring */
+.orbit-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px dashed rgba(96,64,240,0.2);
+  animation: spin 18s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* orbit dots */
+.orbit-dot {
+  position: absolute; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--violet); opacity: 0.6;
+}
+.od-1 { top: -4px; left: calc(50% - 4px); }
+.od-2 { bottom: -4px; right: 30px; background: var(--azure); }
+.od-3 { top: 30px; right: -4px; background: var(--emerald); opacity: .5; }
+
+/* centre circle */
+.empty-circle-outer {
+  position: absolute; inset: 20px; border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(96,64,240,0.1);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 32px rgba(96,64,240,0.1);
+}
+.empty-circle-inner {
+  width: 90px; height: 90px; border-radius: 50%;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 24px rgba(96,64,240,0.28);
+}
+.empty-circle-inner svg { width: 38px; height: 38px; color: white; }
+
+.empty-title {
+  font-family: var(--font-d);
+  font-size: 1.9rem; font-weight: 400;
+  letter-spacing: -0.02em; line-height: 1.1;
+  color: var(--ink-0); margin-bottom: 12px; z-index: 1;
+}
+.empty-sub {
+  font-size: 14px; color: var(--ink-2); line-height: 1.65;
+  max-width: 420px; margin-bottom: 32px; z-index: 1;
+}
+
+.empty-cta { z-index: 1; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+/* ══════════════════════════════════════════════
+   STEP GUIDE
+══════════════════════════════════════════════ */
+.steps-section {}
+.steps-header { margin-bottom: 24px; }
+.section-eyebrow {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-3); margin-bottom: 8px;
+}
+.section-title {
+  font-family: var(--font-d);
+  font-size: 1.5rem; font-weight: 400; line-height: 1.15;
+  letter-spacing: -0.02em; color: var(--ink-0);
+}
+
+.steps-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+
+.step-card {
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: var(--radius); padding: 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; gap: 14px;
+  transition: transform .16s, box-shadow .16s, border-color .16s;
+  cursor: default; position: relative; overflow: hidden;
+}
+.step-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(96,64,240,0.2);
+}
+.step-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.step-card:nth-child(1)::before { background: var(--violet); }
+.step-card:nth-child(2)::before { background: var(--azure); }
+.step-card:nth-child(3)::before { background: var(--emerald); }
+
+.step-num {
+  font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--ink-3);
+}
+.step-ico {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-ico svg { width: 20px; height: 20px; }
+.si-violet  { background: rgba(96,64,240,0.1);  color: var(--violet); }
+.si-azure   { background: rgba(26,150,216,0.1); color: var(--azure); }
+.si-emerald { background: rgba(10,170,110,0.1); color: var(--emerald); }
+
+.step-title { font-size: 15px; font-weight: 700; color: var(--ink-0); line-height: 1.3; }
+.step-body  { font-size: 13px; color: var(--ink-2); line-height: 1.65; flex: 1; }
+.step-action {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 700; color: var(--violet);
+  cursor: pointer; background: none; border: none; font-family: inherit; padding: 0;
+  transition: gap .12s;
+}
+.step-action:hover { gap: 10px; }
+.step-action svg { width: 13px; height: 13px; }
+
+/* ══════════════════════════════════════════════
+   DISCOVER EVENTS
+══════════════════════════════════════════════ */
+.discover-section {}
+
+.event-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;
+}
+
+.event-card {
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: transform .16s, box-shadow .16s, border-color .16s;
+  cursor: pointer;
+}
+.event-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(96,64,240,0.22);
+}
+
+.event-card-banner {
+  height: 96px; position: relative; overflow: hidden;
+  display: flex; align-items: flex-end; padding: 12px 14px;
+}
+.event-card-banner::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(13,12,26,0.45));
+}
+.ecb-1 { background: linear-gradient(128deg, #6040f0, #1a96d8); }
+.ecb-2 { background: linear-gradient(128deg, #0aaa6e, #1a96d8); }
+.ecb-3 { background: linear-gradient(128deg, #b030d8, #6040f0); }
+.ecb-4 { background: linear-gradient(128deg, #d97706, #b030d8); }
+.ecb-5 { background: linear-gradient(128deg, #1a96d8, #0aaa6e); }
+.ecb-6 { background: linear-gradient(128deg, #6040f0, #b030d8); }
+
+/* decorative circles on banner */
+.event-card-banner .bc {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.1); pointer-events: none;
+}
+.bc1 { width: 80px; height: 80px; top: -20px; right: -20px; }
+.bc2 { width: 50px; height: 50px; bottom: -10px; left: 20px; }
+
+.ecb-tag {
+  position: relative; z-index: 1;
+  font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+  background: rgba(255,255,255,0.2); color: #fff;
+  border: 1px solid rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: .04em;
+  backdrop-filter: blur(4px);
+}
+
+.event-card-body { padding: 16px; }
+.ec-title { font-size: 14px; font-weight: 700; color: var(--ink-0); line-height: 1.3; margin-bottom: 8px; }
+.ec-meta  {
+  display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;
+}
+.ec-meta-row {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--ink-3);
+}
+.ec-meta-row svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+.ec-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px; border-top: 1px solid var(--edge);
+}
+.ec-attendees {
+  display: flex; align-items: center; gap: 6px;
+}
+.ec-av-stack { display: flex; }
+.ec-av {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid #fff; margin-left: -7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7.5px; font-weight: 800; color: #fff;
+}
+.ec-av-stack .ec-av:first-child { margin-left: 0; }
+.ec-count { font-size: 12px; color: var(--ink-3); font-weight: 500; }
+
+/* ══════════════════════════════════════════════
+   INVITE ROW
+══════════════════════════════════════════════ */
+.invite-banner {
+  background: var(--grad);
+  border-radius: 18px; padding: 36px 40px;
+  display: flex; align-items: center; gap: 32px;
+  position: relative; overflow: hidden;
+  flex-wrap: wrap;
+}
+.invite-banner::before {
+  content: ''; position: absolute; width: 280px; height: 280px;
+  border-radius: 50%; background: rgba(255,255,255,0.06);
+  right: -60px; top: -100px; pointer-events: none;
+}
+.invite-banner::after {
+  content: ''; position: absolute; width: 160px; height: 160px;
+  border-radius: 50%; background: rgba(255,255,255,0.05);
+  left: 60px; bottom: -60px; pointer-events: none;
+}
+.ib-text { flex: 1; min-width: 240px; position: relative; z-index: 1; }
+.ib-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); margin-bottom: 8px;
+}
+.ib-title {
+  font-family: var(--font-d);
+  font-size: 1.5rem; color: #fff; line-height: 1.15; margin-bottom: 10px;
+}
+.ib-sub { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.6; }
+.ib-actions {
+  display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1;
+}
+.invite-link-box {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 9px; padding: 8px 12px;
+  font-size: 12.5px; color: rgba(255,255,255,0.9);
+  font-weight: 600; backdrop-filter: blur(8px);
+  cursor: pointer; transition: background .12s;
+}
+.invite-link-box:hover { background: rgba(255,255,255,0.22); }
+.invite-link-box svg { width: 13px; height: 13px; flex-shrink: 0; opacity: .8; }
+
+/* ══════════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 22px; border-radius: 9px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: all .14s; border: none; font-family: inherit;
+  white-space: nowrap; line-height: 1; text-decoration: none;
+}
+.btn-sm { padding: 7px 15px; font-size: 12.5px; }
+.btn-xs { padding: 5px 11px; font-size: 11.5px; font-weight: 600; }
+
+.btn-primary {
+  background: var(--grad); color: #fff;
+  box-shadow: 0 2px 10px rgba(96,64,240,.24);
+}
+.btn-primary:hover { opacity: .91; transform: translateY(-1px); box-shadow: 0 5px 18px rgba(96,64,240,.34); }
+
+.btn-secondary {
+  background: var(--surface-2); color: var(--ink-0);
+  border: 1px solid var(--edge-2);
+}
+.btn-secondary:hover { border-color: var(--violet); }
+
+.btn-ghost {
+  background: transparent; color: var(--ink-2);
+  border: 1px solid var(--edge-2);
+}
+.btn-ghost:hover { border-color: var(--violet); color: var(--violet); background: var(--violet-l); }
+
+.btn-white {
+  background: #fff; color: var(--violet);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+.btn-white:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(0,0,0,0.16); }
+
+.btn-outline-white {
+  background: rgba(255,255,255,0.15); color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(8px);
+}
+.btn-outline-white:hover { background: rgba(255,255,255,0.25); }
+
+/* ══════════════════════════════════════════════
+   REGISTRATION MODAL
+══════════════════════════════════════════════ */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(13,12,26,.38); backdrop-filter: blur(8px);
+  z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: 20px; width: 100%; max-width: 460px;
+  box-shadow: 0 20px 60px rgba(13,12,26,0.14);
+  transform: translateY(14px) scale(.97);
+  transition: transform .22s cubic-bezier(.4,0,.2,1);
+}
+.modal-backdrop.open .modal { transform: none; }
+.modal-hdr {
+  padding: 22px 26px 18px; border-bottom: 1px solid var(--edge);
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.modal-title { font-family: var(--font-d); font-size: 1.45rem; font-weight: 400; }
+.modal-sub   { font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+.modal-close {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border: none; background: transparent; color: var(--ink-3);
+  transition: background .1s;
+}
+.modal-close:hover { background: var(--base-2); color: var(--ink-0); }
+.modal-body { padding: 22px 26px; display: flex; flex-direction: column; gap: 16px; }
+.modal-ftr  {
+  padding: 14px 26px 22px; border-top: 1px solid var(--edge);
+  display: flex; gap: 10px; justify-content: flex-end;
+}
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.f-label { font-size: 11.5px; font-weight: 700; color: var(--ink-1); letter-spacing: .02em; }
+.f-input {
+  padding: 9px 13px; border-radius: 8px; border: 1px solid var(--edge-2);
+  background: var(--base); font-size: 13px; font-family: inherit; color: var(--ink-0);
+  outline: none; width: 100%; transition: border-color .15s, box-shadow .15s;
+}
+.f-input:focus { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(96,64,240,.1); }
+.f-input::placeholder { color: var(--ink-3); }
+
+.ticket-type-group { display: flex; gap: 10px; }
+.ticket-type {
+  flex: 1; padding: 14px; border-radius: 10px; cursor: pointer;
+  border: 1.5px solid var(--edge-2); background: var(--base);
+  transition: all .13s; position: relative;
+}
+.ticket-type:hover  { border-color: var(--violet); }
+.ticket-type.active { border-color: var(--violet); background: var(--violet-l); }
+.ticket-type.active::after {
+  content: '✓'; position: absolute; top: 8px; right: 10px;
+  font-size: 11px; font-weight: 800; color: var(--violet);
+}
+.tt-name  { font-size: 13px; font-weight: 700; }
+.tt-price { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; }
+.tt-badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 20px; margin-top: 5px;
+}
+
+/* ══════════════════════════════════════════════
+   SUCCESS SCREEN (in modal)
+══════════════════════════════════════════════ */
+.success-screen {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 32px 26px; gap: 14px;
+}
+.success-ring {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #0aaa6e, #34d399);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 24px rgba(10,170,110,0.3);
+  animation: popIn .4s cubic-bezier(.4,0,.2,1);
+}
+@keyframes popIn { from{transform:scale(.6);opacity:0} to{transform:scale(1);opacity:1} }
+.success-title { font-family: var(--font-d); font-size: 1.6rem; }
+.success-sub { font-size: 13px; color: var(--ink-3); line-height: 1.65; max-width: 300px; }
+.ticket-id {
+  font-family: 'Courier New', monospace; font-size: 13px; font-weight: 700;
+  color: var(--violet); background: var(--violet-l); padding: 5px 13px;
+  border-radius: 7px; letter-spacing: .07em; border: 1px solid rgba(96,64,240,.18);
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--ink-0); color: #fff;
+  padding: 11px 20px; border-radius: 99px;
+  font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 8px 28px rgba(13,12,26,.3);
+  opacity: 0; transition: opacity .2s, transform .2s;
+  pointer-events: none; z-index: 9000; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast svg  { width: 14px; height: 14px; color: #4ade80; }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media (max-width:960px) {
+  .steps-grid  { grid-template-columns: 1fr 1fr; }
+  .event-grid  { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width:640px) {
+  .steps-grid  { grid-template-columns: 1fr; }
+  .event-grid  { grid-template-columns: 1fr; }
+  .invite-banner { padding: 28px 24px; }
+  .welcome-title { font-size: 1.9rem; }
+  .ticket-type-group { flex-direction: column; }
+  .nav-links .nav-link span { display: none; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ TOP NAV ══════════════════ -->
+<nav class="topnav">
+  <a href="#" class="nav-brand">
+    <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+      <defs>
+        <linearGradient id="lg" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#6040f0"/><stop offset="1" stop-color="#1a96d8"/>
+        </linearGradient>
+      </defs>
+      <circle cx="13" cy="13" r="10.5" stroke="url(#lg)" stroke-width="1.6"/>
+      <circle cx="13" cy="13" r="6"    stroke="url(#lg)" stroke-width="1.2" opacity=".55"/>
+      <circle cx="13" cy="13" r="2.2"  fill="url(#lg)"/>
+    </svg>
+    Circles
+  </a>
+
+  <div class="nav-spacer"></div>
+
+  <div class="nav-links">
+    <button class="nav-link active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>My Events</span>
+    </button>
+    <button class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Discover</span>
+    </button>
+  </div>
+
+  <button class="nav-notif" aria-label="Notifications" onclick="showToast('No notifications yet')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+  </button>
+
+  <div class="nav-av" title="Arjun Reddy" onclick="showToast('Profile settings coming soon')">AR</div>
+</nav>
+
+
+<!-- ══════════════════ PAGE ══════════════════ -->
+<div class="page">
+
+  <!-- ── Welcome header ── -->
+  <div class="welcome-row">
+    <div class="welcome-left">
+      <div class="welcome-eyebrow">Your participant hub</div>
+      <h1 class="welcome-title">Welcome, <span>Arjun.</span><br>Ready to dive in?</h1>
+      <p class="welcome-sub">You haven't joined any events yet. Discover what's happening, register in seconds, and connect with thousands of people building the future.</p>
+      <div class="welcome-actions">
+        <button class="btn btn-primary" onclick="showToast('Browse events coming soon!')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Explore Events
+        </button>
+        <button class="btn btn-secondary" onclick="showToast('Invite link copied — send it to friends!')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          Share Circles
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── Hero empty state ── -->
+  <div class="hero-empty">
+    <div class="empty-illustration">
+      <div class="orbit-ring">
+        <div class="orbit-dot od-1"></div>
+        <div class="orbit-dot od-2"></div>
+        <div class="orbit-dot od-3"></div>
+      </div>
+      <div class="empty-circle-outer">
+        <div class="empty-circle-inner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="empty-title">No events yet</h2>
+    <p class="empty-sub">Your event calendar is empty right now. Register for an event below and your ticket, team, and schedule will all appear here.</p>
+
+    <div class="empty-cta">
+      <button class="btn btn-primary" onclick="showToast('Browse events coming soon!')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Discover Events
+      </button>
+      <button class="btn btn-secondary" onclick="showToast('Enter a code to register for a specific event')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Register with Code
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ── How it works ── -->
+  <div class="steps-section">
+    <div class="steps-header">
+      <div class="section-eyebrow">How it works</div>
+      <div class="section-title">Three steps to your first event</div>
+    </div>
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-num">Step 01</div>
+        <div class="step-ico si-violet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="step-title">Find an event you love</div>
+        <div class="step-body">Browse upcoming conferences, workshops and meetups. Filter by city, topic or date to find events that excite you.</div>
+        <button class="step-action" onclick="scrollTo('discover')">
+          Browse events
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">Step 02</div>
+        <div class="step-ico si-azure">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
+        </div>
+        <div class="step-title">Register in seconds</div>
+        <div class="step-body">Fill in your name and email, pick your ticket type, and you're in. Your QR code arrives instantly by email.</div>
+        <button class="step-action" onclick="showToast('Registration coming soon!')">
+          Register now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">Step 03</div>
+        <div class="step-ico si-emerald">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="step-title">Join a team &amp; show up</div>
+        <div class="step-body">Create or join a team, invite friends, and make the most of the event together. Check in on the day with your QR code.</div>
+        <button class="step-action" onclick="showToast('You can create a team after registering!')">
+          Learn more
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+  <!-- ── Invite banner ── -->
+  <div class="invite-banner">
+    <div class="ib-text">
+      <div class="ib-eyebrow">Bring your people</div>
+      <div class="ib-title">Know someone who'd love this?</div>
+      <div class="ib-sub">Share Circles with friends and colleagues. When they register through your link, you'll both get early access to future events.</div>
+    </div>
+    <div class="ib-actions">
+      <div class="invite-link-box" onclick="copyLink()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        circles.app/invite/ar2026
+      </div>
+      <button class="btn btn-white btn-sm" onclick="copyLink()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        Share Link
+      </button>
+      <button class="btn btn-outline-white btn-sm" onclick="showToast('Email invite opened')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email Friends
+      </button>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+
+<!-- ══════════════════ REGISTER MODAL ══════════════════ -->
+<div class="modal-backdrop" id="regModal" onclick="handleBackdrop(event)">
+  <div class="modal">
+    <div class="modal-hdr" id="mhdr">
+      <div>
+        <div class="modal-title">Register for Event</div>
+        <div class="modal-sub" id="msub">Design Summit 2026 · March 8–9, 2026</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="mbody">
+      <div class="form-field">
+        <label class="f-label" for="rname">Full Name</label>
+        <input class="f-input" id="rname" type="text" placeholder="Your full name" value="Arjun Reddy">
+      </div>
+      <div class="form-field">
+        <label class="f-label" for="remail">Email Address</label>
+        <input class="f-input" id="remail" type="email" placeholder="you@email.com" value="arjun.reddy@mail.com">
+      </div>
+      <div class="form-field">
+        <label class="f-label" for="rphone">Phone Number</label>
+        <input class="f-input" id="rphone" type="tel" placeholder="+91 00000 00000">
+      </div>
+    </div>
+    <div class="modal-ftr" id="mftr">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="completeReg()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirm Registration
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+
+<script>
+'use strict';
+
+/* ── MODAL ───────────────────────── */
+function openRegModal(name) {
+  if (name) document.getElementById('msub').textContent = name + ' · See event page for details';
+  document.getElementById('regModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('regModal').classList.remove('open');
+  document.body.style.overflow = '';
+  // reset
+  setTimeout(() => {
+    document.getElementById('mhdr').style.display = '';
+    document.getElementById('mbody').innerHTML = `
+      <div class="form-field">
+        <label class="f-label" for="rname">Full Name</label>
+        <input class="f-input" id="rname" type="text" placeholder="Your full name" value="Arjun Reddy">
+      </div>
+      <div class="form-field">
+        <label class="f-label" for="remail">Email Address</label>
+        <input class="f-input" id="remail" type="email" placeholder="you@email.com" value="arjun.reddy@mail.com">
+      </div>
+      <div class="form-field">
+        <label class="f-label" for="rphone">Phone Number</label>
+        <input class="f-input" id="rphone" type="tel" placeholder="+91 00000 00000">
+      </div>`;
+    document.getElementById('mftr').innerHTML = `
+      <button class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="completeReg()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirm Registration
+      </button>`;
+  }, 300);
+}
+function handleBackdrop(e) {
+  if (e.target === document.getElementById('regModal')) closeModal();
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('regModal').classList.contains('open')) closeModal();
+});
+
+/* ── TICKET TYPE ─────────────────── */
+function selectTicket(el) {
+  document.querySelectorAll('.ticket-type').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── COMPLETE REGISTRATION ───────── */
+function completeReg() {
+  const name = (document.getElementById('rname') || {}).value || '';
+  if (!name.trim()) { document.getElementById('rname')?.focus(); return; }
+
+  document.getElementById('mhdr').style.display = 'none';
+  document.getElementById('mbody').innerHTML = `
+    <div class="success-screen">
+      <div class="success-ring">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="success-title">You're in!</div>
+      <div class="success-sub">Registration confirmed. Your ticket has been emailed to you. Head to <strong>My Events</strong> to see your QR code and team options.</div>
+      <div class="ticket-id">DS26-AR-4871</div>
+    </div>`;
+  document.getElementById('mftr').innerHTML = `
+    <button class="btn btn-primary btn-sm" onclick="closeModal(); showToast('Welcome to Design Summit 2026! 🎉')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Go to My Events
+    </button>`;
+}
+
+/* ── SCROLL ──────────────────────── */
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: 'smooth' });
+}
+
+/* ── COPY LINK ───────────────────── */
+function copyLink() {
+  if (navigator.clipboard) navigator.clipboard.writeText('https://circles.app/invite/ar2026').catch(()=>{});
+  showToast('Invite link copied!');
+}
+
+/* ── TOAST ───────────────────────── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${msg}`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
