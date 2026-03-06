@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circles — Attendees</title>
+  <link rel="stylesheet" href="Attendees.css">
+</head>
+<body>
+
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="#" class="nav-logo">
+      <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+        <defs>
+          <linearGradient id="lg-nav" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6040f0"/><stop offset="1" stop-color="#1a96d8"/>
+          </linearGradient>
+        </defs>
+        <circle cx="13" cy="13" r="10.5" stroke="url(#lg-nav)" stroke-width="1.6"/>
+        <circle cx="13" cy="13" r="6"    stroke="url(#lg-nav)" stroke-width="1.2" opacity="0.55"/>
+        <circle cx="13" cy="13" r="2.2"  fill="url(#lg-nav)"/>
+      </svg>
+      Circles
+    </a>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-lbl">Main</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Dashboard
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8"  y1="2" x2="8"  y2="6"/>
+        <line x1="3"  y1="10" x2="21" y2="10"/>
+      </svg>
+      Events <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+      </svg>
+      Attendees
+    </div>
+    <div class="nav-lbl">Management</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Analytics
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Settings
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sb-user">
+      <div class="av-sm">CK</div>
+      <div style="flex:1;min-width:0">
+        <div class="u-name">Champion Kumar</div>
+        <div class="u-role">Event Admin</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<div class="main">
+
+  <header class="topbar">
+    <div class="topbar-ev">
+      <div class="ev-sel">
+        <span>Design Summit 2026</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="live-badge"><div class="live-dot"></div>Live</div>
+      <div class="ev-meta">
+        March 8, 2026 <span style="margin:0 4px;opacity:0.3">•</span> Bharat Mandapam, New Delhi
+      </div>
+    </div>
+    <div class="tb-actions">
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="notif-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- ①  PAGE HEADER — with event context -->
+    <div class="page-hdr">
+      <div class="page-title-block">
+        <div class="page-breadcrumb">
+          <a href="#" class="page-breadcrumb-link">Events</a>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg>
+          <span>Design Summit 2026</span>
+        </div>
+        <div class="page-title">Attendees</div>
+        <div class="page-event-name">Design Summit 2026</div>
+        <div class="page-sub">Managing registrations and check-ins</div>
+      </div>
+      <div class="hdr-actions">
+        <div class="search-wrap">
+          <svg class="search-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input class="search-input" type="text" id="searchInput"
+            placeholder="Search name, email or ticket ID" oninput="applyFilters()">
+        </div>
+        <select class="filter-select" id="statusFilter" onchange="applyFilters()">
+          <option value="all">All Statuses</option>
+          <option value="checked">Checked In</option>
+          <option value="registered">Registered</option>
+          <option value="vip">VIP</option>
+          <option value="speaker">Speaker</option>
+        </select>
+        <button class="btn btn-sec" onclick="exportCSV()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Export CSV
+        </button>
+        <!-- ②  SCAN QR BUTTON -->
+        <button class="btn btn-pri" onclick="alert('QR Scanner opening… (demo)')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="16" y="16" width="2" height="2"/>
+            <rect x="19" y="16" width="2" height="2"/>
+            <rect x="16" y="19" width="2" height="2"/>
+            <rect x="19" y="19" width="2" height="2"/>
+          </svg>
+          Scan QR Check-in
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-ico" style="background:rgba(96,64,240,0.1);color:var(--violet)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-val">4,821</div>
+          <div class="stat-lbl">Total Registered</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ico" style="background:rgba(10,170,110,0.1);color:var(--emerald)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-val" style="color:var(--emerald)">2,942</div>
+          <div class="stat-lbl">Checked In</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ico" style="background:rgba(217,119,6,0.1);color:var(--amber)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-val" style="color:var(--amber)">1,879</div>
+          <div class="stat-lbl">Pending Check-in</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ico" style="background:rgba(176,48,216,0.1);color:var(--rose)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-val" style="color:var(--rose)">120</div>
+          <div class="stat-lbl">VIP / Special</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③  CHECK-IN RATE METRIC ROW -->
+    <div class="metric-row">
+      <div class="metric-item">
+        <span class="metric-label">Check-in Rate</span>
+        <div class="rate-bar-track">
+          <div class="rate-bar-fill" style="width:61%"></div>
+        </div>
+        <span class="metric-value">61%</span>
+        <span class="metric-pill">On track</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">2,942 checked in</span>
+        <span class="metric-value">of 4,821 registered</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">Peak rate</span>
+        <span class="metric-value">243 / hr</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">Est. completion</span>
+        <span class="metric-value">~58 min</span>
+      </div>
+    </div>
+
+    <!-- ④  MIDDLE ROW: table + activity panel -->
+    <div class="middle-row">
+
+      <!-- TABLE PANEL -->
+      <div class="table-panel">
+        <div class="table-panel-hdr">
+          <div class="table-panel-left">
+            <span class="table-panel-title">All Attendees</span>
+            <span class="table-panel-meta" id="tableCount">4,821 attendees</span>
+          </div>
+          <!-- ⑧  SELECT MODE BUTTON -->
+          <div class="table-panel-right">
+            <button class="select-btn" id="selectModeBtn" onclick="toggleSelectMode()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 11 12 14 22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              Select
+            </button>
+          </div>
+        </div>
+
+        <!-- Bulk actions bar -->
+        <div class="bulk-bar" id="bulkBar">
+          <span class="bulk-count" id="bulkCount">0 selected</span>
+          <button class="bulk-btn bulk-btn-ci" onclick="bulkCheckin()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/></svg>
+            Check-in Selected
+          </button>
+          <button class="bulk-btn bulk-btn-exp" onclick="bulkExport()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Selected
+          </button>
+          <button class="bulk-btn bulk-btn-del" onclick="bulkDelete()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            Delete Selected
+          </button>
+        </div>
+
+        <!-- Table scroll -->
+        <div class="table-scroll">
+          <table class="att-table" id="attTable">
+            <thead>
+              <tr>
+                <!-- ⑦  Hidden checkbox column — shows only in select mode -->
+                <th class="col-check" id="thCheck">
+                  <input type="checkbox" class="row-check" id="selectAll" onchange="toggleSelectAll(this)">
+                </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Ticket</th>
+                <th>Status</th>
+                <th>Check-in Time</th>
+                <th>Reg. ID</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- ⑨  Skeleton rows shown on load -->
+            </tbody>
+          </table>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="emptyState" style="display:none">
+            <div class="empty-illo">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div class="empty-title">No registrations found</div>
+            <div class="empty-sub">Try adjusting your search or filter, or share your event link to collect attendees.</div>
+            <button class="btn btn-pri" style="margin-top:4px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16 6 12 2 8 6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+              </svg>
+              Share Registration Link
+            </button>
+          </div>
+        </div>
+
+        <!-- ⑥  Pagination — with "attendees" word -->
+        <div class="pagination" id="paginationBar">
+          <span class="pag-info" id="pagInfo">Showing 1–20 of 4,821 attendees</span>
+          <div class="pag-controls">
+            <button class="pag-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
+            <div class="pag-pages" id="pagPages"></div>
+            <button class="pag-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+          </div>
+        </div>
+      </div><!-- /table-panel -->
+
+      <!-- ④  REAL-TIME ACTIVITY PANEL -->
+      <div class="activity-panel">
+        <div class="activity-panel-hdr">
+          <span class="activity-panel-title">Recent Activity</span>
+          <span class="activity-live-lbl">
+            <span class="live-dot"></span>Live
+          </span>
+        </div>
+        <div class="activity-list" id="activityList">
+          <!-- injected by JS -->
+        </div>
+      </div>
+
+    </div><!-- /middle-row -->
+
+  </main>
+</div>
+
+<!-- ══════════════════════ CHECK-IN MODAL ══════════════════════ -->
+<div class="modal-overlay" id="ciModal" onclick="handleModalClick(event,'ciModal')">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Confirm Check-in</div>
+      <button class="modal-close" onclick="closeModal('ciModal')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-av-row">
+        <div class="modal-av" id="ciAv">AR</div>
+        <div>
+          <div class="modal-att-name"  id="ciName">Arjun Reddy</div>
+          <div class="modal-att-email" id="ciEmail">arjun@email.com</div>
+        </div>
+      </div>
+      <div class="modal-fields">
+        <div class="modal-field"><div class="modal-field-lbl">Ticket Type</div><div class="modal-field-val" id="ciTicket">General</div></div>
+        <div class="modal-field"><div class="modal-field-lbl">Registration ID</div><div class="modal-field-val" id="ciRegId" style="font-family:monospace;font-size:13px">4821-AF2</div></div>
+        <div class="modal-field"><div class="modal-field-lbl">Status</div><div class="modal-field-val" id="ciStatus">Registered</div></div>
+        <div class="modal-field"><div class="modal-field-lbl">Event</div><div class="modal-field-val">Design Summit 2026</div></div>
+      </div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn btn-sec" onclick="closeModal('ciModal')">Cancel</button>
+      <button class="btn btn-confirm-ci" onclick="confirmCheckin()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 11 12 14 22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        Confirm Check-in
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ VIEW PROFILE MODAL ══════════════════════ -->
+<div class="modal-overlay" id="profileModal" onclick="handleModalClick(event,'profileModal')">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-hdr">
+      <div class="modal-title">Attendee Profile</div>
+      <button class="modal-close" onclick="closeModal('profileModal')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-av-row">
+        <div class="modal-av" id="profAv">AR</div>
+        <div>
+          <div class="modal-att-name"  id="profName">—</div>
+          <div class="modal-att-email" id="profEmail">—</div>
+        </div>
+      </div>
+      <div class="profile-section">
+        <div class="profile-section-title">Registration Details</div>
+        <div class="profile-grid">
+          <div class="profile-field"><div class="profile-field-lbl">Ticket Type</div><div class="profile-field-val" id="profTicket">—</div></div>
+          <div class="profile-field"><div class="profile-field-lbl">Reg. ID</div><div class="profile-field-val" id="profRegId" style="font-family:monospace;font-size:12px">—</div></div>
+          <div class="profile-field"><div class="profile-field-lbl">Status</div><div class="profile-field-val" id="profStatus">—</div></div>
+          <div class="profile-field"><div class="profile-field-lbl">Check-in Time</div><div class="profile-field-val" id="profTime">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn btn-sec" onclick="closeModal('profileModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ JAVASCRIPT ══════════════════════ -->
+<script>
+/* ─── DATA ─────────────────────────────────────────── */
+const ATTENDEES = [
+  { id:1,  name:'Arjun Reddy',    email:'arjun@email.com',      ticket:'General', status:'checked',    time:'10:23 AM', regId:'4821-AF2', color:'#6040f0' },
+  { id:2,  name:'Sana Luthra',    email:'sana@designco.in',     ticket:'VIP',     status:'vip',        time:'09:48 AM', regId:'4820-BK9', color:'#1a96d8' },
+  { id:3,  name:'Rahul Mehta',    email:'rahul@studio.io',      ticket:'Speaker', status:'speaker',    time:'09:12 AM', regId:'4819-CL1', color:'#0aaa6e' },
+  { id:4,  name:'Priya Sharma',   email:'priya@techpulse.com',  ticket:'General', status:'registered', time:'—',        regId:'4818-DM4', color:'#b030d8' },
+  { id:5,  name:'Karan Bose',     email:'karan@outlook.com',    ticket:'General', status:'checked',    time:'10:41 AM', regId:'4817-EF7', color:'#d97706' },
+  { id:6,  name:'Neha Joshi',     email:'neha@designhub.in',    ticket:'VIP',     status:'vip',        time:'10:05 AM', regId:'4816-GH3', color:'#6040f0' },
+  { id:7,  name:'Amit Patel',     email:'amit@cloudworks.io',   ticket:'General', status:'registered', time:'—',        regId:'4815-IJ8', color:'#1a96d8' },
+  { id:8,  name:'Divya Nair',     email:'divya@pixels.design',  ticket:'Speaker', status:'speaker',    time:'08:55 AM', regId:'4814-KL2', color:'#0aaa6e' },
+  { id:9,  name:'Vikram Singh',   email:'vikram@startup.in',    ticket:'General', status:'checked',    time:'11:02 AM', regId:'4813-MN5', color:'#b030d8' },
+  { id:10, name:'Ananya Roy',     email:'ananya@ux.io',         ticket:'VIP',     status:'vip',        time:'09:30 AM', regId:'4812-OP6', color:'#d97706' },
+  { id:11, name:'Suresh Kumar',   email:'suresh@dev.com',       ticket:'General', status:'registered', time:'—',        regId:'4811-QR9', color:'#6040f0' },
+  { id:12, name:'Meera Kapoor',   email:'meera@creative.in',    ticket:'General', status:'checked',    time:'10:17 AM', regId:'4810-ST4', color:'#1a96d8' },
+  { id:13, name:'Rohan Verma',    email:'rohan@techco.io',      ticket:'General', status:'registered', time:'—',        regId:'4809-UV1', color:'#0aaa6e' },
+  { id:14, name:'Pooja Das',      email:'pooja@event.in',       ticket:'VIP',     status:'vip',        time:'09:55 AM', regId:'4808-WX3', color:'#b030d8' },
+  { id:15, name:'Aditya Shah',    email:'aditya@works.io',      ticket:'General', status:'checked',    time:'11:20 AM', regId:'4807-YZ7', color:'#d97706' },
+  { id:16, name:'Sneha Pillai',   email:'sneha@designco.in',    ticket:'Speaker', status:'speaker',    time:'09:00 AM', regId:'4806-AB2', color:'#6040f0' },
+  { id:17, name:'Gaurav Tiwari',  email:'gaurav@cloud.com',     ticket:'General', status:'registered', time:'—',        regId:'4805-CD8', color:'#1a96d8' },
+  { id:18, name:'Ritika Agarwal', email:'ritika@studio.in',     ticket:'General', status:'checked',    time:'10:50 AM', regId:'4804-EF5', color:'#0aaa6e' },
+  { id:19, name:'Deepak Mishra',  email:'deepak@labs.io',       ticket:'VIP',     status:'vip',        time:'10:10 AM', regId:'4803-GH4', color:'#b030d8' },
+  { id:20, name:'Kavita Reddy',   email:'kavita@design.in',     ticket:'General', status:'registered', time:'—',        regId:'4802-IJ6', color:'#d97706' },
+];
+
+/* Seed activity feed from existing data */
+const ACTIVITY_FEED = [
+  { type:'ci',  name:'Arjun Reddy',    detail:'Checked in · General',      ago:'2s ago' },
+  { type:'ci',  name:'Sana Luthra',    detail:'Checked in · VIP',          ago:'1m ago' },
+  { type:'reg', name:'Priya Sharma',   detail:'New registration · General', ago:'3m ago' },
+  { type:'ci',  name:'Karan Bose',     detail:'Checked in · General',      ago:'4m ago' },
+  { type:'vip', name:'Neha Joshi',     detail:'Checked in · VIP',          ago:'6m ago' },
+  { type:'reg', name:'Amit Patel',     detail:'New registration · General', ago:'9m ago' },
+  { type:'ci',  name:'Vikram Singh',   detail:'Checked in · General',      ago:'11m ago' },
+  { type:'reg', name:'Rohan Verma',    detail:'New registration · General', ago:'14m ago' },
+  { type:'ci',  name:'Aditya Shah',    detail:'Checked in · General',      ago:'17m ago' },
+];
+
+const TOTAL = 4821;
+const PER_PAGE = 20;
+let currentPage  = 1;
+let filteredData = [...ATTENDEES];
+let selectedIds  = new Set();
+let selectMode   = false;
+let pendingCheckinId = null;
+
+/* ─── HELPERS ──────────────────────────────────────── */
+function initials(name) {
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+function badgeHTML(status) {
+  const map = {
+    checked:    ['badge-checked',    'Checked In'],
+    registered: ['badge-registered', 'Registered'],
+    vip:        ['badge-vip',        'VIP'],
+    speaker:    ['badge-speaker',    'Speaker'],
+  };
+  const [cls, label] = map[status] || map.registered;
+  return `<span class="badge ${cls}"><span class="badge-dot"></span>${label}</span>`;
+}
+
+/* ─── ⑨ SKELETON ────────────────────────────────────── */
+function renderSkeleton() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = Array.from({ length: 8 }).map(() => `
+    <tr class="skeleton-row">
+      <td class="col-check ${selectMode ? 'visible' : ''}"></td>
+      <td>
+        <div class="skeleton-name-cell">
+          <div class="skeleton-av"></div>
+          <div class="skeleton-lines">
+            <div class="skeleton-bar" style="width:120px"></div>
+            <div class="skeleton-bar" style="width:70px"></div>
+          </div>
+        </div>
+      </td>
+      <td><div class="skeleton-bar" style="width:140px"></div></td>
+      <td><div class="skeleton-bar" style="width:60px"></div></td>
+      <td><div class="skeleton-bar" style="width:80px"></div></td>
+      <td><div class="skeleton-bar" style="width:70px"></div></td>
+      <td><div class="skeleton-bar" style="width:80px"></div></td>
+      <td><div class="skeleton-bar" style="width:120px;margin-left:auto"></div></td>
+    </tr>`).join('');
+}
+
+/* ─── ⑤ RENDER ROWS (improved action hierarchy) ──── */
+function renderRows() {
+  const tbody      = document.getElementById('tableBody');
+  const emptyState = document.getElementById('emptyState');
+  const pagBar     = document.getElementById('paginationBar');
+
+  if (filteredData.length === 0) {
+    tbody.innerHTML = '';
+    emptyState.style.display = 'flex';
+    pagBar.style.display     = 'none';
+    return;
+  }
+  emptyState.style.display = 'none';
+  pagBar.style.display     = 'flex';
+
+  const start = (currentPage - 1) * PER_PAGE;
+  const slice = filteredData.slice(start, start + PER_PAGE);
+  const chkClass = `col-check${selectMode ? ' visible' : ''}`;
+
+  tbody.innerHTML = slice.map(a => {
+    const isDone = a.status === 'checked' || a.status === 'vip' || a.status === 'speaker';
+    const ciBtnClass  = isDone ? 'row-btn-ci done' : 'row-btn-ci';
+    const ciBtnLabel  = isDone
+      ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Checked In`
+      : `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/></svg> Check-in`;
+    const ciOnclick   = isDone ? '' : `onclick="openCheckin(${a.id})"`;
+    const selAttr     = selectedIds.has(a.id) ? 'selected' : '';
+
+    return `
+      <tr class="${selAttr}" id="row-${a.id}">
+        <td class="${chkClass}">
+          <input type="checkbox" class="row-check" ${selectedIds.has(a.id) ? 'checked' : ''}
+            onchange="toggleRow(${a.id}, this)">
+        </td>
+        <td>
+          <div class="att-name-cell">
+            <div class="att-av" style="background:${a.color}">${initials(a.name)}</div>
+            <div>
+              <div class="att-name">${a.name}</div>
+              <div class="att-ticket-id">#${a.regId}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="att-email">${a.email}</span></td>
+        <td><span class="ticket-type">${a.ticket}</span></td>
+        <td>${badgeHTML(a.status)}</td>
+        <td><span class="att-time ${a.time === '—' ? 'pending' : ''}">${a.time}</span></td>
+        <td><span class="att-reg-id">${a.regId}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="row-btn-view" onclick="openProfile(${a.id})">View</button>
+            <button class="${ciBtnClass}" ${ciOnclick}>${ciBtnLabel}</button>
+            <button class="row-btn-del" onclick="removeAttendee(${a.id})">Remove</button>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+/* ─── ⑥ PAGINATION (with "attendees") ──────────────── */
+function renderPagination() {
+  const total      = filteredData.length;
+  const totalPages = Math.ceil(total / PER_PAGE) || 1;
+  const start      = (currentPage - 1) * PER_PAGE + 1;
+  const end        = Math.min(currentPage * PER_PAGE, total);
+  const display    = total < ATTENDEES.length ? total : TOTAL;
+
+  document.getElementById('pagInfo').textContent =
+    `Showing ${start.toLocaleString()}–${end.toLocaleString()} of ${display.toLocaleString()} attendees`;
+  document.getElementById('prevBtn').disabled = currentPage === 1;
+  document.getElementById('nextBtn').disabled = currentPage === totalPages;
+
+  const pagesEl = document.getElementById('pagPages');
+  let pages = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages = [1];
+    if (currentPage > 3) pages.push('…');
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+    if (currentPage < totalPages - 2) pages.push('…');
+    pages.push(totalPages);
+  }
+  pagesEl.innerHTML = pages.map(p =>
+    p === '…'
+      ? `<span class="pag-ellipsis">…</span>`
+      : `<button class="pag-pg ${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`
+  ).join('');
+}
+
+function changePage(dir) {
+  const total = Math.ceil(filteredData.length / PER_PAGE) || 1;
+  currentPage = Math.max(1, Math.min(total, currentPage + dir));
+  renderRows(); renderPagination();
+}
+function goPage(p) { currentPage = p; renderRows(); renderPagination(); }
+
+/* ─── SEARCH + FILTER ──────────────────────────────── */
+function applyFilters() {
+  const q   = document.getElementById('searchInput').value.toLowerCase();
+  const fil = document.getElementById('statusFilter').value;
+  filteredData = ATTENDEES.filter(a => {
+    const matchQ = !q || a.name.toLowerCase().includes(q) ||
+      a.email.toLowerCase().includes(q) || a.regId.toLowerCase().includes(q);
+    const matchF = fil === 'all' || a.status === fil;
+    return matchQ && matchF;
+  });
+  currentPage = 1;
+  document.getElementById('tableCount').textContent =
+    `${filteredData.length.toLocaleString()} attendees`;
+  renderRows(); renderPagination();
+}
+
+/* ─── ⑦⑧ SELECTION MODE ──────────────────────────── */
+function toggleSelectMode() {
+  selectMode = !selectMode;
+  const btn = document.getElementById('selectModeBtn');
+  btn.classList.toggle('active', selectMode);
+  btn.innerHTML = selectMode
+    ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Done`
+    : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Select`;
+
+  document.getElementById('thCheck').classList.toggle('visible', selectMode);
+
+  if (!selectMode) {
+    selectedIds.clear();
+    document.getElementById('selectAll').checked = false;
+    updateBulkBar();
+  }
+  renderRows();
+}
+
+// SHIFT-key activates select mode
+document.addEventListener('keydown', e => {
+  if (e.key === 'Shift' && !selectMode) toggleSelectMode();
+});
+document.addEventListener('keyup', e => {
+  if (e.key === 'Shift' && selectMode && selectedIds.size === 0) toggleSelectMode();
+});
+
+function toggleRow(id, cb) {
+  if (cb.checked) selectedIds.add(id); else selectedIds.delete(id);
+  const row = document.getElementById(`row-${id}`);
+  if (row) row.classList.toggle('selected', cb.checked);
+  updateBulkBar();
+}
+function toggleSelectAll(cb) {
+  const start = (currentPage - 1) * PER_PAGE;
+  filteredData.slice(start, start + PER_PAGE).forEach(a => {
+    if (cb.checked) selectedIds.add(a.id); else selectedIds.delete(a.id);
+    const row = document.getElementById(`row-${a.id}`);
+    if (row) {
+      row.classList.toggle('selected', cb.checked);
+      const chk = row.querySelector('.row-check');
+      if (chk) chk.checked = cb.checked;
+    }
+  });
+  updateBulkBar();
+}
+function updateBulkBar() {
+  const bar = document.getElementById('bulkBar');
+  const cnt = document.getElementById('bulkCount');
+  cnt.textContent = `${selectedIds.size} selected`;
+  bar.classList.toggle('visible', selectMode && selectedIds.size > 0);
+}
+
+/* ─── BULK ACTIONS ──────────────────────────────────── */
+function bulkCheckin() {
+  selectedIds.forEach(id => {
+    const a = ATTENDEES.find(x => x.id === id);
+    if (a && a.status === 'registered') {
+      a.status = 'checked';
+      a.time   = now();
+      pushActivity({ type:'ci', name: a.name, detail:'Checked in · ' + a.ticket, ago: 'just now' });
+    }
+  });
+  selectedIds.clear();
+  document.getElementById('selectAll').checked = false;
+  updateBulkBar(); applyFilters();
+}
+function bulkExport() { alert(`Exporting ${selectedIds.size} selected attendees…`); }
+function bulkDelete() {
+  if (!confirm(`Remove ${selectedIds.size} attendees?`)) return;
+  selectedIds.forEach(id => {
+    const idx = ATTENDEES.findIndex(x => x.id === id);
+    if (idx > -1) ATTENDEES.splice(idx, 1);
+  });
+  selectedIds.clear();
+  document.getElementById('selectAll').checked = false;
+  updateBulkBar(); applyFilters();
+}
+
+/* ─── SINGLE ROW ACTIONS ────────────────────────────── */
+function removeAttendee(id) {
+  if (!confirm('Remove this attendee?')) return;
+  const idx = ATTENDEES.findIndex(x => x.id === id);
+  if (idx > -1) ATTENDEES.splice(idx, 1);
+  applyFilters();
+}
+
+/* ─── CHECK-IN MODAL ───────────────────────────────── */
+function openCheckin(id) {
+  const a = ATTENDEES.find(x => x.id === id);
+  if (!a) return;
+  pendingCheckinId = id;
+  document.getElementById('ciAv').textContent      = initials(a.name);
+  document.getElementById('ciAv').style.background  = a.color;
+  document.getElementById('ciName').textContent     = a.name;
+  document.getElementById('ciEmail').textContent    = a.email;
+  document.getElementById('ciTicket').textContent   = a.ticket;
+  document.getElementById('ciRegId').textContent    = a.regId;
+  document.getElementById('ciStatus').textContent   = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+  openModal('ciModal');
+}
+function confirmCheckin() {
+  const a = ATTENDEES.find(x => x.id === pendingCheckinId);
+  if (a) {
+    a.status = 'checked';
+    a.time   = now();
+    pushActivity({ type:'ci', name: a.name, detail:'Checked in · ' + a.ticket, ago: 'just now' });
+  }
+  closeModal('ciModal');
+  applyFilters();
+}
+
+/* ─── PROFILE MODAL ─────────────────────────────────── */
+function openProfile(id) {
+  const a = ATTENDEES.find(x => x.id === id);
+  if (!a) return;
+  document.getElementById('profAv').textContent      = initials(a.name);
+  document.getElementById('profAv').style.background  = a.color;
+  document.getElementById('profName').textContent    = a.name;
+  document.getElementById('profEmail').textContent   = a.email;
+  document.getElementById('profTicket').textContent  = a.ticket;
+  document.getElementById('profRegId').textContent   = a.regId;
+  document.getElementById('profStatus').textContent  = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+  document.getElementById('profTime').textContent    = a.time;
+  openModal('profileModal');
+}
+
+/* ─── MODAL HELPERS ─────────────────────────────────── */
+function openModal(id)  { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+function handleModalClick(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal('ciModal'); closeModal('profileModal'); }
+});
+
+/* ─── EXPORT ────────────────────────────────────────── */
+function exportCSV() {
+  const data = selectedIds.size > 0
+    ? ATTENDEES.filter(a => selectedIds.has(a.id))
+    : filteredData;
+  let csv = 'Name,Email,Ticket Type,Status,Check-in Time,Reg ID\n';
+  data.forEach(a => { csv += `"${a.name}","${a.email}","${a.ticket}","${a.status}","${a.time}","${a.regId}"\n`; });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url; link.download = 'attendees.csv'; link.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ─── ④ ACTIVITY FEED ──────────────────────────────── */
+const typeIcon = {
+  ci:  `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/></svg>`,
+  reg: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  vip: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+};
+function renderActivity() {
+  const list = document.getElementById('activityList');
+  list.innerHTML = ACTIVITY_FEED.slice(0, 12).map(item => `
+    <div class="activity-item">
+      <div class="activity-ico ${item.type}">${typeIcon[item.type] || typeIcon.ci}</div>
+      <div class="activity-body">
+        <div class="activity-text">${item.name}</div>
+        <div class="activity-sub">${item.detail}</div>
+      </div>
+      <div class="activity-time">${item.ago}</div>
+    </div>`).join('');
+}
+function pushActivity(item) {
+  ACTIVITY_FEED.unshift(item);
+  renderActivity();
+}
+
+/* ─── UTILS ─────────────────────────────────────────── */
+function now() {
+  return new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+}
+
+/* ─── ⑨ INIT with skeleton then real data ─────────── */
+renderSkeleton();
+renderActivity();
+setTimeout(() => {
+  applyFilters();   // replaces skeleton with real rows after brief pause
+}, 700);
+</script>
+</body>
+</html>
