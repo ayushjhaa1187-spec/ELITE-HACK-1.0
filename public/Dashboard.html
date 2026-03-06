@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Circles — Dashboard</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <script src="/admin-global-search.js"></script>
   <link rel="stylesheet" href="Dashboard.css">
   <script>
     if (!localStorage.getItem('token')) {
@@ -110,7 +111,7 @@
           March 8, 2026 <span class="ev-meta-sep">•</span> Bharat Mandapam, New Delhi
         </div>
         <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
-          <input type="text" class="f-input" placeholder="Search event, attendees..."
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
             style="padding-left: 36px; height: 36px; border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none; background: var(--surface);">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
             style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">
@@ -525,6 +526,22 @@
       }
     });
 
+    function applyDashboardSearch(query) {
+      const searchQuery = String(query || '').trim().toLowerCase();
+      document.querySelectorAll('.ac-card').forEach(card => {
+        const show = !searchQuery || card.textContent.toLowerCase().includes(searchQuery);
+        card.style.display = show ? '' : 'none';
+      });
+    }
+
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      if (!globalInput || !window.CirclesGlobalSearch) return;
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => applyDashboardSearch(query)
+      });
+    }
+
     // ── Event Selector Dropdown ──
     document.querySelector('.ev-sel').style.cursor = 'pointer';
     document.querySelector('.ev-sel').addEventListener('click', function () {
@@ -593,6 +610,7 @@
     });
 
     // ── Init ──
+    setupGlobalSearch();
     loadEvents();
   </script>
 </body>

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Circles — Events</title>
   <link rel="stylesheet" href="Events.css">
+  <script src="/admin-global-search.js"></script>
   <script>
     if (!localStorage.getItem('token')) {
       window.location.href = '/';
@@ -119,7 +120,7 @@
           <span id="eventDate">March 8, 2026</span> <span class="ev-meta-sep">•</span> <span id="eventVenue">Bharat Mandapam, New Delhi</span>
         </div>
         <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
-          <input type="text" class="f-input" placeholder="Search event, attendees..."
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
             style="padding-left: 36px; height: 36px; border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
             style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
@@ -286,6 +287,8 @@
 
     let allEvents = [];
     let currentEvent = null;
+    let activeStatusFilter = 'all';
+    let activeSearchQuery = '';
 
     async function loadEvents() {
       try {
@@ -313,7 +316,7 @@
         }
 
         renderEvents(allEvents);
-        document.getElementById('filterCount').textContent = allEvents.length + (allEvents.length === 1 ? ' event' : ' events');
+        applyEventFilters();
         const badge = document.getElementById('sidebarEventCount');
         if (badge) {
           badge.textContent = allEvents.length;
@@ -465,19 +468,28 @@
     }
 
     /* ── Filter ── */
+    function applyEventFilters() {
+      const cards = document.querySelectorAll('.event-card[data-status]');
+      let visible = 0;
+      const searchQuery = activeSearchQuery.trim().toLowerCase();
+
+      cards.forEach(card => {
+        const statusMatch = activeStatusFilter === 'all' || card.dataset.status === activeStatusFilter;
+        const searchMatch = !searchQuery || card.textContent.toLowerCase().includes(searchQuery);
+        const show = statusMatch && searchMatch;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      document.getElementById('filterCount').textContent = visible + (visible === 1 ? ' event' : ' events');
+    }
+
+    /* Filter */
     function setFilter(btn) {
       document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
-      const f = btn.dataset.filter;
-      const cards = document.querySelectorAll('.event-card[data-status]');
-      let visible = 0;
-      cards.forEach(c => {
-        const show = f === 'all' || c.dataset.status === f;
-        c.style.display = show ? '' : 'none';
-        if (show) visible++;
-      });
-      // filterCount is handled above with length, doing it strictly visible is better here:
-      document.getElementById('filterCount').textContent = visible + (visible === 1 ? ' event' : ' events');
+      activeStatusFilter = btn.dataset.filter || 'all';
+      applyEventFilters();
     }
 
     /* ── Modal ── */
@@ -550,7 +562,20 @@
       }
     }
 
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      if (!globalInput || !window.CirclesGlobalSearch) return;
+
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => {
+          activeSearchQuery = String(query || '');
+          applyEventFilters();
+        }
+      });
+    }
+
     // Load events on mount
+    setupGlobalSearch();
     loadEvents();
   </script>
 </body>

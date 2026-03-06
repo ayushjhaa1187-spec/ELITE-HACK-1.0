@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Circles — Attendees</title>
   <link rel="stylesheet" href="Attendees.css">
+  <script src="/admin-global-search.js"></script>
   <script>
     if (!localStorage.getItem('token')) {
       window.location.href = '/';
@@ -112,7 +113,7 @@
           March 8, 2026 <span style="margin:0 4px;opacity:0.3">•</span> Bharat Mandapam, New Delhi
         </div>
         <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
-          <input type="text" class="f-input" placeholder="Search event, attendees..."
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
             style="padding-left: 36px; height: 36px; border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
             style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
@@ -1063,6 +1064,26 @@
       openModal('ciModal');
     }
 
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      const tableSearchInput = document.getElementById('searchInput');
+      if (!globalInput || !tableSearchInput || !window.CirclesGlobalSearch) return;
+
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => {
+          tableSearchInput.value = query || '';
+          applyFilters();
+        }
+      });
+
+      tableSearchInput.addEventListener('input', () => {
+        const value = tableSearchInput.value || '';
+        if (globalInput.value !== value) globalInput.value = value;
+        if (window.CirclesGlobalSearch) window.CirclesGlobalSearch.storeQuery(value);
+      });
+    }
+
+    setupGlobalSearch();
     renderSkeleton();
     fetchAttendees();
     fetchLiveActivity();

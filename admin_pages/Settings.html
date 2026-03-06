@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Circles — Settings</title>
   <link rel="stylesheet" href="Settings.css">
+  <script src="/admin-global-search.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     if (!localStorage.getItem('token')) {
@@ -114,7 +115,7 @@
         </div>
         <div class="ev-meta">March 8, 2026 &nbsp;·&nbsp; Bharat Mandapam, New Delhi</div>
         <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
-          <input type="text" class="f-input" placeholder="Search event, attendees..."
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
             style="padding-left: 36px; height: 36px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
             style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
@@ -918,6 +919,43 @@
       navEl.classList.add('active');
       if (id === 'operations') loadOperationsSnapshot();
     }
+
+    function getSectionForQuery(query) {
+      const q = String(query || '').trim().toLowerCase();
+      if (!q) return '';
+      const sectionRules = [
+        { id: 'operations', words: ['operations', 'overview', 'analytics', 'attendee', 'event'] },
+        { id: 'general', words: ['general', 'name', 'location', 'description'] },
+        { id: 'event', words: ['visibility', 'capacity', 'waitlist', 'public', 'private'] },
+        { id: 'registration', words: ['registration', 'group', 'upgrade', 'verification'] },
+        { id: 'checkin', words: ['checkin', 'check-in', 'qr', 'manual check', 'vip lane'] },
+        { id: 'notifications', words: ['notification', 'email', 'sender', 'reminder', 'feedback'] },
+        { id: 'team', words: ['team', 'member', 'role', 'permission', 'invite'] },
+      ];
+      const match = sectionRules.find(rule => rule.words.some(word => q.includes(word)));
+      return match ? match.id : '';
+    }
+
+    function applySettingsSearch(query) {
+      const sectionId = getSectionForQuery(query);
+      if (!sectionId) return;
+      const navEl = Array.from(document.querySelectorAll('.snav-item'))
+        .find(item => (item.getAttribute('onclick') || '').includes(`'${sectionId}'`));
+      if (navEl) showSection(sectionId, navEl);
+    }
+
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      if (!globalInput || !window.CirclesGlobalSearch) return;
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => applySettingsSearch(query),
+        getTargetRoute: query => {
+          const sectionId = getSectionForQuery(query);
+          return sectionId ? '/settings' : '';
+        }
+      });
+    }
+    setupGlobalSearch();
 
     /* ── VISIBILITY TOGGLE ──────────────────────────────────── */
     function setVisibility(btn) {

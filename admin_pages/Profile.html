@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Circles — Profile</title>
   <link rel="stylesheet" href="Profile.css">
+  <script src="/admin-global-search.js"></script>
 </head>
 
 <body>
@@ -108,7 +109,7 @@
         </div>
         <div class="ev-meta">March 8, 2026 &nbsp;·&nbsp; Bharat Mandapam, New Delhi</div>
         <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
-          <input type="text" class="f-input" placeholder="Search event, attendees..."
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
             style="padding-left: 36px; height: 36px; border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none; background: var(--base); font-family: inherit;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
             style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
@@ -756,6 +757,31 @@
     }
 
     /* ── SAVE FEEDBACK ──────────────────────── */
+    function applyProfileSearch(query) {
+      const q = String(query || '').trim().toLowerCase();
+      if (!q) return;
+
+      if (q.includes('personal') || q.includes('name') || q.includes('email') || q.includes('phone')) {
+        scrollTo('personal');
+        return;
+      }
+      if (q.includes('security') || q.includes('password') || q.includes('2fa')) {
+        const securityCard = Array.from(document.querySelectorAll('.card')).find(card =>
+          (card.querySelector('.card-title')?.textContent || '').toLowerCase().includes('security')
+        );
+        if (securityCard) securityCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      if (!globalInput || !window.CirclesGlobalSearch) return;
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => applyProfileSearch(query)
+      });
+    }
+    setupGlobalSearch();
+
     function saveSection(key) {
       const el = document.getElementById('sm-' + key);
       if (!el) return;
@@ -880,10 +906,6 @@
         btn.disabled = false;
         setTimeout(() => { btn.innerHTML = orig; }, 3000);
       }, 1600);
-    }
-
-    function handleLogout() {
-      if (confirm('Log out of Circles?')) alert('Signed out. (Demo — redirect would happen here.)');
     }
 
     function confirmDelete() {

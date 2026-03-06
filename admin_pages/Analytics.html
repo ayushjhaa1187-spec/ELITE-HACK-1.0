@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Circles — Analytics</title>
   <link rel="stylesheet" href="Analytics.css">
+  <script src="/admin-global-search.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <script>
     if (!localStorage.getItem('token')) {
@@ -111,7 +112,7 @@
         <div class="ev-meta">March 8, 2026 <span style="margin:0 4px;opacity:0.3">•</span> Bharat Mandapam, New Delhi
         </div>
         <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
-          <input type="text" class="f-input" placeholder="Search event, attendees..."
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
             style="padding-left: 36px; height: 36px; background: var(--base); border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
             style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
@@ -707,6 +708,25 @@
   </div>`).join('');
 
     /* ─── INITIALIZATION ──────────── */
+    function applyAnalyticsSearch(query) {
+      const searchQuery = String(query || '').trim().toLowerCase();
+      ['refList', 'geoList'].forEach(listId => {
+        document.querySelectorAll(`#${listId} .bar-row`).forEach(row => {
+          const show = !searchQuery || row.textContent.toLowerCase().includes(searchQuery);
+          row.style.display = show ? '' : 'none';
+        });
+      });
+    }
+
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      if (!globalInput || !window.CirclesGlobalSearch) return;
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => applyAnalyticsSearch(query)
+      });
+    }
+    setupGlobalSearch();
+
     const rawUser = JSON.parse(localStorage.getItem('user') || '{}');
     const displayName = rawUser.name || rawUser.fullName || rawUser.profile?.name || rawUser.email || rawUser.profile?.email || 'Admin';
     document.getElementById('userName').textContent = displayName;
