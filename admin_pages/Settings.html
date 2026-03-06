@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Circles — Settings</title>
   <link rel="stylesheet" href="Settings.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     if (!localStorage.getItem('token')) {
       window.location.href = '/';
@@ -80,11 +81,18 @@
 
     <div class="sidebar-footer">
       <div class="sb-user">
-        <div class="av-sm">CK</div>
+        <div class="av-sm" id="userInitials">AD</div>
         <div style="flex:1;min-width:0">
-          <div class="u-name">Champion Kumar</div>
+          <div class="u-name" id="userName">Admin</div>
           <div class="u-role">Event Admin</div>
         </div>
+        <button id="logoutBtn" class="icon-btn" style="color:var(--danger); margin-left: auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
       </div>
     </div>
   </aside>
@@ -105,6 +113,15 @@
           <div class="live-dot"></div>Live
         </div>
         <div class="ev-meta">March 8, 2026 &nbsp;·&nbsp; Bharat Mandapam, New Delhi</div>
+        <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
+          <input type="text" class="f-input" placeholder="Search event, attendees..."
+            style="padding-left: 36px; height: 36px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
       </div>
       <div class="topbar-right">
         <button class="icon-btn" aria-label="Notifications">
@@ -732,7 +749,11 @@
         <td><span class="status-dot ${m.status}">${m.status === 'active' ? 'Active' : 'Pending invite'}</span></td>
         <td>
           <div class="row-actions">
-            <button class="ra-btn" onclick="cycleRole(${m.id})">Change role</button>
+            <select class="role-select" onchange="updateRole(${m.id}, this.value)">
+              <option value="admin" ${m.role === 'admin' ? 'selected' : ''}>Admin</option>
+              <option value="organizer" ${m.role === 'organizer' ? 'selected' : ''}>Organizer</option>
+              <option value="staff" ${m.role === 'staff' ? 'selected' : ''}>Staff</option>
+            </select>
             <button class="ra-btn danger" onclick="removeMember(${m.id})">Remove</button>
           </div>
         </td>
@@ -744,12 +765,13 @@
       return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function cycleRole(id) {
+    function updateRole(id, newRole) {
       const m = TEAM.find(x => x.id === id);
       if (!m) return;
-      const order = ['admin', 'organizer', 'staff'];
-      m.role = order[(order.indexOf(m.role) + 1) % order.length];
+      m.role = newRole;
       renderTeam();
+      // Optional: Add API call here to persist the role change
+      console.log(`Updated user ${id} to role ${newRole}`);
     }
 
     function removeMember(id) {
@@ -780,6 +802,23 @@
     /* ── FETCH CURRENT EVENT DATA ───────────────────────────── */
     const currentEventId = localStorage.getItem('currentEventId');
     const token = localStorage.getItem('token');
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+
+    // ── Update Profile ──
+    document.getElementById('userName').textContent = userData.name || 'Admin';
+    if (userData.name) {
+      const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+      document.getElementById('userInitials').textContent = initials;
+    }
+
+    // ── Logout Binding ──
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+      }
+    });
 
     async function loadEventData() {
       if (!token || !currentEventId) return;
@@ -871,17 +910,84 @@
     }
 
     /* ── QR CODE GENERATE ───────────────────────────────────── */
-    function generateQR() {
+    async function generateQR() {
       const btn = document.getElementById('qrBtn');
+      if (!token || !currentEventId) {
+        alert("Event context missing. Please select an event from the dashboard.");
+        return;
+      }
+
       btn.disabled = true;
       btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><path d="M21 12a9 9 0 1 1-9-9"/></svg> Generating…`;
-      setTimeout(() => {
-        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--emerald)"><polyline points="20 6 9 17 4 12"/></svg> 4,821 codes ready`;
+
+      try {
+        const res = await fetch(`/api/admin/events/${currentEventId}/attendees`, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch attendees");
+        const data = await res.json();
+
+        // Handle both possible structures (direct array or {registrations: []})
+        const regs = Array.isArray(data) ? data : (data.registrations || []);
+
+        if (regs.length === 0) {
+          alert("No attendees found to generate codes for.");
+          btn.disabled = false;
+          btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg> Generate QR Codes`;
+          return;
+        }
+
+        // Show a sample QR for the first attendee found
+        const sample = regs[0];
+        const qrPayload = JSON.stringify({
+          registrationId: sample.id,
+          eventId: sample.eventId,
+          userId: sample.userId,
+          eventName: sample.event?.title || "Design Summit 2026",
+          participantName: sample.user?.profile?.name || sample.user?.name || "Attendee",
+          checkInStatus: sample.status
+        });
+
+        // Create a modal or temporary display for the sample QR
+        let qrContainer = document.getElementById('sampleQRContainer');
+        if (!qrContainer) {
+          qrContainer = document.createElement('div');
+          qrContainer.id = 'sampleQRContainer';
+          qrContainer.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:24px; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:2000; text-align:center;';
+          document.body.appendChild(qrContainer);
+        }
+
+        qrContainer.innerHTML = `
+          <h3 style="margin-top:0">Sample QR Code</h3>
+          <p style="font-size:12px;color:var(--ink-3)">Scannable for: ${sample.user?.profile?.name || sample.user?.email}</p>
+          <div id="qrcode" style="margin:16px auto; display:inline-block"></div>
+          <p style="font-size:11px;color:var(--ink-4)">Raw: ${sample.id}</p>
+          <button class="btn btn-primary btn-sm" onclick="this.parentElement.remove()">Close</button>
+        `;
+
+        new QRCode(document.getElementById("qrcode"), {
+          text: qrPayload,
+          width: 200,
+          height: 200,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--emerald)"><polyline points="20 6 9 17 4 12"/></svg> ${regs.length} codes ready`;
         btn.disabled = false;
+
         setTimeout(() => {
           btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg> Generate QR Codes`;
-        }, 3000);
-      }, 1800);
+        }, 5000);
+
+      } catch (err) {
+        console.error(err);
+        alert("Error generating codes: " + err.message);
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg> Generate QR Codes`;
+      }
     }
 
     /* ── INVITE MODAL ───────────────────────────────────────── */

@@ -1,87 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Circles — Profile</title>
   <link rel="stylesheet" href="Profile.css">
 </head>
+
 <body>
 
-<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <a href="#" class="nav-logo">
-      <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
-        <defs>
-          <linearGradient id="lg" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#6040f0"/><stop offset="1" stop-color="#1a96d8"/>
-          </linearGradient>
-        </defs>
-        <circle cx="13" cy="13" r="10.5" stroke="url(#lg)" stroke-width="1.6"/>
-        <circle cx="13" cy="13" r="6" stroke="url(#lg)" stroke-width="1.2" opacity=".55"/>
-        <circle cx="13" cy="13" r="2.2" fill="url(#lg)"/>
+  <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="#" class="nav-logo">
+        <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+          <defs>
+            <linearGradient id="lg" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6040f0" />
+              <stop offset="1" stop-color="#1a96d8" />
+            </linearGradient>
+          </defs>
+          <circle cx="13" cy="13" r="10.5" stroke="url(#lg)" stroke-width="1.6" />
+          <circle cx="13" cy="13" r="6" stroke="url(#lg)" stroke-width="1.2" opacity=".55" />
+          <circle cx="13" cy="13" r="2.2" fill="url(#lg)" />
+        </svg>
+        Circles
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-lbl">Main</div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        Dashboard
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Events <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>
+        Attendees
+      </div>
+      <div class="nav-lbl">Management</div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Analytics
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sb-user">
+        <div class="av-sm" id="userInitials">AD</div>
+        <div style="flex:1;min-width:0">
+          <div class="u-name" id="userName">Admin</div>
+          <div class="u-role">Event Admin</div>
+        </div>
+        <button id="logoutBtn" class="icon-btn" style="color:var(--danger); margin-left: auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════ MAIN ══════════════════════ -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="ev-sel">
+          <span>Design Summit 2026</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        <div class="live-badge">
+          <div class="live-dot"></div>Live
+        </div>
+        <div class="ev-meta">March 8, 2026 &nbsp;·&nbsp; Bharat Mandapam, New Delhi</div>
+        <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
+          <input type="text" class="f-input" placeholder="Search event, attendees..."
+            style="padding-left: 36px; height: 36px; border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none; background: var(--base); font-family: inherit;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+      </div>
+  </div>
+  <div class="topbar-right">
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
       </svg>
-      Circles
-    </a>
+      <span class="notif-dot"></span>
+    </button>
   </div>
-
-  <nav class="sidebar-nav">
-    <div class="nav-lbl">Main</div>
-    <div class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Dashboard
-    </div>
-    <div class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Events <span class="nav-badge">3</span>
-    </div>
-    <div class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      Attendees
-    </div>
-    <div class="nav-lbl">Management</div>
-    <div class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Analytics
-    </div>
-    <div class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Settings
-    </div>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="sb-user">
-      <div class="av-sm">CK</div>
-      <div style="flex:1;min-width:0">
-        <div class="u-name">Champion Kumar</div>
-        <div class="u-role">Event Admin</div>
-      </div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2.5" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    </div>
-  </div>
-</aside>
-
-<!-- ══════════════════════ MAIN ══════════════════════ -->
-<div class="main">
-
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <div class="ev-sel">
-        <span>Design Summit 2026</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="live-badge"><div class="live-dot"></div>Live</div>
-      <div class="ev-meta">March 8, 2026 &nbsp;·&nbsp; Bharat Mandapam, New Delhi</div>
-    </div>
-    <div class="topbar-right">
-      <button class="icon-btn" aria-label="Notifications">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="notif-dot"></span>
-      </button>
-    </div>
   </header>
 
   <!-- CONTENT -->
@@ -109,20 +154,34 @@
             </div>
             <div class="profile-name">Champion Kumar</div>
             <div class="profile-role-badge">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
               Event Admin
             </div>
             <div class="profile-email">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
               champion@circles.app
             </div>
             <div class="profile-joined">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
               Joined January 2024
             </div>
             <div class="profile-edit-btn">
               <button class="btn btn-secondary btn-sm btn-full" onclick="scrollTo('personal')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
                 Edit Profile
               </button>
             </div>
@@ -160,7 +219,12 @@
                 <div class="photo-actions">
                   <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
                   <button class="btn btn-secondary btn-sm" onclick="document.getElementById('photoInput').click()">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="17 8 12 3 7 8" />
+                      <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
                     Upload Photo
                   </button>
                   <button class="btn btn-ghost btn-sm" onclick="removePhoto()">Remove photo</button>
@@ -184,7 +248,12 @@
 
               <div class="activity-cell">
                 <div class="ac-ico" style="background:rgba(96,64,240,.1);color:var(--violet)">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
                 </div>
                 <div class="ac-val" style="color:var(--violet)">12</div>
                 <div class="ac-lbl">Events Created</div>
@@ -192,7 +261,12 @@
 
               <div class="activity-cell">
                 <div class="ac-ico" style="background:rgba(26,150,216,.1);color:var(--azure)">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
                 </div>
                 <div class="ac-val" style="color:var(--azure)">5</div>
                 <div class="ac-lbl">Teams Managed</div>
@@ -200,7 +274,10 @@
 
               <div class="activity-cell" style="grid-column:1/-1">
                 <div class="ac-ico" style="background:rgba(10,170,110,.1);color:var(--emerald)">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="9 11 12 14 22 4" />
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                  </svg>
                 </div>
                 <div class="ac-val" style="color:var(--emerald)">3,200</div>
                 <div class="ac-lbl">Attendees Managed</div>
@@ -226,7 +303,11 @@
                   <div class="action-desc">Export a copy of all your events, attendees and data.</div>
                 </div>
                 <button class="btn btn-secondary btn-sm" onclick="downloadData()">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
                   Download
                 </button>
               </div>
@@ -237,7 +318,11 @@
                   <div class="action-desc">Sign out of your Circles account on this device.</div>
                 </div>
                 <button class="btn btn-ghost btn-sm" onclick="handleLogout()">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
                   Log out
                 </button>
               </div>
@@ -245,10 +330,17 @@
               <div class="action-row">
                 <div>
                   <div class="action-label" style="color:var(--danger)">Delete account</div>
-                  <div class="action-desc">Permanently delete your account and all associated data. This cannot be undone.</div>
+                  <div class="action-desc">Permanently delete your account and all associated data. This cannot be
+                    undone.</div>
                 </div>
                 <button class="btn btn-danger btn-sm" onclick="confirmDelete()">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6" />
+                    <path d="M14 11v6" />
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                  </svg>
                   Delete account
                 </button>
               </div>
@@ -290,31 +382,48 @@
               <label class="f-label" for="email">Email Address</label>
               <div class="f-hint" style="margin-bottom:6px">Used for login and all platform communications.</div>
               <div style="position:relative">
-                <input class="f-input" id="email" type="email" value="champion@circles.app" placeholder="you@email.com" style="padding-left:36px">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <input class="f-input" id="email" type="email" value="champion@circles.app" placeholder="you@email.com"
+                  style="padding-left:36px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5"
+                  style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
               </div>
             </div>
 
             <div class="form-row">
               <label class="f-label" for="phone">Phone Number</label>
               <div style="position:relative">
-                <input class="f-input" id="phone" type="tel" value="+91 98765 43210" placeholder="+91 00000 00000" style="padding-left:36px">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <input class="f-input" id="phone" type="tel" value="+91 98765 43210" placeholder="+91 00000 00000"
+                  style="padding-left:36px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5"
+                  style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
               </div>
             </div>
 
             <div class="form-row" style="border-bottom:none">
               <label class="f-label" for="org">Organisation</label>
               <div style="position:relative">
-                <input class="f-input" id="org" type="text" value="Circles Events Pvt. Ltd." placeholder="Your organisation" style="padding-left:36px">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <input class="f-input" id="org" type="text" value="Circles Events Pvt. Ltd."
+                  placeholder="Your organisation" style="padding-left:36px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5"
+                  style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
               </div>
             </div>
 
           </div>
           <div class="card-footer">
             <span class="save-msg" id="sm-personal">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
               Saved
             </span>
             <button class="btn btn-secondary btn-sm" onclick="resetPersonal()">Discard</button>
@@ -339,8 +448,11 @@
 
             <div class="form-row">
               <label class="f-label" for="pw-new">New Password</label>
-              <input class="f-input" id="pw-new" type="password" placeholder="Minimum 8 characters" oninput="checkPwStrength(this.value)">
-              <div class="pw-strength"><div class="pw-fill" id="pwFill"></div></div>
+              <input class="f-input" id="pw-new" type="password" placeholder="Minimum 8 characters"
+                oninput="checkPwStrength(this.value)">
+              <div class="pw-strength">
+                <div class="pw-fill" id="pwFill"></div>
+              </div>
               <div class="f-hint" id="pwHint" style="margin-top:4px"></div>
             </div>
 
@@ -352,7 +464,9 @@
           </div>
           <div class="card-footer">
             <span class="save-msg" id="sm-password">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
               Password updated
             </span>
             <button class="btn btn-primary btn-sm" onclick="updatePassword()">Update password</button>
@@ -363,7 +477,10 @@
             <div class="twofa-zone">
               <div class="twofa-left">
                 <div class="twofa-ico">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2" ry="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="5" y="11" width="14" height="10" rx="2" ry="2" />
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  </svg>
                 </div>
                 <div>
                   <div class="twofa-name">Two-Factor Authentication</div>
@@ -415,7 +532,9 @@
           </div>
           <div class="card-footer">
             <span class="save-msg" id="sm-prefs">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
               Saved
             </span>
             <button class="btn btn-primary btn-sm" onclick="saveSection('prefs')">Save preferences</button>
@@ -436,7 +555,11 @@
 
               <div class="session-row">
                 <div class="session-ico">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
                 </div>
                 <div style="flex:1;min-width:0">
                   <div class="session-device">MacBook Pro — Chrome</div>
@@ -447,7 +570,10 @@
 
               <div class="session-row">
                 <div class="session-ico">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                    <line x1="12" y1="18" x2="12.01" y2="18" />
+                  </svg>
                 </div>
                 <div style="flex:1;min-width:0">
                   <div class="session-device">iPhone 15 — Safari</div>
@@ -458,7 +584,11 @@
 
               <div class="session-row">
                 <div class="session-ico">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
                 </div>
                 <div style="flex:1;min-width:0">
                   <div class="session-device">Windows PC — Edge</div>
@@ -478,154 +608,213 @@
     <!-- /profile-layout -->
 
   </main>
-</div>
+  </div>
 
-<!-- ══════════════════════ JAVASCRIPT ══════════════════════ -->
-<script>
-'use strict';
+  <!-- ══════════════════════ JAVASCRIPT ══════════════════════ -->
+  <script>
+    'use strict';
 
-/* ── SAVE FEEDBACK ──────────────────────── */
-function saveSection(key) {
-  const el = document.getElementById('sm-' + key);
-  if (!el) return;
-  el.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved`;
-  el.classList.add('show');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 2800);
-}
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const token = localStorage.getItem('token');
 
-function resetPersonal() {
-  document.getElementById('first-name').value = 'Champion';
-  document.getElementById('last-name').value  = 'Kumar';
-  document.getElementById('email').value       = 'champion@circles.app';
-  document.getElementById('phone').value       = '+91 98765 43210';
-  document.getElementById('org').value         = 'Circles Events Pvt. Ltd.';
-}
+    if (!token || !user) {
+      window.location.href = '/';
+    }
 
-/* ── PASSWORD STRENGTH ──────────────────── */
-function checkPwStrength(val) {
-  const fill = document.getElementById('pwFill');
-  const hint = document.getElementById('pwHint');
-  if (!val) { fill.style.width = '0'; hint.textContent = ''; return; }
+    // ── Update Profile ──
+    (function () {
+      const uName = document.getElementById('userName');
+      const avSm = document.getElementById('userInitials');
+      const overviewAv = document.getElementById('overviewAv');
+      const profileName = document.querySelector('.profile-name');
+      const profileEmail = document.querySelector('.profile-email');
 
-  let score = 0;
-  if (val.length >= 8)  score++;
-  if (val.length >= 12) score++;
-  if (/[A-Z]/.test(val)) score++;
-  if (/[0-9]/.test(val)) score++;
-  if (/[^A-Za-z0-9]/.test(val)) score++;
+      if (user) {
+        if (uName) uName.textContent = user.name || user.email;
+        if (profileName) profileName.textContent = user.name || user.email;
+        if (profileEmail) profileEmail.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${user.email}`;
 
-  const map = [
-    { pct:'20%', bg:'var(--danger)', text:'Too weak' },
-    { pct:'40%', bg:'var(--danger)', text:'Weak' },
-    { pct:'60%', bg:'var(--amber)',  text:'Fair' },
-    { pct:'80%', bg:'var(--azure)',  text:'Good' },
-    { pct:'100%',bg:'var(--emerald)','text':'Strong' },
-  ];
-  const m = map[score - 1] || map[0];
-  fill.style.width      = m.pct;
-  fill.style.background = m.bg;
-  hint.style.color      = m.bg;
-  hint.textContent      = m.text;
-}
+        if (user.name) {
+          const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          if (avSm) avSm.textContent = initials;
+          if (overviewAv) overviewAv.textContent = initials;
+          const photoPreview = document.getElementById('photoPreview');
+          if (photoPreview) photoPreview.textContent = initials;
+        }
 
-function updatePassword() {
-  const cur  = document.getElementById('pw-current').value;
-  const nw   = document.getElementById('pw-new').value;
-  const conf = document.getElementById('pw-confirm').value;
-  if (!cur) { document.getElementById('pw-current').focus(); return; }
-  if (nw.length < 8) { alert('New password must be at least 8 characters.'); return; }
-  if (nw !== conf)   { alert('Passwords do not match.'); return; }
-  ['pw-current','pw-new','pw-confirm'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('pwFill').style.width = '0';
-  document.getElementById('pwHint').textContent  = '';
-  saveSection('password');
-}
+        // Split name into first/last for inputs
+        if (user.name) {
+          const parts = user.name.split(' ');
+          const first = parts[0];
+          const last = parts.slice(1).join(' ');
+          const fInput = document.getElementById('first-name');
+          const lInput = document.getElementById('last-name');
+          if (fInput) fInput.value = first;
+          if (lInput) lInput.value = last;
+        }
+        const eInput = document.getElementById('email');
+        if (eInput) eInput.value = user.email;
+      }
+    })();
 
-/* ── 2FA TOGGLE ─────────────────────────── */
-function toggle2FA(cb) {
-  if (cb.checked) {
-    alert('2FA setup flow would open here. (Demo — not implemented.)');
-  }
-}
+    // ── Logout Handling ──
+    function performLogout() {
+      if (confirm('Log out of Circles?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+      }
+    }
 
-/* ── PHOTO UPLOAD ───────────────────────── */
-function handlePhotoUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const src = ev.target.result;
-    // Update small preview
-    const prev = document.getElementById('photoPreview');
-    prev.innerHTML = `<img src="${src}" alt="Avatar">`;
-    // Update overview avatar
-    const ov = document.getElementById('overviewAv');
-    ov.innerHTML = `<img src="${src}" alt="Avatar">`;
-    ov.style.fontSize = '0';
-    // Update sidebar
-    document.querySelector('.av-sm').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-  };
-  reader.readAsDataURL(file);
-}
+    document.getElementById('logoutBtn').addEventListener('click', performLogout);
 
-function removePhoto() {
-  document.getElementById('photoPreview').innerHTML = 'CK';
-  document.getElementById('overviewAv').innerHTML   = 'CK';
-  document.getElementById('overviewAv').style.fontSize = '';
-  document.querySelector('.av-sm').textContent = 'CK';
-  document.getElementById('photoInput').value = '';
-}
+    function handleLogout() {
+      performLogout();
+    }
 
-/* ── ACCOUNT ACTIONS ────────────────────── */
-function downloadData() {
-  const btn = event.currentTarget;
-  const orig = btn.innerHTML;
-  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><path d="M21 12a9 9 0 1 1-9-9"/></svg> Preparing…`;
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Ready to download`;
-    btn.disabled = false;
-    setTimeout(() => { btn.innerHTML = orig; }, 3000);
-  }, 1600);
-}
+    /* ── SAVE FEEDBACK ──────────────────────── */
+    function saveSection(key) {
+      const el = document.getElementById('sm-' + key);
+      if (!el) return;
+      el.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved`;
+      el.classList.add('show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('show'), 2800);
+    }
 
-function handleLogout() {
-  if (confirm('Log out of Circles?')) alert('Signed out. (Demo — redirect would happen here.)');
-}
+    function resetPersonal() {
+      document.getElementById('first-name').value = 'Champion';
+      document.getElementById('last-name').value = 'Kumar';
+      document.getElementById('email').value = 'champion@circles.app';
+      document.getElementById('phone').value = '+91 98765 43210';
+      document.getElementById('org').value = 'Circles Events Pvt. Ltd.';
+    }
 
-function confirmDelete() {
-  if (confirm('This will permanently delete your account and all data.\n\nType DELETE to confirm (demo — no data is actually removed).')) {
-    alert('Account deletion request submitted.');
-  }
-}
+    /* ── PASSWORD STRENGTH ──────────────────── */
+    function checkPwStrength(val) {
+      const fill = document.getElementById('pwFill');
+      const hint = document.getElementById('pwHint');
+      if (!val) { fill.style.width = '0'; hint.textContent = ''; return; }
 
-/* ── SESSIONS ───────────────────────────── */
-function revokeSession(btn) {
-  const row = btn.closest('.session-row');
-  row.style.opacity = '0';
-  row.style.transition = 'opacity .2s';
-  setTimeout(() => row.remove(), 200);
-}
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (val.length >= 12) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
 
-function revokeOthers() {
-  document.querySelectorAll('.session-row .btn-ghost').forEach(btn => {
-    const row = btn.closest('.session-row');
-    row.style.opacity = '0'; row.style.transition = 'opacity .2s';
-    setTimeout(() => row.remove(), 200);
-  });
-}
+      const map = [
+        { pct: '20%', bg: 'var(--danger)', text: 'Too weak' },
+        { pct: '40%', bg: 'var(--danger)', text: 'Weak' },
+        { pct: '60%', bg: 'var(--amber)', text: 'Fair' },
+        { pct: '80%', bg: 'var(--azure)', text: 'Good' },
+        { pct: '100%', bg: 'var(--emerald)', 'text': 'Strong' },
+      ];
+      const m = map[score - 1] || map[0];
+      fill.style.width = m.pct;
+      fill.style.background = m.bg;
+      hint.style.color = m.bg;
+      hint.textContent = m.text;
+    }
 
-/* ── SCROLL TO SECTION ──────────────────── */
-function scrollTo(id) {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
-}
+    function updatePassword() {
+      const cur = document.getElementById('pw-current').value;
+      const nw = document.getElementById('pw-new').value;
+      const conf = document.getElementById('pw-confirm').value;
+      if (!cur) { document.getElementById('pw-current').focus(); return; }
+      if (nw.length < 8) { alert('New password must be at least 8 characters.'); return; }
+      if (nw !== conf) { alert('Passwords do not match.'); return; }
+      ['pw-current', 'pw-new', 'pw-confirm'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('pwFill').style.width = '0';
+      document.getElementById('pwHint').textContent = '';
+      saveSection('password');
+    }
 
-/* ── INJECT SPIN KEYFRAME ───────────────── */
-const style = document.createElement('style');
-style.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
-document.head.appendChild(style);
-</script>
+    /* ── 2FA TOGGLE ─────────────────────────── */
+    function toggle2FA(cb) {
+      if (cb.checked) {
+        alert('2FA setup flow would open here. (Demo — not implemented.)');
+      }
+    }
+
+    /* ── PHOTO UPLOAD ───────────────────────── */
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const src = ev.target.result;
+        // Update small preview
+        const prev = document.getElementById('photoPreview');
+        prev.innerHTML = `<img src="${src}" alt="Avatar">`;
+        // Update overview avatar
+        const ov = document.getElementById('overviewAv');
+        ov.innerHTML = `<img src="${src}" alt="Avatar">`;
+        ov.style.fontSize = '0';
+        // Update sidebar
+        document.querySelector('.av-sm').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removePhoto() {
+      document.getElementById('photoPreview').innerHTML = 'CK';
+      document.getElementById('overviewAv').innerHTML = 'CK';
+      document.getElementById('overviewAv').style.fontSize = '';
+      document.querySelector('.av-sm').textContent = 'CK';
+      document.getElementById('photoInput').value = '';
+    }
+
+    /* ── ACCOUNT ACTIONS ────────────────────── */
+    function downloadData() {
+      const btn = event.currentTarget;
+      const orig = btn.innerHTML;
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><path d="M21 12a9 9 0 1 1-9-9"/></svg> Preparing…`;
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Ready to download`;
+        btn.disabled = false;
+        setTimeout(() => { btn.innerHTML = orig; }, 3000);
+      }, 1600);
+    }
+
+    function handleLogout() {
+      if (confirm('Log out of Circles?')) alert('Signed out. (Demo — redirect would happen here.)');
+    }
+
+    function confirmDelete() {
+      if (confirm('This will permanently delete your account and all data.\n\nType DELETE to confirm (demo — no data is actually removed).')) {
+        alert('Account deletion request submitted.');
+      }
+    }
+
+    /* ── SESSIONS ───────────────────────────── */
+    function revokeSession(btn) {
+      const row = btn.closest('.session-row');
+      row.style.opacity = '0';
+      row.style.transition = 'opacity .2s';
+      setTimeout(() => row.remove(), 200);
+    }
+
+    function revokeOthers() {
+      document.querySelectorAll('.session-row .btn-ghost').forEach(btn => {
+        const row = btn.closest('.session-row');
+        row.style.opacity = '0'; row.style.transition = 'opacity .2s';
+        setTimeout(() => row.remove(), 200);
+      });
+    }
+
+    /* ── SCROLL TO SECTION ──────────────────── */
+    function scrollTo(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ── INJECT SPIN KEYFRAME ───────────────── */
+    const style = document.createElement('style');
+    style.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
+    document.head.appendChild(style);
+  </script>
 </body>
+
 </html>
