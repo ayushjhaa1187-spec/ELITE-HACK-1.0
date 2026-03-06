@@ -916,6 +916,7 @@
       const sec = document.getElementById('sec-' + id);
       if (sec) sec.classList.add('active');
       navEl.classList.add('active');
+      if (id === 'operations') loadOperationsSnapshot();
     }
 
     /* ── VISIBILITY TOGGLE ──────────────────────────────────── */
@@ -926,6 +927,7 @@
 
     /* ── FETCH CURRENT EVENT DATA ───────────────────────────── */
     const currentEventId = localStorage.getItem('currentEventId');
+    let activeEventId = currentEventId;
     const token = localStorage.getItem('token');
 
     function normalizeUser(userObj) {
@@ -1011,6 +1013,7 @@
         const events = await fetchAdminEvents();
         const activeEvent = events.find(e => e.id === currentEventId) || events[0];
         if (activeEvent) {
+          activeEventId = activeEvent.id;
           const nameEl = document.getElementById('currentEventName');
           if (nameEl) nameEl.textContent = activeEvent.title;
         }
@@ -1026,6 +1029,7 @@
         const events = await fetchAdminEvents();
         const selectedEvent = events.find(e => e.id === currentEventId) || events[0];
         if (!selectedEvent) return;
+        activeEventId = selectedEvent.id;
         document.getElementById('ev-name').value = selectedEvent.title || '';
         document.getElementById('ev-location').value = selectedEvent.venue || '';
         document.getElementById('ev-date').value = selectedEvent.startDate ? selectedEvent.startDate.split('T')[0] : '';
@@ -1041,6 +1045,7 @@
       try {
         const events = await fetchAdminEvents();
         const selectedEvent = events.find(e => e.id === currentEventId) || events[0];
+        if (selectedEvent) activeEventId = selectedEvent.id;
 
         setText('opsEventsCount', String(events.length));
         setText('opsActiveEvent', selectedEvent?.title || 'No event selected');
@@ -1091,7 +1096,7 @@
     loadOperationsSnapshot();
 
     async function saveGeneral() {
-      if (!token || !currentEventId) return;
+      if (!token || !activeEventId) return;
 
       const title = document.getElementById('ev-name').value;
       const venue = document.getElementById('ev-location').value;
@@ -1110,7 +1115,7 @@
       };
 
       try {
-        const res = await fetch(`/api/admin/events/${currentEventId}`, {
+        const res = await fetch(`/api/admin/events/${activeEventId}`, {
           method: 'PUT',
           headers: {
             'Authorization': 'Bearer ' + token,
@@ -1120,6 +1125,8 @@
         });
         if (res.ok) {
           save('general'); // Trigger success animation
+          updateEventName();
+          loadOperationsSnapshot();
         } else {
           const err = await res.json();
           alert('Error saving: ' + (err.error || JSON.stringify(err)));
@@ -1142,8 +1149,8 @@
 
     function confirmDelete() {
       if (confirm('Are you sure? This will permanently delete the event and all its data.')) {
-        if (!token || !currentEventId) return;
-        fetch(`/api/admin/events/${currentEventId}`, {
+        if (!token || !activeEventId) return;
+        fetch(`/api/admin/events/${activeEventId}`, {
           method: 'DELETE',
           headers: { 'Authorization': 'Bearer ' + token }
         }).then(res => {
@@ -1161,7 +1168,7 @@
     /* ── QR CODE GENERATE ───────────────────────────────────── */
     async function generateQR() {
       const btn = document.getElementById('qrBtn');
-      if (!token || !currentEventId) {
+      if (!token || !activeEventId) {
         alert("Event context missing. Please select an event from the dashboard.");
         return;
       }
@@ -1170,7 +1177,7 @@
       btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><path d="M21 12a9 9 0 1 1-9-9"/></svg> Fetching attendees…`;
 
       try {
-        const res = await fetch(`/api/admin/events/${currentEventId}/attendees`, {
+        const res = await fetch(`/api/admin/events/${activeEventId}/attendees`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
 

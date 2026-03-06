@@ -31,7 +31,7 @@
 
     <nav class="sidebar-nav">
       <div class="nav-lbl">Main</div>
-      <div class="nav-item">
+      <div class="nav-item" onclick="window.location.href='/dashboard'" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <rect x="3" y="3" width="7" height="7" rx="1" />
           <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -40,7 +40,7 @@
         </svg>
         Dashboard
       </div>
-      <div class="nav-item">
+      <div class="nav-item" onclick="window.location.href='/events'" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <rect x="3" y="4" width="18" height="18" rx="2" />
           <line x1="16" y1="2" x2="16" y2="6" />
@@ -49,7 +49,7 @@
         </svg>
         Events <span class="nav-badge" id="eventBadge" style="display:none;">0</span>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" onclick="window.location.href='/attendees'" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
           <circle cx="9" cy="7" r="4" />
@@ -57,13 +57,13 @@
         Attendees
       </div>
       <div class="nav-lbl">Management</div>
-      <div class="nav-item">
+      <div class="nav-item" onclick="window.location.href='/analytics'" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
         </svg>
         Analytics
       </div>
-      <div class="nav-item">
+      <div class="nav-item" onclick="window.location.href='/settings'" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <circle cx="12" cy="12" r="3" />
           <path
@@ -117,17 +117,16 @@
           </svg>
         </div>
       </div>
-  </div>
-  <div class="topbar-right">
-    <button class="icon-btn" aria-label="Notifications">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-      </svg>
-      <span class="notif-dot"></span>
-    </button>
-  </div>
-  </header>
+      <div class="topbar-right">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </header>
 
   <!-- CONTENT -->
   <main class="content">
@@ -149,7 +148,7 @@
           <div class="profile-banner"></div>
           <div class="profile-av-row">
             <div class="profile-av-wrap">
-              <div class="profile-av" id="overviewAv">CK</div>
+              <div class="profile-av" id="overviewAv">AD</div>
               <div class="online-ring"></div>
             </div>
             <div class="profile-name" id="profileName">User Profile</div>
@@ -160,12 +159,12 @@
               </svg>
               Event Admin
             </div>
-            <div class="profile-email">
+            <div class="profile-email" id="profileEmailDisplay">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
-              champion@circles.app
+              --
             </div>
             <div class="profile-joined">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -214,7 +213,7 @@
           </div>
           <div class="card-body">
             <div class="photo-body">
-              <div class="photo-preview" id="photoPreview">CK</div>
+              <div class="photo-preview" id="photoPreview">AD</div>
               <div>
                 <div class="photo-actions">
                   <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
@@ -369,11 +368,11 @@
               <div class="form-grid">
                 <div style="display:flex;flex-direction:column;gap:6px">
                   <label class="f-label" for="first-name">First Name</label>
-                  <input class="f-input" id="first-name" type="text" value="Champion" placeholder="First name">
+                  <input class="f-input" id="first-name" type="text" value="" placeholder="First name">
                 </div>
                 <div style="display:flex;flex-direction:column;gap:6px">
                   <label class="f-label" for="last-name">Last Name</label>
-                  <input class="f-input" id="last-name" type="text" value="Kumar" placeholder="Last name">
+                  <input class="f-input" id="last-name" type="text" value="" placeholder="Last name">
                 </div>
               </div>
             </div>
@@ -382,7 +381,7 @@
               <label class="f-label" for="email">Email Address</label>
               <div class="f-hint" style="margin-bottom:6px">Used for login and all platform communications.</div>
               <div style="position:relative">
-                <input class="f-input" id="email" type="email" value="champion@circles.app" placeholder="you@email.com"
+                <input class="f-input" id="email" type="email" value="" placeholder="you@email.com"
                   style="padding-left:36px">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5"
                   style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">
@@ -614,47 +613,85 @@
   <script>
     'use strict';
 
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const rawUser = JSON.parse(localStorage.getItem('user') || 'null');
     const token = localStorage.getItem('token');
 
-    if (!token || !user) {
+    function normalizeUser(userObj) {
+      if (!userObj || typeof userObj !== 'object') return { name: '', email: '' };
+      return {
+        ...userObj,
+        name: userObj.name || userObj.fullName || userObj.profile?.name || '',
+        email: userObj.email || userObj.profile?.email || '',
+      };
+    }
+
+    function parseEventsPayload(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.events)) return payload.events;
+      return [];
+    }
+
+    const user = normalizeUser(rawUser);
+    if (!token || (!user.name && !user.email)) {
       window.location.href = '/';
     }
 
-    // ── Update Profile ──
+    const personalSnapshot = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      org: '',
+    };
+
+    // Update profile from the logged-in admin
     (function () {
       const uName = document.getElementById('userName');
       const avSm = document.getElementById('userInitials');
       const overviewAv = document.getElementById('overviewAv');
-      const profileName = document.querySelector('.profile-name');
-      const profileEmail = document.querySelector('.profile-email');
+      const profileName = document.getElementById('profileName');
+      const profileEmail = document.getElementById('profileEmailDisplay');
+      const photoPreview = document.getElementById('photoPreview');
 
-      if (user) {
-        if (uName) uName.textContent = user.name || user.email;
-        if (profileName) profileName.textContent = user.name || user.email;
-        if (profileEmail) profileEmail.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${user.email}`;
+      const displayName = user.name || user.email || 'Admin';
+      const initials = displayName
+        .split(' ')
+        .filter(Boolean)
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2) || 'AD';
 
-        if (user.name) {
-          const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-          if (avSm) avSm.textContent = initials;
-          if (overviewAv) overviewAv.textContent = initials;
-          const photoPreview = document.getElementById('photoPreview');
-          if (photoPreview) photoPreview.textContent = initials;
-        }
-
-        // Split name into first/last for inputs
-        if (user.name) {
-          const parts = user.name.split(' ');
-          const first = parts[0];
-          const last = parts.slice(1).join(' ');
-          const fInput = document.getElementById('first-name');
-          const lInput = document.getElementById('last-name');
-          if (fInput) fInput.value = first;
-          if (lInput) lInput.value = last;
-        }
-        const eInput = document.getElementById('email');
-        if (eInput) eInput.value = user.email;
+      if (uName) uName.textContent = displayName;
+      if (profileName) profileName.textContent = displayName;
+      if (profileEmail) {
+        const emailText = user.email || '--';
+        profileEmail.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${emailText}`;
       }
+      if (avSm) avSm.textContent = initials;
+      if (overviewAv) overviewAv.textContent = initials;
+      if (photoPreview) photoPreview.textContent = initials;
+
+      const nameParts = (user.name || '').trim().split(/\s+/).filter(Boolean);
+      const first = nameParts[0] || '';
+      const last = nameParts.slice(1).join(' ');
+      const fInput = document.getElementById('first-name');
+      const lInput = document.getElementById('last-name');
+      const eInput = document.getElementById('email');
+      const phoneInput = document.getElementById('phone');
+      const orgInput = document.getElementById('org');
+
+      if (fInput) fInput.value = first;
+      if (lInput) lInput.value = last;
+      if (eInput) eInput.value = user.email || '';
+      if (phoneInput && !phoneInput.value) phoneInput.value = '';
+      if (orgInput && !orgInput.value) orgInput.value = '';
+
+      personalSnapshot.firstName = fInput ? fInput.value : '';
+      personalSnapshot.lastName = lInput ? lInput.value : '';
+      personalSnapshot.email = eInput ? eInput.value : '';
+      personalSnapshot.phone = phoneInput ? phoneInput.value : '';
+      personalSnapshot.org = orgInput ? orgInput.value : '';
     })();
 
     // ── Logout Handling ──
@@ -662,6 +699,7 @@
       if (confirm('Log out of Circles?')) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('currentEventId');
         window.location.href = '/';
       }
     }
@@ -677,7 +715,7 @@
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (res.ok) {
-          const events = await res.json();
+          const events = parseEventsPayload(await res.json());
           const badge = document.getElementById('eventBadge');
           if (badge) {
             badge.textContent = events.length;
@@ -695,13 +733,13 @@
       try {
         const token = localStorage.getItem('token');
         const currentEventId = localStorage.getItem('currentEventId');
-        if (!token || !currentEventId) return;
+        if (!token) return;
         const res = await fetch('/api/admin/events', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (res.ok) {
-          const events = await res.json();
-          const event = events.find(e => e.id === currentEventId);
+          const events = parseEventsPayload(await res.json());
+          const event = events.find(e => e.id === currentEventId) || events[0];
           if (event) {
             const nameEl = document.getElementById('currentEventName');
             if (nameEl) nameEl.textContent = event.title;
@@ -721,6 +759,26 @@
     function saveSection(key) {
       const el = document.getElementById('sm-' + key);
       if (!el) return;
+
+      if (key === 'personal') {
+        personalSnapshot.firstName = document.getElementById('first-name').value.trim();
+        personalSnapshot.lastName = document.getElementById('last-name').value.trim();
+        personalSnapshot.email = document.getElementById('email').value.trim();
+        personalSnapshot.phone = document.getElementById('phone').value.trim();
+        personalSnapshot.org = document.getElementById('org').value.trim();
+
+        const fullName = [personalSnapshot.firstName, personalSnapshot.lastName].filter(Boolean).join(' ').trim();
+        const displayName = fullName || personalSnapshot.email || 'Admin';
+        const initials = displayName.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'AD';
+
+        document.getElementById('userName').textContent = displayName;
+        document.getElementById('profileName').textContent = displayName;
+        if (!document.querySelector('#userInitials img')) document.getElementById('userInitials').textContent = initials;
+        if (!document.querySelector('#overviewAv img')) document.getElementById('overviewAv').textContent = initials;
+        if (!document.querySelector('#photoPreview img')) document.getElementById('photoPreview').textContent = initials;
+        document.getElementById('profileEmailDisplay').innerHTML = `<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z\"/><polyline points=\"22,6 12,13 2,6\"/></svg>${personalSnapshot.email || '--'}`;
+      }
+
       el.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved`;
       el.classList.add('show');
       clearTimeout(el._t);
@@ -728,11 +786,11 @@
     }
 
     function resetPersonal() {
-      document.getElementById('first-name').value = 'Champion';
-      document.getElementById('last-name').value = 'Kumar';
-      document.getElementById('email').value = 'champion@circles.app';
-      document.getElementById('phone').value = '+91 98765 43210';
-      document.getElementById('org').value = 'Circles Events Pvt. Ltd.';
+      document.getElementById('first-name').value = personalSnapshot.firstName;
+      document.getElementById('last-name').value = personalSnapshot.lastName;
+      document.getElementById('email').value = personalSnapshot.email;
+      document.getElementById('phone').value = personalSnapshot.phone;
+      document.getElementById('org').value = personalSnapshot.org;
     }
 
     /* ── PASSWORD STRENGTH ──────────────────── */
@@ -803,10 +861,11 @@
     }
 
     function removePhoto() {
-      document.getElementById('photoPreview').innerHTML = 'CK';
-      document.getElementById('overviewAv').innerHTML = 'CK';
+      const initials = (document.getElementById('userInitials')?.textContent || 'AD').trim() || 'AD';
+      document.getElementById('photoPreview').innerHTML = initials;
+      document.getElementById('overviewAv').innerHTML = initials;
       document.getElementById('overviewAv').style.fontSize = '';
-      document.querySelector('.av-sm').textContent = 'CK';
+      document.querySelector('.av-sm').textContent = initials;
       document.getElementById('photoInput').value = '';
     }
 

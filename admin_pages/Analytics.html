@@ -707,17 +707,17 @@
   </div>`).join('');
 
     /* ─── INITIALIZATION ──────────── */
-    const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    document.getElementById('userName').textContent = userData.name || 'Admin';
-    if (userData.name) {
-      const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
-      document.getElementById('userInitials').textContent = initials;
-    }
+    const rawUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const displayName = rawUser.name || rawUser.fullName || rawUser.profile?.name || rawUser.email || rawUser.profile?.email || 'Admin';
+    document.getElementById('userName').textContent = displayName;
+    const initials = displayName.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'AD';
+    document.getElementById('userInitials').textContent = initials;
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
       if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('currentEventId');
         window.location.href = '/';
       }
     });
