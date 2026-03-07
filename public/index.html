@@ -115,7 +115,7 @@
 
           <div class="db-graph-card">
             <div class="db-graph-header">
-              <span class="db-graph-label">Check-in activity — Today</span>
+              <span class="db-graph-label" id="demoLabel">Check-in activity — Today</span>
               <div class="db-legend">
                 <div class="legend-i">
                   <div class="pip v"></div>Registrations
@@ -401,14 +401,19 @@
         elements.liveBadge.style.color = '#fff';
       }
 
+      const demoLabel = document.getElementById('demoLabel');
+      if (demoLabel) {
+        demoLabel.textContent = '⚡ Simulated Demo Event';
+      }
+
       function animate() {
         let reg = 3124;
         let ci = 1487;
         let active = 512;
 
         setInterval(() => {
-          reg += Math.floor(Math.random() * 2);
-          ci += Math.floor(Math.random() * 3);
+          reg += Math.floor(Math.random() * 3);
+          ci += Math.floor(Math.random() * 5);
           active += Math.floor(Math.random() * 5) - 2;
 
           if (elements.reg) elements.reg.textContent = reg.toLocaleString();
@@ -468,7 +473,6 @@
       document.getElementById('authError').style.display = 'none';
       document.getElementById('authEmail').value = '';
       document.getElementById('authPassword').value = '';
-      document.getElementById('authName').value = '';
       updateAuthUI();
     }
 

@@ -818,37 +818,43 @@
       save('team');
     }
 
-    function removeMember(id) {
+    async function removeMember(id) {
       const m = TEAM.find(x => x.id === id);
       if (!m) return;
 
-      // Styled Confirmation Modal
-      const modal = document.createElement('div');
-      modal.className = 'modal-backdrop open';
-      modal.style.zIndex = '2000';
-      modal.innerHTML = `
-        <div class="modal" style="max-width: 400px; padding: 24px; text-align: center;">
-          <div style="width: 50px; height: 50px; background: rgba(220,38,38,0.1); color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
-          </div>
-          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Remove team member?</h3>
-          <p style="font-size: 14px; color: var(--ink-2); margin-bottom: 24px;">This will revoke <strong>${m.name}</strong>'s access to this event workspace immediately.</p>
-          <div style="display: flex; gap: 12px;">
-            <button class="btn btn-secondary btn-full" onclick="this.closest('.modal-backdrop').remove()">Cancel</button>
-            <button class="btn btn-danger btn-full" id="confirmRemoveBtn">Remove Member</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modal);
+      const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+      const isSelf = m.email === currentUser.email;
+      const adminCount = TEAM.filter(member => member.role === 'admin').length;
+      const isLastAdmin = m.role === 'admin' && adminCount <= 1;
 
-      document.getElementById('confirmRemoveBtn').onclick = () => {
+      if (isSelf && isLastAdmin) {
+        alert('You are the only admin. Promote someone else first.');
+        return;
+      }
+
+      const confirmed = window.confirm(`Remove ${m.name} from this event?`);
+      if (!confirmed) return;
+
+      try {
+        if (token && activeEventId) {
+          const response = await fetch(`/api/events/${activeEventId}/members/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+
+          if (!response.ok && response.status !== 404) {
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.error || 'Failed to remove member');
+          }
+        }
+
         TEAM = TEAM.filter(x => x.id !== id);
-        // Persist locally for session
         localStorage.setItem(`circles_team_${activeEventId || 'global'}`, JSON.stringify(TEAM));
         renderTeam();
-        modal.remove();
         save('team');
-      };
+      } catch (error) {
+        alert(error.message || 'Unable to remove member right now.');
+      }
     }
 
     renderTeam();
@@ -1061,6 +1067,11 @@
     async function saveGeneral() {
       if (!token || !activeEventId) return;
 
+      const saveBtn = document.getElementById('btnSaveGeneral');
+      const originalText = saveBtn.textContent;
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+
       const title = document.getElementById('ev-name').value;
       const venue = document.getElementById('ev-location').value;
       const dateStr = document.getElementById('ev-date').value;
@@ -1090,6 +1101,7 @@
           save('general'); // Trigger success animation
           updateEventName();
           loadOperationsSnapshot();
+          saveBtn.textContent = '✅ Saved';
         } else {
           const err = await res.json();
           alert('Error saving: ' + (err.error || JSON.stringify(err)));
@@ -1097,6 +1109,10 @@
       } catch (e) {
         console.error(e);
         alert('Error saving event details');
+        saveBtn.textContent = '❌ Failed';
+      } finally {
+        saveBtn.disabled = false;
+        setTimeout(() => { saveBtn.textContent = originalText; }, 2000);
       }
     }
 
