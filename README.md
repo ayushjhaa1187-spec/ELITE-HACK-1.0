@@ -1,6 +1,6 @@
-# CoCreate 🚀
+# Circles 🚀
 
-![CoCreate Logo](./cocreate_logo.png)
+![Circles Logo](./cocreate_logo.png)
 
 > **One platform. Every event. Zero chaos. No excuses.**
 

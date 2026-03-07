@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CoCreate — CoCreate Project.</title>
+  <title>Circles — Event Control Room</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,7 +31,7 @@
         <circle cx="13" cy="13" r="6" stroke="url(#lg-nav)" stroke-width="1.2" opacity="0.55" />
         <circle cx="13" cy="13" r="2.2" fill="url(#lg-nav)" />
       </svg>
-      CoCreate
+      Circles
     </a>
     <div class="nav-actions">
       <button class="btn-ghost-sm" onclick="openAuthModal('login')">Sign In</button>
@@ -57,7 +57,7 @@
     </p>
 
     <div class="hero-ctas">
-      <button class="btn-hero-p" onclick="window.location.href='/dashboard'">
+      <button class="btn-hero-p" onclick="openAuthModal('register')">
         Create Your Event
         <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2.5 7h9M7 2.5L11.5 7 7 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
@@ -190,7 +190,7 @@
   <div class="divider-full"></div>
   <div class="wins-section">
     <div class="wins-header">
-      <span class="eyebrow">Why CoCreate Wins</span>
+      <span class="eyebrow">Why Circles Wins</span>
       <h2>We don't patch the gap.<br />We replace the stack.</h2>
       <p>Three things we refuse to compromise on — because your events can't afford it.</p>
     </div>
@@ -328,14 +328,14 @@
         <circle cx="13" cy="13" r="6" stroke="url(#lg-ft)" stroke-width="1.2" opacity="0.45" />
         <circle cx="13" cy="13" r="2.2" fill="url(#lg-ft)" />
       </svg>
-      CoCreate
+      Circles
     </div>
     <ul class="footer-links">
       <li><a href="#">Privacy</a></li>
       <li><a href="#">Terms</a></li>
       <li><a href="#">Status</a></li>
     </ul>
-    <div class="footer-copy">© 2026 CoCreate, Inc.</div>
+    <div class="footer-copy">© 2026 Circles, Inc.</div>
   </footer>
 
   <!-- ══════════════════ AUTH MODAL ══════════════════ -->
@@ -343,7 +343,7 @@
     <div id="authModal" style="background:#fff;border-radius:16px;padding:40px;max-width:420px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,0.2);position:relative;animation:modalIn 0.3s ease">
       <button onclick="closeAuthModal()" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#999">✕</button>
       <h2 id="authTitle" style="font-family:'Instrument Serif',serif;font-size:28px;margin:0 0 6px;color:#1a1a2e">Sign In</h2>
-      <p id="authSubtitle" style="color:#6e6e7d;font-size:14px;margin:0 0 24px">Welcome back to CoCreate</p>
+      <p id="authSubtitle" style="color:#6e6e7d;font-size:14px;margin:0 0 24px">Welcome back to Circles</p>
       <div id="authError" style="display:none;background:#fee;color:#c00;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px"></div>
       <div id="nameGroup" style="display:none;margin-bottom:14px">
         <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Full Name</label>
@@ -434,7 +434,7 @@
     function updateAuthUI() {
       const isLogin = authMode === 'login';
       document.getElementById('authTitle').textContent = isLogin ? 'Sign In' : 'Create Account';
-      document.getElementById('authSubtitle').textContent = isLogin ? 'Welcome back to CoCreate' : 'Get started with CoCreate';
+      document.getElementById('authSubtitle').textContent = isLogin ? 'Welcome back to Circles' : 'Get started with Circles';
       document.getElementById('authSubmit').textContent = isLogin ? 'Sign In' : 'Create Account';
       document.getElementById('authToggleText').textContent = isLogin ? "Don't have an account? " : 'Already have an account? ';
       document.getElementById('authToggleLink').textContent = isLogin ? 'Register' : 'Sign In';
