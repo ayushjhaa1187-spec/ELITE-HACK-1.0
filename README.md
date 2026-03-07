@@ -206,5 +206,5 @@ Built at **IIT Madras** for **Elite Hack 1.0 — Web Track**.
 
 ---
 
-*Built with ❤️ for Elite Hack 1.0 · IIT Madras*
+*Built with vision for Elite Hack 1.0 · IIT Madras*
 
