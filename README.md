@@ -4,7 +4,7 @@
 
 > **One platform. Every event. Zero chaos. No excuses.**
 
-**CoCreate** is a full-stack Multi-Event Management Platform built for **Elite Hack 1.0 — Web Track at IIT Madras**. It centralizes event creation, participant registrations, team formation, notifications, and organiser dashboards into a single system — so every hackathon, fest, and workshop at an institute runs from the same place.
+**Circles** is a full-stack Multi-Event Management Platform
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -18,7 +18,7 @@
 
 Managing events at an institute is broken. Organisers juggle Google Forms, WhatsApp groups, and spreadsheets. Participants miss deadlines buried in chat threads. Teams get formed over DMs, eligibility is checked by hand, and attendance is tracked on paper.
 
-**CoCreate fixes all of that — in one place.**
+**Circles fixes all of that — in one place.**
 
 | 🏗️ For Organisers & Admins | 🎓 For Participants |
 |:--- |:--- |
