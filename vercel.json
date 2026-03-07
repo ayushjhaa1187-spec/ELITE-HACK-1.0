@@ -9,7 +9,10 @@
                     "public/**",
                     "admin_pages/**",
                     "swagger.yaml",
-                    "participant_pages/**"
+                    "participant_pages/**",
+                    "prisma/schema.prisma",
+                    "node_modules/.prisma/client/**",
+                    "node_modules/@prisma/client/**"
                 ]
             }
         }
