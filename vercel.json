@@ -1,54 +1,23 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "src/index.ts",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "src/index.ts"
-        },
-        {
-            "src": "/api-docs(.*)",
-            "dest": "src/index.ts"
-        },
-        {
-            "handle": "filesystem"
-        },
-        {
-            "src": "/dashboard",
-            "dest": "public/Dashboard.html"
-        },
-        {
-            "src": "/attendees",
-            "dest": "public/Attendees.html"
-        },
-        {
-            "src": "/events",
-            "dest": "public/Events.html"
-        },
-        {
-            "src": "/analytics",
-            "dest": "public/Analytics.html"
-        },
-        {
-            "src": "/settings",
-            "dest": "public/Settings.html"
-        },
-        {
-            "src": "/profile",
-            "dest": "public/Profile.html"
-        },
-        {
-            "src": "/register",
-            "dest": "public/register.html"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "public/$1"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "src/index.ts"
+    },
+    {
+      "src": "/api-docs(.*)",
+      "dest": "src/index.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "public/$1"
+    }
+  ]
 }

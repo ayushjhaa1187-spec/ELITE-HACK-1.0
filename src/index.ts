@@ -187,8 +187,8 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
     });
 });
 
-// Start the server only if not in test environment and not on Vercel
-if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
+// Start local dev server only outside production/test environments.
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
         console.log(`Server is running at http://localhost:${PORT}`);
         console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
