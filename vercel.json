@@ -12,11 +12,8 @@
             "dest": "src/index.ts"
         },
         {
-            "src": "/api-docs(.*)",
+            "src": "/api-docs/(.*)",
             "dest": "src/index.ts"
-        },
-        {
-            "handle": "filesystem"
         },
         {
             "src": "/dashboard",
@@ -41,6 +38,10 @@
         {
             "src": "/profile",
             "dest": "public/Profile.html"
+        },
+        {
+            "src": "/scanner",
+            "dest": "public/Scanner.html"
         },
         {
             "src": "/register",
