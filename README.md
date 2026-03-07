@@ -7,7 +7,8 @@
 **Circles** is a full-stack Multi-Event Management Platform
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![HTML5](https://img.shields.io/badge/Frontend-HTML5%2FCSS3-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
 [![Prisma](https://img.shields.io/badge/ORM-Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](./LICENSE)
@@ -67,7 +68,7 @@ graph LR
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | Next.js 14 / React — routing, shared components, fully responsive |
+| **Frontend** | HTML5 / Vanilla CSS / TypeScript — Clean, performant, zero-bloat UI |
 | **Backend** | Node.js + Express + TypeScript — REST APIs for auth, events, teams, notifications |
 | **Database** | PostgreSQL via Supabase — relational schema for users, events, teams, registrations |
 | **ORM** | Prisma |
@@ -149,7 +150,9 @@ Integration tests cover all critical user flows — auth, event CRUD, team opera
 │   ├── utils/                 # Security, Notifications, Services
 │   ├── validators/            # Zod schemas for all request bodies
 │   └── index.ts               # Server entry point
-├── Frontend/                  # Static HTML/CSS files
+├── public/                    # Main landing page & shared assets
+├── admin_pages/               # Organizer-facing dashboard screens
+├── participant_pages/         # Attendee-facing ticket & event screens
 ├── tests/                      # Jest + Supertest integration tests
 ├── swagger.yaml                # OpenAPI 3.0 spec
 ├── vercel.json                 # Vercel deployment configuration

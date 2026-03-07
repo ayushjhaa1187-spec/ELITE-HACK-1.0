@@ -9,13 +9,6 @@ interface DecodedToken {
     role: string;
 }
 
-declare global {
-    namespace Express {
-        interface Request {
-            user?: DecodedToken;
-        }
-    }
-}
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;

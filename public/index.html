@@ -104,7 +104,7 @@
             <div class="db-stat">
               <div class="db-stat-label">Live Check-ins</div>
               <div class="db-stat-val a">1,487</div>
-              <div class="db-stat-sub">47.6% attendance rate</div>
+              <div class="db-stat-sub" id="attendanceRateDesc">47.6% attendance rate</div>
             </div>
             <div class="db-stat">
               <div class="db-stat-label">Active Now</div>
@@ -315,27 +315,50 @@
       <h2 id="authTitle" style="font-family:'Instrument Serif',serif;font-size:28px;margin:0 0 6px;color:#1a1a2e">Sign
         In</h2>
       <p id="authSubtitle" style="color:#6e6e7d;font-size:14px;margin:0 0 24px">Welcome back to Circles</p>
+
       <div id="authError"
         style="display:none;background:#fee;color:#c00;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px">
       </div>
+
+      <!-- Register Only Field -->
+      <div id="nameGroup" style="display:none;margin-bottom:14px">
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Full Name</label>
+        <input id="authName" type="text" placeholder="John Doe"
+          style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s"
+          onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
+      </div>
+
       <div style="margin-bottom:14px">
         <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Email</label>
         <input id="authEmail" type="email" placeholder="you@example.com"
           style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s"
           onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
       </div>
+
       <div style="margin-bottom:14px">
         <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Password</label>
         <input id="authPassword" type="password" placeholder="Min 6 characters"
           style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s"
           onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
       </div>
+
+      <!-- Register Only Field -->
+      <div id="roleGroup" style="display:none;margin-bottom:14px">
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">I am an</label>
+        <select id="authRole"
+          style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;background:#fff;outline:none;box-sizing:border-box;">
+          <option value="PARTICIPANT">Attendee</option>
+          <option value="ADMIN">Event Organizer</option>
+        </select>
+      </div>
+
       <button id="authSubmit" onclick="submitAuth()"
         style="width:100%;padding:12px;background:linear-gradient(135deg,#6040f0,#1a96d8);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;transition:opacity 0.2s"
         onmouseenter="this.style.opacity='0.9'" onmouseleave="this.style.opacity='1'">Sign In</button>
+
       <p style="text-align:center;margin-top:16px;font-size:13px;color:#6e6e7d">
         <span id="authToggleText">Don't have an account?</span>
-        <a href="/register.html" id="authToggleLink"
+        <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)"
           style="color:#6040f0;font-weight:600;text-decoration:none">Register</a>
       </p>
     </div>
@@ -419,6 +442,12 @@
           if (elements.reg) elements.reg.textContent = reg.toLocaleString();
           if (elements.ci) elements.ci.textContent = ci.toLocaleString();
           if (elements.active) elements.active.textContent = active.toLocaleString();
+
+          const attendanceNode = document.getElementById('attendanceRateDesc');
+          if (attendanceNode && reg > 0) {
+            const rate = ((ci / reg) * 100).toFixed(1);
+            attendanceNode.textContent = `${rate}% attendance rate`;
+          }
         }, 3000);
       }
       animate();
@@ -487,47 +516,51 @@
     }
 
     function updateAuthUI() {
-      // Login only modal now
-      document.getElementById('authTitle').textContent = 'Sign In';
-      document.getElementById('authSubtitle').textContent = 'Welcome back to Circles';
-      document.getElementById('authSubmit').textContent = 'Sign In';
+      const isLogin = authMode === 'login';
+      document.getElementById('authTitle').textContent = isLogin ? 'Sign In' : 'Create Account';
+      document.getElementById('authSubtitle').textContent = isLogin ? 'Welcome back to Circles' : 'Join the control room today';
+      document.getElementById('authSubmit').textContent = isLogin ? 'Sign In' : 'Create Account';
+      document.getElementById('authToggleText').textContent = isLogin ? "Don't have an account?" : "Already have an account?";
+      document.getElementById('authToggleLink').textContent = isLogin ? "Register" : "Sign In";
+
+      document.getElementById('nameGroup').style.display = isLogin ? 'none' : 'block';
+      document.getElementById('roleGroup').style.display = isLogin ? 'none' : 'block';
       document.getElementById('authError').style.display = 'none';
     }
 
     async function submitAuth() {
       const email = document.getElementById('authEmail').value.trim();
       const password = document.getElementById('authPassword').value;
+      const name = document.getElementById('authName').value.trim();
+      const role = document.getElementById('authRole').value;
       const errEl = document.getElementById('authError');
-      const btn = document.getElementById('authSubmit');
 
-      if (!email || !password) {
-        errEl.textContent = 'Please fill in all fields.';
-        errEl.style.display = 'block';
+      if (!email || !password || (authMode === 'register' && !name)) {
+        errEl.textContent = "Please fill in all fields";
+        errEl.style.display = "block";
         return;
       }
 
-      btn.textContent = 'Please wait...';
-      btn.disabled = true;
+      const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
+      const body = authMode === 'login'
+        ? { email, password }
+        : { email, password, name, role };
 
       try {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify(body)
         });
 
         const data = await res.json();
-
         if (!res.ok) {
-          throw new Error(data.error || 'Invalid email or password');
+          throw new Error(data.error || data.errors?.[0]?.message || 'Auth failed');
         }
 
-        // Store token and user data
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('role', data.user.role);
 
-        // Route based on actual role from token, not dropdown
         if (data.user.role === 'ADMIN') {
           window.location.href = '/dashboard';
         } else {
@@ -535,10 +568,7 @@
         }
       } catch (err) {
         errEl.textContent = err.message;
-        errEl.style.display = 'block';
-      } finally {
-        btn.textContent = 'Sign In';
-        btn.disabled = false;
+        errEl.style.display = "block";
       }
     }
 

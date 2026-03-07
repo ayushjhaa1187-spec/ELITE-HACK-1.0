@@ -133,7 +133,13 @@ export const createTeam = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'User is already part of a team for this event' });
         }
 
-        const inviteCode = crypto.randomBytes(4).toString('hex').toUpperCase();
+        let inviteCode = '';
+        let isUnique = false;
+        while (!isUnique) {
+            inviteCode = crypto.randomBytes(4).toString('hex').toUpperCase();
+            const existing = await prisma.team.findUnique({ where: { inviteCode } });
+            if (!existing) isUnique = true;
+        }
 
         const team = await prisma.team.create({
             data: {
@@ -168,35 +174,25 @@ export const joinTeam = async (req: Request, res: Response) => {
 
         const validatedData = joinTeamSchema.parse(req.body);
 
-        const team = await prisma.team.findUnique({
-            where: { inviteCode: validatedData.inviteCode },
-            include: { event: true, members: true }
-        });
+        const teamMember = await prisma.$transaction(async (tx) => {
+            // Re-fetch within transaction to avoid race condition
+            const currentTeam = await tx.team.findUnique({
+                where: { inviteCode: validatedData.inviteCode },
+                include: { members: true, event: true }
+            });
 
-        if (!team) return res.status(404).json({ error: 'Invalid invite code' });
-
-        // Check if user is already in a team for this event
-        const existingTeamMember = await prisma.teamMember.findFirst({
-            where: {
-                userId,
-                team: { eventId: team.eventId }
+            if (!currentTeam) throw new Error('Invalid invite code');
+            if (currentTeam.members.length >= currentTeam.event.maxTeamSize) {
+                throw new Error('Team is already full');
             }
-        });
 
-        if (existingTeamMember) {
-            return res.status(400).json({ error: 'User is already part of a team for this event' });
-        }
-
-        if (team.members.length >= team.event.maxTeamSize) {
-            return res.status(400).json({ error: 'Team is already full' });
-        }
-
-        const teamMember = await prisma.teamMember.create({
-            data: {
-                userId,
-                teamId: team.id,
-                role: 'MEMBER' // Default role
-            }
+            return tx.teamMember.create({
+                data: {
+                    userId,
+                    teamId: currentTeam.id,
+                    role: 'MEMBER'
+                }
+            });
         });
 
         res.json({ message: 'Successfully joined team', teamMember });
@@ -204,7 +200,7 @@ export const joinTeam = async (req: Request, res: Response) => {
         if (error.name === 'ZodError') {
             return res.status(400).json({ errors: error.errors });
         }
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: error.message || 'Internal server error' });
     }
 };
 

@@ -60,6 +60,8 @@ model Event {
   customFields  CustomField[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+
+  @@index([domain])
 }
 
 model ScheduleItem {

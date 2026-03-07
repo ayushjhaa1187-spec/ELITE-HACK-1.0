@@ -133,7 +133,6 @@ export const getEventAttendees = async (req: Request, res: Response) => {
 
 export const checkInRegistration = async (req: Request, res: Response) => {
     try {
-        // req.params.id is the registrationId or teamId? According to docs: POST /api/admin/registrations/:id/checkin
         const registrationId = req.params.id as string;
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ error: 'Unauthorized' });
@@ -144,6 +143,10 @@ export const checkInRegistration = async (req: Request, res: Response) => {
         });
 
         if (!registration) return res.status(404).json({ error: 'Registration not found' });
+
+        if (registration.status === 'CHECKED_IN') {
+            return res.status(400).json({ error: 'User is already checked in.', status: 'ALREADY_CHECKED_IN' });
+        }
 
         if (registration.event.creatorId !== userId) {
             return res.status(403).json({ error: 'You do not have permission to check-in this registration.' });
