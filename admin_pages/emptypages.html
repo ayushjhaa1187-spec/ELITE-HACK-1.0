@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Circles — Dashboard</title>
+  <style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+:root {
+  --ink-0:      #0d0c1a;
+  --ink-1:      rgba(13,12,26,0.85);
+  --ink-2:      rgba(13,12,26,0.65);
+  --ink-3:      rgba(13,12,26,0.46);
+  --ink-4:      rgba(13,12,26,0.08);
+  --base:       #f4f3fb;
+  --base-2:     #eceaf7;
+  --surface:    rgba(255,255,255,0.75);
+  --surface-2:  rgba(255,255,255,0.97);
+  --edge:       rgba(13,12,26,0.08);
+  --edge-2:     rgba(13,12,26,0.14);
+  --violet:     #6040f0;
+  --violet-l:   rgba(96,64,240,0.09);
+  --azure:      #1a96d8;
+  --emerald:    #0aaa6e;
+  --amber:      #d97706;
+  --grad:       linear-gradient(128deg, #6040f0 0%, #1a96d8 100%);
+  --font-d:     'Instrument Serif', Georgia, serif;
+  --font-u:     'Geist', system-ui, sans-serif;
+  --sidebar-w:  240px;
+  --topbar-h:   64px;
+  --radius:     14px;
+  --shadow-sm:  0 1px 4px rgba(13,12,26,0.06);
+  --shadow-md:  0 4px 20px rgba(13,12,26,0.09);
+  --shadow-lg:  0 16px 48px rgba(13,12,26,0.13);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-u);
+  background: var(--base); color: var(--ink-0);
+  font-size: 13px; line-height: 1.5;
+  min-height: 100vh; display: flex;
+}
+
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px; opacity: 0.015;
+}
+
+/* ══════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w); height: 100vh; position: fixed; top: 0; left: 0;
+  background: var(--surface); backdrop-filter: blur(28px);
+  border-right: 1px solid var(--edge);
+  display: flex; flex-direction: column; z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.sidebar-logo {
+  height: var(--topbar-h); display: flex; align-items: center;
+  padding: 0 20px; border-bottom: 1px solid var(--edge); flex-shrink: 0;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+  color: var(--ink-0); font-weight: 700; font-size: 15px; letter-spacing: -0.02em;
+}
+.logo-svg { width: 26px; height: 26px; }
+
+.sidebar-nav {
+  flex: 1; padding: 12px 10px;
+  display: flex; flex-direction: column; gap: 2px; overflow-y: auto;
+}
+.nav-lbl {
+  font-size: 10.5px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-3); padding: 14px 12px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  border-radius: 8px; color: var(--ink-1); cursor: pointer;
+  transition: background .12s, color .12s; font-weight: 500;
+  font-size: 13px;
+}
+.nav-item:hover  { background: var(--base-2); color: var(--ink-0); }
+.nav-item.active { background: var(--violet); color: #fff; font-weight: 600; }
+.nav-item svg    { width: 16px; height: 16px; flex-shrink: 0; opacity: .75; }
+.nav-item.active svg { opacity: 1; }
+.nav-item .dim   { opacity: .45; }
+
+.sidebar-footer { padding: 12px 10px; border-top: 1px solid var(--edge); }
+.sb-user {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: 8px; cursor: pointer;
+  background: rgba(96,64,240,0.06); border: 1px solid rgba(96,64,240,0.12);
+}
+.av-sm {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; font-size: 11px; flex-shrink: 0;
+}
+.u-name { font-weight: 600; font-size: 13px; line-height: 1.3; }
+.u-role { font-size: 11px; color: var(--ink-3); }
+
+/* ══════════════════════════════════════════
+   MAIN + TOPBAR
+══════════════════════════════════════════ */
+.main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+.topbar {
+  height: var(--topbar-h); background: rgba(244,243,251,.92);
+  backdrop-filter: blur(28px); border-bottom: 1px solid var(--edge);
+  display: flex; align-items: center; padding: 0 32px; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-title { font-size: 14px; font-weight: 700; color: var(--ink-0); }
+.topbar-sub   { font-size: 12.5px; color: var(--ink-3); }
+.topbar-sep   { width: 1px; height: 18px; background: var(--edge-2); }
+.topbar-spacer{ flex: 1; }
+
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; background: transparent; cursor: pointer; color: var(--ink-2);
+  transition: background .1s;
+}
+.icon-btn:hover { background: var(--base-2); }
+
+/* ══════════════════════════════════════════
+   CONTENT AREA
+══════════════════════════════════════════ */
+.content {
+  flex: 1; padding: 40px 40px 80px;
+  display: flex; flex-direction: column; gap: 32px;
+}
+
+/* ══════════════════════════════════════════
+   PAGE HEADER
+══════════════════════════════════════════ */
+.page-hdr {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+  flex-wrap: wrap;
+}
+.page-title {
+  font-family: var(--font-d);
+  font-size: 2.6rem; font-weight: 400; line-height: 1;
+  letter-spacing: -0.025em; color: var(--ink-0);
+}
+.page-sub { font-size: 13px; color: var(--ink-3); margin-top: 6px; }
+
+/* ══════════════════════════════════════════
+   STAT STRIP — all empty/zero
+══════════════════════════════════════════ */
+.stat-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+}
+.stat-card {
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: var(--radius); padding: 20px 22px;
+  box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--edge-2);
+}
+.stat-label { font-size: 11.5px; font-weight: 700; color: var(--ink-3); letter-spacing: .03em; text-transform: uppercase; margin-bottom: 10px; }
+.stat-value {
+  font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+  color: var(--ink-4); /* muted — nothing here yet */
+}
+.stat-hint  { font-size: 11.5px; color: var(--ink-3); margin-top: 6px; }
+
+/* ══════════════════════════════════════════
+   MAIN EMPTY HERO CARD
+══════════════════════════════════════════ */
+.empty-hero {
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 72px 40px 60px; text-align: center; position: relative;
+}
+
+/* Subtle grid pattern background */
+.empty-hero::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--edge) 1px, transparent 1px),
+    linear-gradient(90deg, var(--edge) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
+  opacity: .5;
+}
+
+/* Glowing orb behind the illustration */
+.empty-glow {
+  position: absolute; width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(96,64,240,0.1) 0%, transparent 68%);
+  top: 50%; left: 50%; transform: translate(-50%, -56%);
+  pointer-events: none;
+}
+
+/* Illustration */
+.empty-illustration {
+  position: relative; z-index: 1; margin-bottom: 36px;
+  width: 160px; height: 160px;
+  animation: floatIllo 4s ease-in-out infinite;
+}
+@keyframes floatIllo {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+/* Dashed orbit */
+.illo-orbit {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px dashed rgba(96,64,240,0.22);
+  animation: orbitSpin 20s linear infinite;
+}
+@keyframes orbitSpin { to { transform: rotate(360deg); } }
+
+.illo-dot {
+  position: absolute; width: 9px; height: 9px; border-radius: 50%;
+  border: 2px solid #fff;
+}
+.id-1 { top: -4.5px; left: calc(50% - 4.5px); background: var(--violet); box-shadow: 0 2px 8px rgba(96,64,240,.4); }
+.id-2 { bottom: 14px; right: -4.5px; background: var(--azure); box-shadow: 0 2px 8px rgba(26,150,216,.4); }
+.id-3 { top: 18px; left: -4.5px; background: var(--emerald); box-shadow: 0 2px 8px rgba(10,170,110,.3); }
+
+/* Centre stage */
+.illo-bg {
+  position: absolute; inset: 18px; border-radius: 50%;
+  background: rgba(255,255,255,0.8); border: 1px solid rgba(96,64,240,0.1);
+  box-shadow: 0 8px 32px rgba(96,64,240,0.1);
+  display: flex; align-items: center; justify-content: center;
+}
+.illo-inner {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 28px rgba(96,64,240,0.32);
+}
+.illo-inner svg { width: 38px; height: 38px; color: #fff; }
+
+/* Floating mini cards around illustration */
+.mini-card {
+  position: absolute; z-index: 2;
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: 10px; padding: 8px 12px;
+  box-shadow: 0 4px 16px rgba(13,12,26,0.1);
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap; font-size: 11.5px; font-weight: 600;
+  animation: floatIllo 4s ease-in-out infinite;
+}
+.mini-card:nth-child(2) { animation-delay: -1.3s; }
+.mini-card:nth-child(3) { animation-delay: -2.6s; }
+.mc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.mc-left  { right: calc(100% + 48px); top: 28px; }
+.mc-right { left: calc(100% + 48px);  top: 52px; }
+.mc-bottom{ left: calc(100% + 20px);  bottom: 18px; }
+
+.empty-title {
+  font-family: var(--font-d);
+  font-size: 2.1rem; font-weight: 400;
+  letter-spacing: -0.025em; line-height: 1.1;
+  color: var(--ink-0); margin-bottom: 14px; position: relative; z-index: 1;
+}
+.empty-sub {
+  font-size: 14px; color: var(--ink-2); line-height: 1.7;
+  max-width: 440px; margin-bottom: 36px; position: relative; z-index: 1;
+}
+
+.empty-actions {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  justify-content: center; position: relative; z-index: 1;
+}
+
+/* ══════════════════════════════════════════
+   FEATURE HINTS ROW
+══════════════════════════════════════════ */
+.hints-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.hint-card {
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: var(--radius); padding: 22px;
+  box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 12px;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.hint-card:hover {
+  transform: translateY(-2px); box-shadow: var(--shadow-md);
+  border-color: rgba(96,64,240,0.18);
+}
+.hint-ico {
+  width: 40px; height: 40px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.hint-ico svg { width: 18px; height: 18px; }
+.hi-violet  { background: rgba(96,64,240,0.1); color: var(--violet); }
+.hi-azure   { background: rgba(26,150,216,0.1); color: var(--azure); }
+.hi-emerald { background: rgba(10,170,110,0.1); color: var(--emerald); }
+.hi-amber   { background: rgba(217,119,6,0.1);  color: var(--amber); }
+.hint-title { font-size: 14px; font-weight: 700; color: var(--ink-0); }
+.hint-body  { font-size: 12.5px; color: var(--ink-2); line-height: 1.65; flex: 1; }
+
+/* ══════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; border-radius: 9px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: all .14s; border: none; font-family: inherit;
+  white-space: nowrap; line-height: 1;
+}
+.btn-sm { padding: 7px 15px; font-size: 12.5px; }
+.btn-lg { padding: 13px 28px; font-size: 14.5px; }
+
+.btn-primary {
+  background: var(--grad); color: #fff;
+  box-shadow: 0 2px 12px rgba(96,64,240,0.26);
+}
+.btn-primary:hover { opacity: .91; transform: translateY(-1px); box-shadow: 0 5px 20px rgba(96,64,240,.36); }
+
+.btn-secondary {
+  background: var(--surface-2); color: var(--ink-0);
+  border: 1px solid var(--edge-2);
+}
+.btn-secondary:hover { border-color: var(--violet); }
+
+.btn-ghost {
+  background: transparent; color: var(--ink-2);
+  border: 1px solid var(--edge-2);
+}
+.btn-ghost:hover { border-color: var(--violet); color: var(--violet); background: var(--violet-l); }
+
+/* ══════════════════════════════════════════
+   CREATE EVENT MODAL
+══════════════════════════════════════════ */
+.backdrop {
+  position: fixed; inset: 0;
+  background: rgba(13,12,26,.38); backdrop-filter: blur(8px);
+  z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.backdrop.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--surface-2); border: 1px solid var(--edge);
+  border-radius: 20px; width: 100%; max-width: 520px;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(16px) scale(.97);
+  transition: transform .22s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+.backdrop.open .modal { transform: none; }
+
+.modal-hdr {
+  padding: 24px 28px 18px; border-bottom: 1px solid var(--edge);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.modal-title {
+  font-family: var(--font-d); font-size: 1.55rem; font-weight: 400; line-height: 1.1;
+}
+.modal-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+.modal-close {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border: none; background: transparent; color: var(--ink-3);
+  flex-shrink: 0; transition: background .1s;
+}
+.modal-close:hover { background: var(--base-2); color: var(--ink-0); }
+
+.modal-body {
+  padding: 24px 28px; display: flex; flex-direction: column; gap: 18px;
+  max-height: calc(100vh - 240px); overflow-y: auto;
+}
+.modal-ftr {
+  padding: 16px 28px 22px; border-top: 1px solid var(--edge);
+  display: flex; gap: 10px; justify-content: flex-end;
+  background: rgba(244,243,251,.5);
+}
+
+/* form fields */
+.f-row { display: flex; flex-direction: column; gap: 7px; }
+.f-label {
+  font-size: 11.5px; font-weight: 700; color: var(--ink-1); letter-spacing: .03em;
+}
+.f-hint { font-size: 11.5px; color: var(--ink-3); margin-top: -3px; }
+.f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.f-input, .f-select, .f-textarea {
+  padding: 9px 13px; border-radius: 8px;
+  border: 1px solid var(--edge-2); background: var(--base);
+  font-size: 13px; font-family: inherit; color: var(--ink-0);
+  outline: none; width: 100%;
+  transition: border-color .15s, box-shadow .15s, background .12s;
+}
+.f-textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
+.f-input:focus, .f-select:focus, .f-textarea:focus {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(96,64,240,.1);
+  background: var(--surface-2);
+}
+.f-input::placeholder, .f-textarea::placeholder { color: var(--ink-3); }
+
+/* event type picker */
+.type-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.type-btn {
+  display: flex; align-items: center; gap: 7px; padding: 8px 14px;
+  border-radius: 8px; border: 1.5px solid var(--edge-2);
+  background: var(--base); cursor: pointer; font-size: 12.5px; font-weight: 600;
+  color: var(--ink-2); font-family: inherit; transition: all .13s;
+}
+.type-btn svg { width: 13px; height: 13px; }
+.type-btn:hover  { border-color: var(--violet); color: var(--ink-0); }
+.type-btn.active { border-color: var(--violet); background: var(--violet-l); color: var(--violet); }
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--ink-0); color: #fff;
+  padding: 11px 20px; border-radius: 99px;
+  font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 8px 28px rgba(13,12,26,.28);
+  opacity: 0; transition: opacity .2s, transform .2s;
+  pointer-events: none; z-index: 9000; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast svg  { width: 14px; height: 14px; color: #4ade80; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .stat-strip  { grid-template-columns: 1fr 1fr; }
+  .hints-grid  { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 860px) {
+  .sidebar     { display: none; }
+  .main        { margin-left: 0; }
+  .content     { padding: 24px 18px 60px; }
+  .hints-grid  { grid-template-columns: 1fr; }
+  .stat-strip  { grid-template-columns: 1fr 1fr; }
+  .mc-left, .mc-right, .mc-bottom { display: none; }
+  .f-grid      { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .stat-strip  { grid-template-columns: 1fr; }
+  .empty-actions { flex-direction: column; align-items: stretch; }
+  .empty-actions .btn { justify-content: center; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ SIDEBAR ════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="#" class="nav-logo">
+      <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+        <defs>
+          <linearGradient id="lg" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6040f0"/><stop offset="1" stop-color="#1a96d8"/>
+          </linearGradient>
+        </defs>
+        <circle cx="13" cy="13" r="10.5" stroke="url(#lg)" stroke-width="1.6"/>
+        <circle cx="13" cy="13" r="6"    stroke="url(#lg)" stroke-width="1.2" opacity=".55"/>
+        <circle cx="13" cy="13" r="2.2"  fill="url(#lg)"/>
+      </svg>
+      Circles
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-lbl">Main</div>
+
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Events
+      <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--ink-3)" class="dim">0</span>
+    </div>
+
+    <div class="nav-item" onclick="showToast('Add attendees after creating your first event')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Attendees
+      <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--ink-3)" class="dim">0</span>
+    </div>
+
+    <div class="nav-lbl">Management</div>
+
+    <div class="nav-item" onclick="showToast('Analytics will appear once your first event is live')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Analytics
+    </div>
+
+    <div class="nav-item" onclick="showToast('Settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sb-user">
+      <div class="av-sm">CK</div>
+      <div style="flex:1;min-width:0">
+        <div class="u-name">Champion Kumar</div>
+        <div class="u-role">Event Admin</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <span class="topbar-title">Dashboard</span>
+    <span class="topbar-sep"></span>
+    <span class="topbar-sub">Welcome back, Champion</span>
+    <div class="topbar-spacer"></div>
+
+    <button class="icon-btn" onclick="showToast('No notifications yet')" aria-label="Notifications">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </button>
+
+    <button class="btn btn-primary btn-sm" onclick="openModal()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Create Event
+    </button>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- Page header -->
+    <div class="page-hdr">
+      <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-sub">Your command centre for all events — nothing here yet.</p>
+      </div>
+    </div>
+
+    <!-- Main empty hero -->
+    <div class="empty-hero">
+      <div class="empty-glow"></div>
+
+      <!-- Floating mini info cards -->
+      <div class="mini-card mc-left">
+        <span class="mc-dot" style="background:var(--emerald)"></span>
+        QR check-in ready
+      </div>
+      <div class="mini-card mc-right">
+        <span class="mc-dot" style="background:var(--violet)"></span>
+        Live analytics
+      </div>
+      <div class="mini-card mc-bottom">
+        <span class="mc-dot" style="background:var(--azure)"></span>
+        Team collaboration
+      </div>
+
+      <!-- Illustration -->
+      <div class="empty-illustration">
+        <div class="illo-orbit">
+          <div class="illo-dot id-1"></div>
+          <div class="illo-dot id-2"></div>
+          <div class="illo-dot id-3"></div>
+        </div>
+        <div class="illo-bg">
+          <div class="illo-inner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+              <line x1="8" y1="14" x2="8" y2="14" stroke-linecap="round" stroke-width="2.5"/>
+              <line x1="12" y1="14" x2="12" y2="14" stroke-linecap="round" stroke-width="2.5"/>
+              <line x1="8" y1="18" x2="8" y2="18" stroke-linecap="round" stroke-width="2.5"/>
+              <line x1="12" y1="18" x2="16" y2="18" stroke-linecap="round" stroke-width="2.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="empty-title">Your first event is one click away</h2>
+      <p class="empty-sub">Create an event in under a minute. Add your schedule, invite your team, and start collecting registrations — everything in one place.</p>
+
+      <div class="empty-actions">
+        <button class="btn btn-primary btn-lg" onclick="openModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create your first event
+        </button>
+        <button class="btn btn-secondary" onclick="showToast('Import feature coming soon')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Import from CSV
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div><!-- /main -->
+
+
+<!-- ════════════════ CREATE EVENT MODAL ════════════════ -->
+<div class="backdrop" id="modal" onclick="handleBackdrop(event)">
+  <div class="modal">
+
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Create a new event</div>
+        <div class="modal-sub">Fill in the basics — you can add more details later.</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Event name -->
+      <div class="f-row">
+        <label class="f-label" for="ev-name">Event Name <span style="color:var(--violet)">*</span></label>
+        <input class="f-input" id="ev-name" type="text" placeholder="e.g. Design Summit 2026" autofocus>
+      </div>
+
+      <!-- Type -->
+      <div class="f-row">
+        <div class="f-label">Event Type</div>
+        <div class="type-group" id="typeGroup">
+          <button class="type-btn active" onclick="pickType(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Conference
+          </button>
+          <button class="type-btn" onclick="pickType(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Workshop
+          </button>
+          <button class="type-btn" onclick="pickType(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            Webinar
+          </button>
+          <button class="type-btn" onclick="pickType(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Meetup
+          </button>
+        </div>
+      </div>
+
+      <!-- Date & time -->
+      <div class="f-grid">
+        <div class="f-row">
+          <label class="f-label" for="ev-date">Start Date <span style="color:var(--violet)">*</span></label>
+          <input class="f-input" id="ev-date" type="date">
+        </div>
+        <div class="f-row">
+          <label class="f-label" for="ev-time">Start Time</label>
+          <input class="f-input" id="ev-time" type="time" value="09:00">
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="f-row">
+        <label class="f-label" for="ev-loc">Location</label>
+        <input class="f-input" id="ev-loc" type="text" placeholder="Venue name or city, or 'Online'">
+      </div>
+
+      <!-- Capacity -->
+      <div class="f-row">
+        <label class="f-label" for="ev-cap">Expected Capacity</label>
+        <div class="f-hint">Leave blank for unlimited registrations.</div>
+        <input class="f-input" id="ev-cap" type="number" placeholder="e.g. 500" min="1" style="max-width:160px">
+      </div>
+
+      <!-- Description -->
+      <div class="f-row">
+        <label class="f-label" for="ev-desc">Description</label>
+        <textarea class="f-textarea" id="ev-desc" placeholder="What's this event about? Give attendees a reason to register…"></textarea>
+      </div>
+
+    </div>
+
+    <div class="modal-ftr">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-ghost btn-sm" onclick="saveDraft()">Save as draft</button>
+      <button class="btn btn-primary btn-sm" onclick="createEvent()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Create &amp; Publish
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* ── MODAL ───────────────────────────────── */
+function openModal() {
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('ev-name').focus(), 80);
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleBackdrop(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('modal').classList.contains('open')) closeModal();
+});
+
+/* ── TYPE PICKER ─────────────────────────── */
+function pickType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ── CREATE EVENT ────────────────────────── */
+function createEvent() {
+  const name = document.getElementById('ev-name').value.trim();
+  const date = document.getElementById('ev-date').value;
+  if (!name) { document.getElementById('ev-name').focus(); showToast('Please enter an event name'); return; }
+  if (!date) { document.getElementById('ev-date').focus(); showToast('Please pick a date'); return; }
+  closeModal();
+  showToast('🎉 "' + name + '" created and published!');
+}
+
+function saveDraft() {
+  const name = document.getElementById('ev-name').value.trim() || 'Untitled Event';
+  closeModal();
+  showToast('Draft saved: "' + name + '"');
+}
+
+/* ── TOAST ───────────────────────────────── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${msg}`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+
+</body>
+</html>
