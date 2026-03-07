@@ -3,80 +3,52 @@
     "builds": [
         {
             "src": "src/index.ts",
-            "use": "@vercel/node",
-            "config": {
-                "includeFiles": [
-                    "public/**",
-                    "admin_pages/**",
-                    "swagger.yaml",
-                    "participant_pages/**",
-                    "prisma/schema.prisma",
-                    "node_modules/.prisma/client/**",
-                    "node_modules/@prisma/client/**"
-                ]
-            }
+            "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "/api/(.*)",
-            "dest": "/src/index.ts"
+            "dest": "src/index.ts"
         },
         {
-            "src": "/api-docs/(.*)",
-            "dest": "/src/index.ts"
+            "src": "/api-docs(.*)",
+            "dest": "src/index.ts"
+        },
+        {
+            "handle": "filesystem"
         },
         {
             "src": "/dashboard",
-            "dest": "/src/index.ts"
-        },
-        {
-            "src": "/scanner",
-            "dest": "/src/index.ts"
-        },
-        {
-            "src": "/events",
-            "dest": "/src/index.ts"
+            "dest": "public/Dashboard.html"
         },
         {
             "src": "/attendees",
-            "dest": "/src/index.ts"
+            "dest": "public/Attendees.html"
+        },
+        {
+            "src": "/events",
+            "dest": "public/Events.html"
         },
         {
             "src": "/analytics",
-            "dest": "/src/index.ts"
+            "dest": "public/Analytics.html"
         },
         {
             "src": "/settings",
-            "dest": "/src/index.ts"
+            "dest": "public/Settings.html"
         },
         {
             "src": "/profile",
-            "dest": "/src/index.ts"
+            "dest": "public/Profile.html"
         },
         {
-            "src": "/privacy",
-            "dest": "/src/index.ts"
-        },
-        {
-            "src": "/terms",
-            "dest": "/src/index.ts"
-        },
-        {
-            "src": "/status",
-            "dest": "/src/index.ts"
-        },
-        {
-            "src": "/participant",
-            "dest": "/src/index.ts"
-        },
-        {
-            "src": "/admin",
-            "dest": "/src/index.ts"
+            "src": "/register",
+            "dest": "public/register.html"
         },
         {
             "src": "/(.*)",
-            "dest": "/src/index.ts"
+            "dest": "public/$1"
         }
     ]
 }

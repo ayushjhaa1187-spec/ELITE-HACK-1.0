@@ -107,9 +107,6 @@ app.get('/profile', (req, res) => {
     res.sendFile(path.join(adminPagesPath, 'Profile.html'));
 });
 
-app.get('/emptypages', (req, res) => {
-    res.sendFile(path.join(adminPagesPath, 'emptypages.html'));
-});
 
 // Regulatory & Info Pages
 app.get('/privacy', (req, res) => {

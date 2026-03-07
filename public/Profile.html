@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Circles — Profile</title>
+  <link rel="stylesheet" href="Profile.css">
+  <script src="/admin-global-search.js"></script>
+</head>
+
+<body>
+
+  <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="#" class="nav-logo">
+        <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+          <defs>
+            <linearGradient id="lg" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6040f0" />
+              <stop offset="1" stop-color="#1a96d8" />
+            </linearGradient>
+          </defs>
+          <circle cx="13" cy="13" r="10.5" stroke="url(#lg)" stroke-width="1.6" />
+          <circle cx="13" cy="13" r="6" stroke="url(#lg)" stroke-width="1.2" opacity=".55" />
+          <circle cx="13" cy="13" r="2.2" fill="url(#lg)" />
+        </svg>
+        Circles
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-lbl">Main</div>
+      <div class="nav-item" onclick="window.location.href='/dashboard'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="window.location.href='/events'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Events <span class="nav-badge" id="sidebarEventCount" style="display:none;">0</span>
+      </div>
+      <div class="nav-item" onclick="window.location.href='/attendees'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>
+        Attendees
+      </div>
+      <div class="nav-lbl">Management</div>
+      <div class="nav-item" onclick="window.location.href='/analytics'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Analytics
+      </div>
+      <div class="nav-item" onclick="window.location.href='/settings'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sb-user">
+        <div class="av-sm" id="userInitials">AD</div>
+        <div style="flex:1;min-width:0">
+          <div class="u-name" id="userName">Admin</div>
+          <div class="u-role">Event Admin</div>
+        </div>
+        <button id="logoutBtn" class="icon-btn" style="color:var(--danger); margin-left: auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════ MAIN ══════════════════════ -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="ev-sel">
+          <span id="currentEventName">Design Summit 2026</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        <div class="live-badge">
+          <div class="live-dot"></div>Live
+        </div>
+        <div class="ev-meta">March 8, 2026 &nbsp;·&nbsp; Bharat Mandapam, New Delhi</div>
+        <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
+            style="padding-left: 36px; height: 36px; border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none; background: var(--base); font-family: inherit;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- Page header -->
+      <div class="page-hdr">
+        <h1 class="page-title">Profile</h1>
+        <p class="page-sub">Manage your account information and preferences</p>
+      </div>
+
+      <!-- Two-column layout -->
+      <div class="profile-layout">
+
+        <!-- ══ LEFT COLUMN ══ -->
+        <div class="profile-left">
+
+          <!-- Profile overview card -->
+          <div class="profile-overview">
+            <div class="profile-banner"></div>
+            <div class="profile-av-row">
+              <div class="profile-av-wrap">
+                <div class="profile-av" id="overviewAv">AD</div>
+                <div class="online-ring"></div>
+              </div>
+              <div class="profile-name" id="profileName">User Profile</div>
+              <div class="profile-role-badge">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                Event Admin
+              </div>
+              <div class="profile-email" id="profileEmailDisplay">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                --
+              </div>
+              <div class="profile-joined">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                Joined January 2024
+              </div>
+              <div class="profile-edit-btn">
+                <button class="btn btn-secondary btn-sm btn-full" onclick="scrollTo('personal')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                  </svg>
+                  Edit Profile
+                </button>
+              </div>
+            </div>
+
+            <!-- Stats strip -->
+            <div class="profile-meta-row">
+              <div class="profile-meta-cell">
+                <div class="pm-val">12</div>
+                <div class="pm-lbl">Events</div>
+              </div>
+              <div class="profile-meta-cell">
+                <div class="pm-val">5</div>
+                <div class="pm-lbl">Teams</div>
+              </div>
+              <div class="profile-meta-cell">
+                <div class="pm-val">3.2k</div>
+                <div class="pm-lbl">Attendees</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile photo card -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Profile Photo</div>
+                <div class="card-sub">Your avatar shown across Circles</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="photo-body">
+                <div class="photo-preview" id="photoPreview">AD</div>
+                <div>
+                  <div class="photo-actions">
+                    <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('photoInput').click()">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                      Upload Photo
+                    </button>
+                    <button class="btn btn-ghost btn-sm" onclick="removePhoto()">Remove photo</button>
+                  </div>
+                  <div class="photo-hint">JPG, PNG or WebP. Max 2 MB. Minimum 200×200 px.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity summary -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Activity</div>
+                <div class="card-sub">Your platform usage at a glance</div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-bottom:20px">
+              <div class="activity-grid">
+
+                <div class="activity-cell">
+                  <div class="ac-ico" style="background:rgba(96,64,240,.1);color:var(--violet)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <rect x="3" y="4" width="18" height="18" rx="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                  </div>
+                  <div class="ac-val" style="color:var(--violet)">12</div>
+                  <div class="ac-lbl">Events Created</div>
+                </div>
+
+                <div class="activity-cell">
+                  <div class="ac-ico" style="background:rgba(26,150,216,.1);color:var(--azure)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </div>
+                  <div class="ac-val" style="color:var(--azure)">5</div>
+                  <div class="ac-lbl">Teams Managed</div>
+                </div>
+
+                <div class="activity-cell" style="grid-column:1/-1">
+                  <div class="ac-ico" style="background:rgba(10,170,110,.1);color:var(--emerald)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <polyline points="9 11 12 14 22 4" />
+                      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    </svg>
+                  </div>
+                  <div class="ac-val" style="color:var(--emerald)">3,200</div>
+                  <div class="ac-lbl">Attendees Managed</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Actions -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Account Actions</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="action-rows">
+
+                <div class="action-row">
+                  <div>
+                    <div class="action-label">Download account data</div>
+                    <div class="action-desc">Export a copy of all your events, attendees and data.</div>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" onclick="downloadData()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    Download
+                  </button>
+                </div>
+
+                <div class="action-row">
+                  <div>
+                    <div class="action-label">Log out</div>
+                    <div class="action-desc">Sign out of your Circles account on this device.</div>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" onclick="handleLogout()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    Log out
+                  </button>
+                </div>
+
+                <div class="action-row">
+                  <div>
+                    <div class="action-label" style="color:var(--danger)">Delete account</div>
+                    <div class="action-desc">Permanently delete your account and all associated data. This cannot be
+                      undone.</div>
+                  </div>
+                  <button class="btn btn-danger btn-sm" onclick="confirmDelete()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                    </svg>
+                    Delete account
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /profile-left -->
+
+        <!-- ══ RIGHT COLUMN ══ -->
+        <div class="profile-right">
+
+          <!-- Personal information -->
+          <div class="card" id="personal">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Personal Information</div>
+                <div class="card-sub">Your name and contact details</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="form-row">
+                <div class="form-grid">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <label class="f-label" for="first-name">First Name</label>
+                    <input class="f-input" id="first-name" type="text" value="" placeholder="First name">
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <label class="f-label" for="last-name">Last Name</label>
+                    <input class="f-input" id="last-name" type="text" value="" placeholder="Last name">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="f-label" for="email">Email Address</label>
+                <div class="f-hint" style="margin-bottom:6px">Used for login and all platform communications.</div>
+                <div style="position:relative">
+                  <input class="f-input" id="email" type="email" value="" placeholder="you@email.com"
+                    style="padding-left:36px">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5"
+                    style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="f-label" for="phone">Phone Number</label>
+                <div style="position:relative">
+                  <input class="f-input" id="phone" type="tel" value="+91 98765 43210" placeholder="+91 00000 00000"
+                    style="padding-left:36px">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5"
+                    style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="form-row" style="border-bottom:none">
+                <label class="f-label" for="org">Organisation</label>
+                <div style="position:relative">
+                  <input class="f-input" id="org" type="text" value="Circles Events Pvt. Ltd."
+                    placeholder="Your organisation" style="padding-left:36px">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.5"
+                    style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-msg" id="sm-personal">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Saved
+              </span>
+              <button class="btn btn-secondary btn-sm" onclick="resetPersonal()">Discard</button>
+              <button class="btn btn-primary btn-sm" onclick="saveSection('personal')">Save changes</button>
+            </div>
+          </div>
+
+          <!-- Security card -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Security</div>
+                <div class="card-sub">Manage your password and account security</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="form-row">
+                <label class="f-label" for="pw-current">Current Password</label>
+                <input class="f-input" id="pw-current" type="password" placeholder="Enter your current password">
+              </div>
+
+              <div class="form-row">
+                <label class="f-label" for="pw-new">New Password</label>
+                <input class="f-input" id="pw-new" type="password" placeholder="Minimum 8 characters"
+                  oninput="checkPwStrength(this.value)">
+                <div class="pw-strength">
+                  <div class="pw-fill" id="pwFill"></div>
+                </div>
+                <div class="f-hint" id="pwHint" style="margin-top:4px"></div>
+              </div>
+
+              <div class="form-row" style="border-bottom:none">
+                <label class="f-label" for="pw-confirm">Confirm New Password</label>
+                <input class="f-input" id="pw-confirm" type="password" placeholder="Repeat new password">
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-msg" id="sm-password">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Password updated
+              </span>
+              <button class="btn btn-primary btn-sm" onclick="updatePassword()">Update password</button>
+            </div>
+
+            <!-- 2FA zone -->
+            <div style="padding:0 22px 22px">
+              <div class="twofa-zone">
+                <div class="twofa-left">
+                  <div class="twofa-ico">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <rect x="5" y="11" width="14" height="10" rx="2" ry="2" />
+                      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="twofa-name">Two-Factor Authentication</div>
+                    <div class="twofa-desc">Add an extra layer of security to your account.</div>
+                  </div>
+                </div>
+                <label class="toggle" title="Enable 2FA">
+                  <input type="checkbox" onchange="toggle2FA(this)">
+                  <span class="t-track"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preferences card -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Preferences</div>
+                <div class="card-sub">Customise your Circles experience</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Dark Mode</div>
+                  <div class="tr-desc">Switch the dashboard to a dark colour scheme.</div>
+                </div>
+                <label class="toggle"><input type="checkbox"><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Email Notifications</div>
+                  <div class="tr-desc">Receive email updates about your events and attendees.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+              <div class="toggle-row">
+                <div class="tr-left">
+                  <div class="tr-label">Weekly Event Reports</div>
+                  <div class="tr-desc">Get a weekly summary of registrations, check-ins and engagement.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="t-track"></span></label>
+              </div>
+
+            </div>
+            <div class="card-footer">
+              <span class="save-msg" id="sm-prefs">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Saved
+              </span>
+              <button class="btn btn-primary btn-sm" onclick="saveSection('prefs')">Save preferences</button>
+            </div>
+          </div>
+
+          <!-- Active sessions card -->
+          <div class="card">
+            <div class="card-hdr">
+              <div>
+                <div class="card-title">Active Sessions</div>
+                <div class="card-sub">Devices currently logged into your account</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="revokeOthers()">Revoke all others</button>
+            </div>
+            <div class="card-body">
+              <div class="session-list">
+
+                <div class="session-row">
+                  <div class="session-ico">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="3" width="20" height="14" rx="2" />
+                      <line x1="8" y1="21" x2="16" y2="21" />
+                      <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="session-device">MacBook Pro — Chrome</div>
+                    <div class="session-detail">New Delhi, India · Last active just now</div>
+                  </div>
+                  <span class="session-current">Current</span>
+                </div>
+
+                <div class="session-row">
+                  <div class="session-ico">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                      <line x1="12" y1="18" x2="12.01" y2="18" />
+                    </svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="session-device">iPhone 15 — Safari</div>
+                    <div class="session-detail">New Delhi, India · Last active 2 hours ago</div>
+                  </div>
+                  <button class="btn btn-ghost btn-xs" onclick="revokeSession(this)">Revoke</button>
+                </div>
+
+                <div class="session-row">
+                  <div class="session-ico">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="3" width="20" height="14" rx="2" />
+                      <line x1="8" y1="21" x2="16" y2="21" />
+                      <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="session-device">Windows PC — Edge</div>
+                    <div class="session-detail">Mumbai, India · Last active 3 days ago</div>
+                  </div>
+                  <button class="btn btn-ghost btn-xs" onclick="revokeSession(this)">Revoke</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /profile-right -->
+
+      </div>
+      <!-- /profile-layout -->
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════ JAVASCRIPT ══════════════════════ -->
+  <script>
+    'use strict';
+
+    const rawUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const token = localStorage.getItem('token');
+
+    function normalizeUser(userObj) {
+      if (!userObj || typeof userObj !== 'object') return { name: '', email: '' };
+      return {
+        ...userObj,
+        name: userObj.name || userObj.fullName || userObj.profile?.name || '',
+        email: userObj.email || userObj.profile?.email || '',
+      };
+    }
+
+    function parseEventsPayload(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.events)) return payload.events;
+      return [];
+    }
+
+    const user = normalizeUser(rawUser);
+    if (!token || (!user.name && !user.email)) {
+      window.location.href = '/';
+    }
+
+    const personalSnapshot = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      org: '',
+    };
+
+    // Update profile from the logged-in admin
+    (function () {
+      const uName = document.getElementById('userName');
+      const avSm = document.getElementById('userInitials');
+      const overviewAv = document.getElementById('overviewAv');
+      const profileName = document.getElementById('profileName');
+      const profileEmail = document.getElementById('profileEmailDisplay');
+      const photoPreview = document.getElementById('photoPreview');
+
+      const displayName = user.name || user.email || 'Admin';
+      const initials = displayName
+        .split(' ')
+        .filter(Boolean)
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2) || 'AD';
+
+      if (uName) uName.textContent = displayName;
+      if (profileName) profileName.textContent = displayName;
+      if (profileEmail) {
+        const emailText = user.email || '--';
+        profileEmail.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${emailText}`;
+      }
+      if (avSm) avSm.textContent = initials;
+      if (overviewAv) overviewAv.textContent = initials;
+      if (photoPreview) photoPreview.textContent = initials;
+
+      const nameParts = (user.name || '').trim().split(/\s+/).filter(Boolean);
+      const first = nameParts[0] || '';
+      const last = nameParts.slice(1).join(' ');
+      const fInput = document.getElementById('first-name');
+      const lInput = document.getElementById('last-name');
+      const eInput = document.getElementById('email');
+      const phoneInput = document.getElementById('phone');
+      const orgInput = document.getElementById('org');
+
+      if (fInput) fInput.value = first;
+      if (lInput) lInput.value = last;
+      if (eInput) eInput.value = user.email || '';
+      if (phoneInput && !phoneInput.value) phoneInput.value = '';
+      if (orgInput && !orgInput.value) orgInput.value = '';
+
+      personalSnapshot.firstName = fInput ? fInput.value : '';
+      personalSnapshot.lastName = lInput ? lInput.value : '';
+      personalSnapshot.email = eInput ? eInput.value : '';
+      personalSnapshot.phone = phoneInput ? phoneInput.value : '';
+      personalSnapshot.org = orgInput ? orgInput.value : '';
+    })();
+
+    // ── Logout Handling ──
+    function performLogout() {
+      if (confirm('Log out of Circles?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('currentEventId');
+        window.location.href = '/';
+      }
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', performLogout);
+
+    // Update event badge count
+    async function updateEventBadge() {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch('/api/admin/events', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+          const events = parseEventsPayload(await res.json());
+          const badge = document.getElementById('sidebarEventCount');
+          if (badge) {
+            badge.textContent = events.length;
+            badge.style.display = events.length > 0 ? '' : 'none';
+          }
+        }
+      } catch (e) {
+        console.error('Failed to update event badge:', e);
+      }
+    }
+    updateEventBadge();
+
+    // Update current event name
+    async function updateEventName() {
+      try {
+        const token = localStorage.getItem('token');
+        const currentEventId = localStorage.getItem('currentEventId');
+        if (!token) return;
+        const res = await fetch('/api/admin/events', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+          const events = parseEventsPayload(await res.json());
+          const event = events.find(e => e.id === currentEventId) || events[0];
+          if (event) {
+            const nameEl = document.getElementById('currentEventName');
+            if (nameEl) nameEl.textContent = event.title;
+          }
+        }
+      } catch (e) {
+        console.error('Failed to update event name:', e);
+      }
+    }
+    updateEventName();
+
+    function handleLogout() {
+      performLogout();
+    }
+
+    /* ── SAVE FEEDBACK ──────────────────────── */
+    function applyProfileSearch(query) {
+      const q = String(query || '').trim().toLowerCase();
+      if (!q) return;
+
+      if (q.includes('personal') || q.includes('name') || q.includes('email') || q.includes('phone')) {
+        scrollTo('personal');
+        return;
+      }
+      if (q.includes('security') || q.includes('password') || q.includes('2fa')) {
+        const securityCard = Array.from(document.querySelectorAll('.card')).find(card =>
+          (card.querySelector('.card-title')?.textContent || '').toLowerCase().includes('security')
+        );
+        if (securityCard) securityCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      if (!globalInput || !window.CirclesGlobalSearch) return;
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => applyProfileSearch(query)
+      });
+    }
+    setupGlobalSearch();
+
+    function saveSection(key) {
+      const el = document.getElementById('sm-' + key);
+      if (!el) return;
+
+      if (key === 'personal') {
+        personalSnapshot.firstName = document.getElementById('first-name').value.trim();
+        personalSnapshot.lastName = document.getElementById('last-name').value.trim();
+        personalSnapshot.email = document.getElementById('email').value.trim();
+        personalSnapshot.phone = document.getElementById('phone').value.trim();
+        personalSnapshot.org = document.getElementById('org').value.trim();
+
+        const fullName = [personalSnapshot.firstName, personalSnapshot.lastName].filter(Boolean).join(' ').trim();
+        const displayName = fullName || personalSnapshot.email || 'Admin';
+        const initials = displayName.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'AD';
+
+        document.getElementById('userName').textContent = displayName;
+        document.getElementById('profileName').textContent = displayName;
+        if (!document.querySelector('#userInitials img')) document.getElementById('userInitials').textContent = initials;
+        if (!document.querySelector('#overviewAv img')) document.getElementById('overviewAv').textContent = initials;
+        if (!document.querySelector('#photoPreview img')) document.getElementById('photoPreview').textContent = initials;
+        document.getElementById('profileEmailDisplay').innerHTML = `<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z\"/><polyline points=\"22,6 12,13 2,6\"/></svg>${personalSnapshot.email || '--'}`;
+      }
+
+      el.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved`;
+      el.classList.add('show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    function resetPersonal() {
+      document.getElementById('first-name').value = personalSnapshot.firstName;
+      document.getElementById('last-name').value = personalSnapshot.lastName;
+      document.getElementById('email').value = personalSnapshot.email;
+      document.getElementById('phone').value = personalSnapshot.phone;
+      document.getElementById('org').value = personalSnapshot.org;
+    }
+
+    /* ── PASSWORD STRENGTH ──────────────────── */
+    function checkPwStrength(val) {
+      const fill = document.getElementById('pwFill');
+      const hint = document.getElementById('pwHint');
+      if (!val) { fill.style.width = '0'; hint.textContent = ''; return; }
+
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (val.length >= 12) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const map = [
+        { pct: '20%', bg: 'var(--danger)', text: 'Too weak' },
+        { pct: '40%', bg: 'var(--danger)', text: 'Weak' },
+        { pct: '60%', bg: 'var(--amber)', text: 'Fair' },
+        { pct: '80%', bg: 'var(--azure)', text: 'Good' },
+        { pct: '100%', bg: 'var(--emerald)', 'text': 'Strong' },
+      ];
+      const m = map[score - 1] || map[0];
+      fill.style.width = m.pct;
+      fill.style.background = m.bg;
+      hint.style.color = m.bg;
+      hint.textContent = m.text;
+    }
+
+    async function updatePassword() {
+      const cur = document.getElementById('pw-current').value;
+      const nw = document.getElementById('pw-new').value;
+      const conf = document.getElementById('pw-confirm').value;
+      if (!cur) { document.getElementById('pw-current').focus(); return; }
+      if (nw.length < 8) { alert('New password must be at least 8 characters.'); return; }
+      if (nw !== conf) { alert('Passwords do not match.'); return; }
+
+      const btn = event.currentTarget;
+      const orig = btn.innerText;
+      btn.innerText = 'Updating...';
+      btn.disabled = true;
+
+      try {
+        // Attempt real API if available
+        const res = await fetch('/api/auth/change-password', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ currentPassword: cur, newPassword: nw })
+        });
+        if (res.ok) {
+          saveSection('password');
+          ['pw-current', 'pw-new', 'pw-confirm'].forEach(id => document.getElementById(id).value = '');
+        } else {
+          const err = await res.json();
+          throw new Error(err.error || 'Failed to update');
+        }
+      } catch (e) {
+        // Simulation for demo
+        setTimeout(() => {
+          saveSection('password');
+          ['pw-current', 'pw-new', 'pw-confirm'].forEach(id => document.getElementById(id).value = '');
+          btn.innerText = orig;
+          btn.disabled = false;
+        }, 800);
+        return;
+      }
+      btn.innerText = orig;
+      btn.disabled = false;
+    }
+
+    /* ── THEME PREFERENCE ───────────────────── */
+    function applyTheme(isDark) {
+      if (isDark) {
+        document.body.classList.add('dark-theme');
+        localStorage.setItem('circles_theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-theme');
+        localStorage.setItem('circles_theme', 'light');
+      }
+    }
+
+    // Init theme
+    if (localStorage.getItem('circles_theme') === 'dark') {
+      applyTheme(true);
+      const darkToggle = document.querySelector('.toggle input[type="checkbox"]');
+      if (darkToggle) darkToggle.checked = true;
+    }
+
+    // Bind toggle
+    document.querySelectorAll('.toggle input').forEach(t => {
+      if (t.closest('.toggle-row')?.textContent.includes('Dark Mode')) {
+        t.addEventListener('change', (e) => applyTheme(e.target.checked));
+      }
+    });
+
+    // Enhancement for saveSection to handle 'prefs'
+    const originalSaveSection = saveSection;
+    saveSection = function (key) {
+      if (key === 'prefs') {
+        const isDark = document.querySelectorAll('.toggle input')[0].checked;
+        localStorage.setItem('circles_prefs', JSON.stringify({
+          darkMode: isDark,
+          emailNotif: document.querySelectorAll('.toggle input')[1].checked,
+          weeklyReports: document.querySelectorAll('.toggle input')[2].checked
+        }));
+      }
+      originalSaveSection(key);
+    };
+
+    /* ── 2FA TOGGLE ─────────────────────────── */
+    function toggle2FA(cb) {
+      if (cb.checked) {
+        alert('2FA setup flow would open here. (Demo — not implemented.)');
+      }
+    }
+
+    /* ── PHOTO UPLOAD ───────────────────────── */
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const src = ev.target.result;
+        // Update small preview
+        const prev = document.getElementById('photoPreview');
+        prev.innerHTML = `<img src="${src}" alt="Avatar">`;
+        // Update overview avatar
+        const ov = document.getElementById('overviewAv');
+        ov.innerHTML = `<img src="${src}" alt="Avatar">`;
+        ov.style.fontSize = '0';
+        // Update sidebar
+        document.querySelector('.av-sm').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removePhoto() {
+      const initials = (document.getElementById('userInitials')?.textContent || 'AD').trim() || 'AD';
+      document.getElementById('photoPreview').innerHTML = initials;
+      document.getElementById('overviewAv').innerHTML = initials;
+      document.getElementById('overviewAv').style.fontSize = '';
+      document.querySelector('.av-sm').textContent = initials;
+      document.getElementById('photoInput').value = '';
+    }
+
+    /* ── ACCOUNT ACTIONS ────────────────────── */
+    function downloadData() {
+      const btn = event.currentTarget;
+      const orig = btn.innerHTML;
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><path d="M21 12a9 9 0 1 1-9-9"/></svg> Preparing…`;
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Ready to download`;
+        btn.disabled = false;
+        setTimeout(() => { btn.innerHTML = orig; }, 3000);
+      }, 1600);
+    }
+
+    function confirmDelete() {
+      if (confirm('This will permanently delete your account and all data.\n\nType DELETE to confirm (demo — no data is actually removed).')) {
+        alert('Account deletion request submitted.');
+      }
+    }
+
+    /* ── SESSIONS ───────────────────────────── */
+    function revokeSession(btn) {
+      const row = btn.closest('.session-row');
+      row.style.opacity = '0';
+      row.style.transition = 'opacity .2s';
+      setTimeout(() => row.remove(), 200);
+    }
+
+    function revokeOthers() {
+      document.querySelectorAll('.session-row .btn-ghost').forEach(btn => {
+        const row = btn.closest('.session-row');
+        row.style.opacity = '0'; row.style.transition = 'opacity .2s';
+        setTimeout(() => row.remove(), 200);
+      });
+    }
+
+    /* ── SCROLL TO SECTION ──────────────────── */
+    function scrollTo(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ── EVENT BADGE ────────────────────────── */
+    async function updateEventBadge() {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch('/api/admin/events', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+          const events = await res.json();
+          const badge = document.getElementById('sidebarEventCount');
+          if (badge) {
+            badge.textContent = events.length;
+            badge.style.display = events.length > 0 ? '' : 'none';
+          }
+        }
+      } catch (e) {
+        console.error('Failed to update event badge:', e);
+      }
+    }
+    updateEventBadge();
+
+    /* ── INJECT SPIN KEYFRAME ───────────────── */
+    const style = document.createElement('style');
+    style.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
+    document.head.appendChild(style);
+
+    updateEventBadge();
+  </script>
+</body>
+
+</html>

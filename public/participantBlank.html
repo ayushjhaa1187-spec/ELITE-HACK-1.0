@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>My Events — Circles</title>
+  <style>
+    /* ── DESIGN TOKENS ── */
+    :root {
+      --ink-0: #0d0c1a;
+      --ink-1: rgba(13, 12, 26, 0.85);
+      --ink-2: rgba(13, 12, 26, 0.65);
+      --ink-3: rgba(13, 12, 26, 0.46);
+      --ink-4: rgba(13, 12, 26, 0.08);
+      --base: #f4f3fb;
+      --base-2: #eceaf7;
+      --surface: rgba(255, 255, 255, 0.80);
+      --surface-2: rgba(255, 255, 255, 0.97);
+      --edge: rgba(13, 12, 26, 0.08);
+      --edge-2: rgba(13, 12, 26, 0.14);
+      --violet: #6040f0;
+      --violet-l: rgba(96, 64, 240, 0.09);
+      --azure: #1a96d8;
+      --emerald: #0aaa6e;
+      --amber: #d97706;
+      --grad: linear-gradient(128deg, #6040f0 0%, #1a96d8 100%);
+      --grad-soft: linear-gradient(160deg, #f0eeff 0%, #e8f4ff 100%);
+      --font-d: 'Instrument Serif', Georgia, serif;
+      --font-u: 'Geist', system-ui, sans-serif;
+      --nav-h: 68px;
+      --radius: 14px;
+      --shadow-sm: 0 1px 4px rgba(13, 12, 26, 0.06);
+      --shadow-md: 0 4px 20px rgba(13, 12, 26, 0.09);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-u);
+      background: var(--base);
+      color: var(--ink-0);
+      font-size: 13px;
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    /* noise */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      opacity: 0.015;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      height: var(--nav-h);
+      background: rgba(244, 243, 251, 0.93);
+      backdrop-filter: blur(28px);
+      border-bottom: 1px solid var(--edge);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 0 max(24px, calc(50vw - 580px));
+      gap: 16px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink-0);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .nav-spacer {
+      flex: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-2);
+      cursor: pointer;
+      text-decoration: none;
+      background: none;
+      border: none;
+      font-family: inherit;
+      transition: background .12s, color .12s;
+    }
+
+    .nav-link svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .nav-link:hover {
+      background: var(--base-2);
+      color: var(--ink-0);
+    }
+
+    .nav-link.active {
+      color: var(--violet);
+      background: var(--violet-l);
+    }
+
+    .nav-av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(96, 64, 240, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .nav-av:hover {
+      transform: scale(1.06);
+      box-shadow: 0 4px 14px rgba(96, 64, 240, .35);
+    }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .welcome-title {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      color: var(--ink-0);
+      margin-bottom: 12px;
+    }
+
+    .welcome-title span {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .welcome-sub {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.65;
+      max-width: 480px;
+    }
+
+    .hero-empty {
+      background: var(--grad-soft);
+      border: 1px solid rgba(96, 64, 240, 0.12);
+      border-radius: 20px;
+      padding: 80px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+
+    .empty-title {
+      font-family: var(--font-d);
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: var(--ink-0);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 12px 24px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .14s;
+      border: none;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--grad);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--ink-0);
+      border: 1px solid var(--edge-2);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--ink-0);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 28px rgba(13, 12, 26, .3);
+      opacity: 0;
+      transition: all .2s;
+      pointer-events: none;
+      z-index: 9000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="topnav">
+    <a href="/" class="nav-brand">
+      <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+        <defs>
+          <linearGradient id="lg" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6040f0" />
+            <stop offset="1" stop-color="#1a96d8" />
+          </linearGradient>
+        </defs>
+        <circle cx="13" cy="13" r="10.5" stroke="url(#lg)" stroke-width="1.6" />
+        <circle cx="13" cy="13" r="6" stroke="url(#lg)" stroke-width="1.2" opacity=".55" />
+        <circle cx="13" cy="13" r="2.2" fill="url(#lg)" />
+      </svg>
+      Circles
+    </a>
+    <div class="nav-spacer"></div>
+    <div class="nav-links">
+      <a href="/participant" class="nav-link active">My Events</a>
+      <a href="/" class="nav-link">Home</a>
+    </div>
+    <div class="nav-av" id="navAv" title="User">U</div>
+  </nav>
+
+  <div class="page">
+    <div class="welcome-box">
+      <h1 class="welcome-title" id="welcomeTitle">Welcome, <span>Explorer.</span><br>Your events await.</h1>
+      <p class="welcome-sub">Explore upcoming conferences, workshops and meetups. Your registered events will appear
+        here.</p>
+    </div>
+
+    <div class="hero-empty">
+      <h2 class="empty-title">No events yet</h2>
+      <p class="empty-sub" style="color:var(--ink-2); max-width: 400px;">Your event calendar is empty. Discover what's
+        happening and grab your first ticket today.</p>
+      <div style="display:flex; gap:12px;">
+        <a href="/" class="btn btn-primary">Discover Events</a>
+        <button class="btn btn-secondary" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Action successful</div>
+
+  <script>
+    // ── Auth Check ──
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (!token || !user) {
+      window.location.href = '/';
+    }
+
+    // ── Update UI ──
+    if (user) {
+      const title = document.getElementById('welcomeTitle');
+      const name = user.name || user.fullName || user.email.split('@')[0];
+      if (title) title.innerHTML = `Welcome, <span>${name}.</span><br>Your journey starts here.`;
+
+      const navAv = document.getElementById('navAv');
+      if (navAv) {
+        navAv.textContent = name.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        navAv.title = name;
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+      }
+    }
+
+    document.getElementById('navAv').onclick = logout;
+  </script>
+</body>
+
+</html>

@@ -110,6 +110,13 @@
       </div>
 
       <div class="tb-actions">
+        <button class="icon-btn" title="Create Event" onclick="openModal()" style="margin-right: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
+
         <!-- Event Context on Top-Right -->
         <div class="topbar-ev-ctx"
           style="display: flex; align-items: center; gap: 12px; margin-right: 16px; border-right: 1px solid var(--edge); padding-right: 16px;">
@@ -136,7 +143,53 @@
       </div>
     </header>
 
-    <main class="content">
+    <!-- ── Empty State Hero (Hidden by default) ── -->
+    <div id="emptyHero" class="empty-hero">
+      <div class="empty-glow"></div>
+      <div class="empty-illustration">
+        <div class="illo-orbit">
+          <div class="illo-dot id-1"></div>
+          <div class="illo-dot id-2"></div>
+          <div class="illo-dot id-3"></div>
+        </div>
+        <div class="illo-bg">
+          <div class="illo-inner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+          </div>
+        </div>
+        <div class="mini-card mc-left">
+          <div class="mc-dot" style="background:var(--violet)"></div> Plan Schedule
+        </div>
+        <div class="mini-card mc-right">
+          <div class="mc-dot" style="background:var(--azure)"></div> Track ROI
+        </div>
+        <div class="mini-card mc-bottom">
+          <div class="mc-dot" style="background:var(--emerald)"></div> Live Check-in
+        </div>
+      </div>
+
+      <h1 class="empty-title">Your first event is one click away</h1>
+      <p class="empty-sub">Elevate your event experience with real-time analytics, seamless check-ins, and participant
+        engagement tools. Create an event in under a minute.</p>
+
+      <div class="empty-actions">
+        <button class="btn btn-pri btn-lg" onclick="openModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Create & Publish
+        </button>
+        <button class="btn btn-sec btn-lg" onclick="window.location.href='/events'">View All Events</button>
+      </div>
+    </div>
+
+    <main class="content" id="dashboardContent">
       <div class="page-hdr">
         <div>
           <div class="page-title">Dashboard</div>
@@ -363,12 +416,17 @@
           if (meta) {
             meta.innerHTML = dStr + ' <span class="ev-meta-sep">•</span> ' + venueStr;
           }
+
+          document.getElementById('dashboardContent').style.display = 'flex';
+          document.getElementById('emptyHero').style.display = 'none';
+
           loadStats(currentEventId);
           loadRecentCheckins(currentEventId);
 
         } else {
-          // If no events, redirect to empty state page
-          window.location.href = '/emptypages';
+          // If no events, show empty hero
+          document.getElementById('dashboardContent').style.display = 'none';
+          document.getElementById('emptyHero').style.display = 'flex';
         }
       } catch (e) {
         console.error('Failed to load events:', e);
@@ -679,6 +737,103 @@
     setupGlobalSearch();
     loadEvents();
   </script>
+  <!-- ── Create Event Modal ── -->
+  <div class="backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-hdr"
+        style="padding: 24px 28px 18px; border-bottom: 1px solid var(--edge); display: flex; align-items: flex-start; justify-content: space-between;">
+        <div>
+          <h2 class="modal-title">Create New Event</h2>
+          <div class="u-role" style="margin-top:4px">Fill in the basics to get started</div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 28px; display: flex; flex-direction: column; gap: 20px;">
+        <div>
+          <label class="f-lbl">Event Name</label>
+          <input type="text" id="evTitle" class="f-input" placeholder="e.g. Summer Tech Fest 2024">
+        </div>
+        <div>
+          <label class="f-lbl">Event Type</label>
+          <div class="type-grid">
+            <div class="type-btn active">Conference</div>
+            <div class="type-btn">Workshop</div>
+            <div class="type-btn">Networking</div>
+            <div class="type-btn">Webinar</div>
+          </div>
+        </div>
+        <div>
+          <label class="f-lbl">Primary Venue</label>
+          <input type="text" id="evVenue" class="f-input" placeholder="e.g. Grand Plaza Hotel">
+        </div>
+      </div>
+      <div class="modal-ftr" style="padding: 20px 28px 28px; display: flex; gap: 12px;">
+        <button class="btn btn-sec" style="flex:1" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-pri" style="flex:1" onclick="createEvent()">Create & Publish</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function openModal() {
+      const mb = document.getElementById('modalBackdrop');
+      if (mb) mb.classList.add('open');
+    }
+    function closeModal() {
+      const mb = document.getElementById('modalBackdrop');
+      if (mb) mb.classList.remove('open');
+    }
+    async function createEvent() {
+      const title = document.getElementById('evTitle').value.trim();
+      const venue = document.getElementById('evVenue').value.trim();
+      const btn = document.querySelector('.modal-ftr .btn-pri');
+      if (!title) return showToast('Please enter an event title');
+      const payload = {
+        title, venue: venue || 'Venue TBD',
+        startDate: new Date(Date.now() + 7 * 86400000).toISOString(),
+        endDate: new Date(Date.now() + 7 * 86400000 + 4 * 3600000).toISOString(),
+        registrationStart: new Date().toISOString(),
+        registrationEnd: new Date(Date.now() + 7 * 86400000).toISOString(),
+        tags: document.querySelector('.type-btn.active')?.textContent.trim() || 'General'
+      };
+      if (btn) { btn.disabled = true; btn.innerHTML = 'Publishing...'; }
+      try {
+        const res = await fetch('/api/admin/events', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          const event = await res.json();
+          localStorage.setItem('currentEventId', event.id);
+          showToast('🎉 Created!');
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          const err = await res.json();
+          showToast('Error: ' + (err.error || 'Failed'));
+          if (btn) { btn.disabled = false; btn.innerHTML = 'Create & Publish'; }
+        }
+      } catch (e) {
+        showToast('Error');
+        if (btn) { btn.disabled = false; btn.innerHTML = 'Create & Publish'; }
+      }
+    }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return alert(msg);
+      t.innerHTML = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+  </script>
 </body>
+
 
 </html>

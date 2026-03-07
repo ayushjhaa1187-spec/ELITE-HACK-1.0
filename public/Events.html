@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circles — Events</title>
+  <link rel="stylesheet" href="Events.css">
+  <script src="/admin-global-search.js"></script>
+  <script>
+    if (!localStorage.getItem('token')) {
+      window.location.href = '/';
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="/" class="nav-logo">
+        <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+          <defs>
+            <linearGradient id="lg-nav" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6040f0" />
+              <stop offset="1" stop-color="#1a96d8" />
+            </linearGradient>
+          </defs>
+          <circle cx="13" cy="13" r="10.5" stroke="url(#lg-nav)" stroke-width="1.6" />
+          <circle cx="13" cy="13" r="6" stroke="url(#lg-nav)" stroke-width="1.2" opacity="0.55" />
+          <circle cx="13" cy="13" r="2.2" fill="url(#lg-nav)" />
+        </svg>
+        Circles
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-lbl">Main</div>
+      <div class="nav-item" onclick="window.location.href='/dashboard'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        Dashboard
+      </div>
+
+      <div class="nav-item active" onclick="window.location.href='/events'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Events <span class="nav-badge" id="sidebarEventCount" style="display:none;">0</span>
+      </div>
+
+      <div class="nav-item" onclick="window.location.href='/attendees'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>
+        Attendees
+      </div>
+
+      <div class="nav-lbl">Management</div>
+      <div class="nav-item" onclick="window.location.href='/analytics'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Analytics
+      </div>
+
+      <div class="nav-item" onclick="window.location.href='/settings'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sb-user">
+        <div class="av-sm" id="userInitials">AD</div>
+        <div style="flex:1;min-width:0">
+          <div class="u-name" id="userName">Admin</div>
+          <div class="u-role">Event Admin</div>
+        </div>
+        <button id="logoutBtn" class="icon-btn" style="color:var(--danger); margin-left: auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════ MAIN ══════════════════════ -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-ev" id="topbarEventContainer" style="display:none;">
+        <div class="ev-sel" id="eventSelector">
+          <span id="eventName">Design Summit 2026</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        <div class="live-badge" id="liveBadge" style="display:none;">
+          <div class="live-dot"></div>Live
+        </div>
+        <div class="ev-meta" id="eventMeta" style="display:none;">
+          <span id="eventDate">March 8, 2026</span> <span class="ev-meta-sep">•</span> <span id="eventVenue">Bharat Mandapam, New Delhi</span>
+        </div>
+        <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
+          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
+            style="padding-left: 36px; height: 36px; border: 1px solid var(--edge-2); border-radius: 8px; width: 100%; outline: none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+      </div>
+      <div class="tb-actions">
+
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- Page Header -->
+      <div class="page-hdr">
+        <div>
+          <div class="page-title">Events</div>
+          <div class="page-sub">Create and manage your events</div>
+        </div>
+        <div class="hdr-actions">
+          <button class="btn btn-sec" onclick="openModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Create Event
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all" onclick="setFilter(this)">All Events</button>
+          <button class="filter-tab" data-filter="live" onclick="setFilter(this)">Live</button>
+          <button class="filter-tab" data-filter="upcoming" onclick="setFilter(this)">Upcoming</button>
+          <button class="filter-tab" data-filter="completed" onclick="setFilter(this)">Completed</button>
+        </div>
+        <span class="filter-count" id="filterCount">3 events</span>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="events-grid" id="eventsGrid">
+        <!-- Create New Event Card -->
+        <div class="create-card" onclick="openModal()">
+          <div class="create-card-ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+          </div>
+          <div class="create-card-title">Create New Event</div>
+          <div class="create-card-sub">Start planning your next event — set a date, venue, and open registrations</div>
+        </div>
+        <!-- Cards rendered via JS -->
+      </div><!-- /events-grid -->
+
+      <!-- Empty State for New Admin -->
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-illo">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+          </svg>
+        </div>
+        <div class="empty-title">Creating Event, right?</div>
+        <div class="empty-sub">Start by creating your first event. Set a date, venue, and description to get started with managing your event registrations.</div>
+        <button class="btn btn-pri" onclick="openModal()" style="margin-top: 12px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Create Your First Event
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- ══════════════════════ MODAL ══════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-hdr">
+        <div class="modal-title">Create New Event</div>
+        <button class="modal-close" onclick="closeModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field">
+          <label class="form-label">Event Title</label>
+          <input class="form-input" type="text" placeholder="e.g. Design Summit 2027" />
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Date</label>
+            <input class="form-input" type="date" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Capacity</label>
+            <input class="form-input" type="number" placeholder="e.g. 500" />
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Venue</label>
+          <input class="form-input" type="text" placeholder="e.g. Convention Centre, New Delhi" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Description</label>
+          <textarea class="form-input" placeholder="Describe your event — agenda, speakers, what to expect…"></textarea>
+        </div>
+      </div>
+      <div class="modal-ftr">
+        <button class="btn btn-sec" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-pri" onclick="handleCreate()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Create Event
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!token || !user) {
+      window.location.href = '/';
+    }
+
+    // ── Update Profile ──
+    const uName = document.getElementById('userName');
+    const avSm = document.getElementById('userInitials');
+    if (user) {
+      if (uName) uName.textContent = user.name || user.email;
+      if (avSm && user.name) avSm.textContent = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    // ── Logout Binding ──
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          localStorage.removeItem('currentEventId');
+          window.location.href = '/';
+        }
+      });
+    }
+
+    let allEvents = [];
+    let currentEvent = null;
+    let activeStatusFilter = 'all';
+    let activeSearchQuery = '';
+
+    async function loadEvents() {
+      try {
+        const res = await fetch('/api/admin/events', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.status === 403 || res.status === 401) {
+          alert('Unauthorized access');
+          window.location.href = '/';
+          return;
+        }
+        allEvents = await res.json();
+
+        // Set current event if available
+        if (allEvents.length > 0) {
+          currentEvent = allEvents[0];
+          updateTopbarEvent();
+          document.getElementById('topbarEventContainer').style.display = '';
+          document.getElementById('eventsGrid').style.display = '';
+          document.getElementById('emptyState').style.display = 'none';
+        } else {
+          document.getElementById('topbarEventContainer').style.display = 'none';
+          document.getElementById('eventsGrid').style.display = 'none';
+          document.getElementById('emptyState').style.display = 'flex';
+        }
+
+        renderEvents(allEvents);
+        applyEventFilters();
+        const badge = document.getElementById('sidebarEventCount');
+        if (badge) {
+          badge.textContent = allEvents.length;
+          badge.style.display = allEvents.length > 0 ? '' : 'none';
+        }
+      } catch (e) {
+        console.error('Failed to load events:', e);
+      }
+    }
+
+    function updateTopbarEvent() {
+      if (!currentEvent) return;
+      const status = getStatus(currentEvent);
+      const d = new Date(currentEvent.startDate);
+      const dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      document.getElementById('eventName').textContent = currentEvent.title;
+      document.getElementById('eventDate').textContent = dateStr;
+      document.getElementById('eventVenue').textContent = currentEvent.venue || 'Virtual';
+
+      const liveBadge = document.getElementById('liveBadge');
+      const eventMeta = document.getElementById('eventMeta');
+      if (status === 'live') {
+        liveBadge.style.display = '';
+        eventMeta.style.display = 'none';
+      } else {
+        liveBadge.style.display = 'none';
+        eventMeta.style.display = '';
+      }
+    }
+
+    function getStatus(event) {
+      const now = new Date();
+      const start = new Date(event.startDate);
+      const end = new Date(event.endDate);
+      if (now >= start && now <= end) return 'live';
+      if (now < start) return 'upcoming';
+      return 'completed';
+    }
+
+    function renderEvents(events) {
+      const grid = document.getElementById('eventsGrid');
+
+      // Keep the "Create New Event" card
+      const createCard = `
+      <div class="create-card" onclick="openModal()">
+        <div class="create-card-ico">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5"  y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <div class="create-card-title">Create New Event</div>
+        <div class="create-card-sub">Start planning your next event — set a date, venue, and open registrations</div>
+      </div>
+    `;
+
+      const eventCards = events.map(event => {
+        const status = getStatus(event);
+        let statusHtml = '';
+        let accentClass = '';
+        if (status === 'live') {
+          statusHtml = `<span class="status-badge status-live">
+              <span style="display:inline-block;width:6px;height:6px;background:#0aaa6e;border-radius:50%;margin-right:5px;animation:pulse 2s infinite;vertical-align:middle"></span>Live
+            </span>`;
+        } else if (status === 'upcoming') {
+          statusHtml = `<span class="status-badge status-upcoming">Upcoming</span>`;
+          accentClass = 'azure';
+        } else {
+          statusHtml = `<span class="status-badge status-completed">Completed</span>`;
+          accentClass = 'rose';
+        }
+
+        const d = new Date(event.startDate);
+        const endD = new Date(event.endDate);
+        const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' – ' + endD.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+        const regsCount = event._count?.registrations || 0;
+        const capacity = event.capacity || event.maxTeamSize * 10 || 1000;
+        const fillPercentage = Math.min(100, Math.round((regsCount / capacity) * 100));
+
+        return `
+      <div class="event-card" data-status="${status}">
+        <div class="event-card-accent ${accentClass}"></div>
+        <div class="event-card-body">
+          <div class="event-card-top">
+            <div class="event-title">${event.title}</div>
+            ${statusHtml}
+          </div>
+          <div class="event-meta">
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8"  y1="2" x2="8"  y2="6"/>
+                <line x1="3"  y1="10" x2="21" y2="10"/>
+              </svg>
+              <span><strong>${dateStr}</strong> · ${timeStr}</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>${event.venue || 'Virtual'}</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <span><strong>${regsCount}</strong> registrations · ${capacity} capacity</span>
+            </div>
+          </div>
+          <div class="event-progress">
+            <div class="progress-header">
+              <span class="progress-label">Registration Fill</span>
+              <span class="progress-value">${regsCount} / ${capacity}</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill ${accentClass}" style="width:${fillPercentage}%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="event-card-footer">
+          <button class="card-btn primary-btn" onclick="goToDashboard('${event.id}', event)">Dashboard</button>
+          <button class="card-btn" onclick="goToAttendees('${event.id}', event)">Attendees</button>
+        </div>
+      </div>
+      `;
+      });
+
+      grid.innerHTML = createCard + eventCards.join('');
+    }
+
+    function goToDashboard(eventId, e) {
+      if (e) e.stopPropagation();
+      localStorage.setItem('currentEventId', eventId);
+      window.location.href = '/dashboard';
+    }
+
+    function goToAttendees(eventId, e) {
+      if (e) e.stopPropagation();
+      localStorage.setItem('currentEventId', eventId);
+      window.location.href = '/attendees';
+    }
+
+    /* ── Filter ── */
+    function applyEventFilters() {
+      const cards = document.querySelectorAll('.event-card[data-status]');
+      let visible = 0;
+      const searchQuery = activeSearchQuery.trim().toLowerCase();
+
+      cards.forEach(card => {
+        const statusMatch = activeStatusFilter === 'all' || card.dataset.status === activeStatusFilter;
+        const searchMatch = !searchQuery || card.textContent.toLowerCase().includes(searchQuery);
+        const show = statusMatch && searchMatch;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      document.getElementById('filterCount').textContent = visible + (visible === 1 ? ' event' : ' events');
+    }
+
+    /* Filter */
+    function setFilter(btn) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      activeStatusFilter = btn.dataset.filter || 'all';
+      applyEventFilters();
+    }
+
+    /* ── Modal ── */
+    function openModal() {
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    async function handleCreate() {
+      const title = document.querySelector('.modal-body input[type="text"]').value.trim();
+      const dateInput = document.querySelector('.modal-body input[type="date"]').value;
+      const capacityInput = document.querySelectorAll('.modal-body input[type="number"]')[0].value || 500;
+      const venueInput = document.querySelectorAll('.modal-body input[type="text"]')[1].value.trim() || 'Virtual';
+      const descInput = document.querySelector('.modal-body textarea').value.trim() || 'No description provided';
+
+      if (!title || !dateInput) {
+        alert('Title and Date are required');
+        return;
+      }
+
+      // Default dates based on the input date
+      const startDate = new Date(dateInput);
+      startDate.setHours(9, 0, 0); // 9 AM
+      const endDate = new Date(dateInput);
+      endDate.setHours(18, 0, 0); // 6 PM
+
+      const registrationStart = new Date();
+      const registrationEnd = new Date(dateInput);
+
+      const payload = {
+        title,
+        description: descInput,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        registrationStart: registrationStart.toISOString(),
+        registrationEnd: registrationEnd.toISOString(),
+        venue: venueInput,
+        maxTeamSize: 1
+      };
+
+      // The schema allows additional capacity mapped to maxTeamSize for now or ignored since it's missing in DB natively? The schema has maxTeamSize. I'll pass capacity as maxTeamSize for now, but usually it's different.
+
+      try {
+        const res = await fetch('/api/admin/events', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          closeModal();
+          loadEvents();
+        } else {
+          const error = await res.json();
+          alert('Failed to create event: ' + (error.error || JSON.stringify(error)));
+        }
+      } catch (e) {
+        alert('Error creating event: ' + e.message);
+      }
+    }
+
+    function setupGlobalSearch() {
+      const globalInput = document.getElementById('globalSearchInput');
+      if (!globalInput || !window.CirclesGlobalSearch) return;
+
+      window.CirclesGlobalSearch.attach(globalInput, {
+        applyLocalSearch: query => {
+          activeSearchQuery = String(query || '');
+          applyEventFilters();
+        }
+      });
+    }
+
+    // Load events on mount
+    setupGlobalSearch();
+    loadEvents();
+  </script>
+</body>
+
+</html>

@@ -12,6 +12,7 @@
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="Landingpage.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 
 </head>
 
@@ -124,46 +125,9 @@
                 </div>
               </div>
             </div>
-            <svg class="db-graph-svg" viewBox="0 0 860 118" preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="fv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#6040f0" stop-opacity="0.18" />
-                  <stop offset="100%" stop-color="#6040f0" stop-opacity="0" />
-                </linearGradient>
-                <linearGradient id="fa" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#1a96d8" stop-opacity="0.14" />
-                  <stop offset="100%" stop-color="#1a96d8" stop-opacity="0" />
-                </linearGradient>
-              </defs>
-
-              <!-- Grid -->
-              <line x1="0" y1="29" x2="860" y2="29" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
-              <line x1="0" y1="59" x2="860" y2="59" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
-              <line x1="0" y1="89" x2="860" y2="89" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
-
-              <!-- Registrations fill + line -->
-              <path
-                d="M0,110 C70,110 90,86 160,70 C230,54 272,32 342,22 C410,12 456,16 522,14 C586,12 642,9 712,6 C774,4 822,3 860,2 L860,118 L0,118Z"
-                fill="url(#fv)" />
-              <path class="graph-line"
-                d="M0,110 C70,110 90,86 160,70 C230,54 272,32 342,22 C410,12 456,16 522,14 C586,12 642,9 712,6 C774,4 822,3 860,2"
-                fill="none" stroke="#6040f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-
-              <!-- Check-ins fill + line -->
-              <path
-                d="M0,116 C88,116 122,98 192,86 C262,74 302,56 372,46 C442,36 482,40 548,36 C612,32 662,26 732,20 C792,15 832,13 860,12 L860,118 L0,118Z"
-                fill="url(#fa)" />
-              <path class="graph-line-2"
-                d="M0,116 C88,116 122,98 192,86 C262,74 302,56 372,46 C442,36 482,40 548,36 C612,32 662,26 732,20 C792,15 832,13 860,12"
-                fill="none" stroke="#1a96d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-
-              <!-- Live data points -->
-              <circle cx="860" cy="2" r="4" fill="#6040f0" />
-              <circle cx="860" cy="2" r="8" fill="none" stroke="#6040f0" stroke-width="1" opacity="0.25" />
-              <circle cx="860" cy="12" r="3.5" fill="#1a96d8" />
-              <circle cx="860" cy="12" r="7" fill="none" stroke="#1a96d8" stroke-width="1" opacity="0.2" />
-            </svg>
+            <div style="position:relative;height:140px;width:100%;margin-top:10px;">
+              <canvas id="activityChart"></canvas>
+            </div>
           </div>
         </div>
       </div>
@@ -354,12 +318,6 @@
       <div id="authError"
         style="display:none;background:#fee;color:#c00;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px">
       </div>
-      <div id="nameGroup" style="display:none;margin-bottom:14px">
-        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Full Name</label>
-        <input id="authName" type="text" placeholder="Enter your name"
-          style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s"
-          onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
-      </div>
       <div style="margin-bottom:14px">
         <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">Email</label>
         <input id="authEmail" type="email" placeholder="you@example.com"
@@ -372,20 +330,12 @@
           style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;transition:border 0.2s"
           onfocus="this.style.borderColor='#6040f0'" onblur="this.style.borderColor='#e0e0e8'">
       </div>
-      <div id="roleGroup" style="display:none;margin-bottom:14px">
-        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:6px">I am a</label>
-        <select id="authRole"
-          style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e8;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;background:#fff;cursor:pointer">
-          <option value="ADMIN">Event Organizer (Admin)</option>
-          <option value="PARTICIPANT">Attendee (Participant)</option>
-        </select>
-      </div>
       <button id="authSubmit" onclick="submitAuth()"
         style="width:100%;padding:12px;background:linear-gradient(135deg,#6040f0,#1a96d8);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;transition:opacity 0.2s"
         onmouseenter="this.style.opacity='0.9'" onmouseleave="this.style.opacity='1'">Sign In</button>
       <p style="text-align:center;margin-top:16px;font-size:13px;color:#6e6e7d">
         <span id="authToggleText">Don't have an account?</span>
-        <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)"
+        <a href="/register.html" id="authToggleLink"
           style="color:#6040f0;font-weight:600;text-decoration:none">Register</a>
       </p>
     </div>
@@ -436,43 +386,76 @@
       }
     })();
 
-    // ── Live Pulse ──
+    // ── Live Demo Animation (Step 5.1) ──
     (async function () {
       const elements = {
         reg: document.querySelector('.db-stat-val.v'),
         ci: document.querySelector('.db-stat-val.a'),
-        active: document.querySelector('.db-stat-val.e')
+        active: document.querySelector('.db-stat-val.e'),
+        liveBadge: document.querySelector('.db-live')
       };
 
-      async function refresh() {
-        try {
-          const res = await fetch('/api/events/stats/global');
-          if (res.ok) {
-            const stats = await res.json();
-            // Use real data as base, but still pulse for "liveness"
-            let reg = Math.max(stats.totalRegistrations, 3124);
-            let ci = Math.max(stats.checkIns, 1487);
-            let active = Math.max(stats.activeNow, 512);
-
-            if (elements.reg) elements.reg.textContent = reg.toLocaleString();
-            if (elements.ci) elements.ci.textContent = ci.toLocaleString();
-            if (elements.active) elements.active.textContent = active.toLocaleString();
-          }
-        } catch (e) { }
+      if (elements.liveBadge) {
+        elements.liveBadge.innerHTML = '<span class="live-dot"></span> Demo Mode';
+        elements.liveBadge.style.background = 'rgba(255,255,255,0.1)';
+        elements.liveBadge.style.color = '#fff';
       }
 
-      refresh();
-      setInterval(refresh, 10000); // Real refresh every 10s
+      function animate() {
+        let reg = 3124;
+        let ci = 1487;
+        let active = 512;
 
-      // Micro-pulses for visual flair
-      setInterval(() => {
-        if (elements.reg && Math.random() > 0.8) {
-          const val = parseInt(elements.reg.textContent.replace(/,/g, ''));
-          elements.reg.textContent = (val + 1).toLocaleString();
-          elements.reg.style.transform = 'scale(1.05)';
-          setTimeout(() => elements.reg.style.transform = 'none', 200);
-        }
-      }, 4000);
+        setInterval(() => {
+          reg += Math.floor(Math.random() * 2);
+          ci += Math.floor(Math.random() * 3);
+          active += Math.floor(Math.random() * 5) - 2;
+
+          if (elements.reg) elements.reg.textContent = reg.toLocaleString();
+          if (elements.ci) elements.ci.textContent = ci.toLocaleString();
+          if (elements.active) elements.active.textContent = active.toLocaleString();
+        }, 3000);
+      }
+      animate();
+
+      // ── Activity Chart initialization (Step 5.2) ──
+      const ctx = document.getElementById('activityChart');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm'],
+            datasets: [
+              {
+                label: 'Registrations',
+                data: [120, 340, 580, 820, 950, 1100, 1320, 1487, 1502],
+                borderColor: '#6040f0',
+                backgroundColor: 'rgba(96, 64, 240, 0.1)',
+                fill: true,
+                tension: 0.4
+              },
+              {
+                label: 'Check-ins',
+                data: [0, 0, 180, 420, 680, 920, 1180, 1400, 1487],
+                borderColor: '#1a96d8',
+                backgroundColor: 'rgba(26, 150, 216, 0.1)',
+                fill: true,
+                tension: 0.4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { display: false },
+              y: { display: false }
+            },
+            elements: { point: { radius: 0 } }
+          }
+        });
+      }
     })();
 
     // ── Auth Modal Logic ──
@@ -500,14 +483,10 @@
     }
 
     function updateAuthUI() {
-      const isLogin = authMode === 'login';
-      document.getElementById('authTitle').textContent = isLogin ? 'Sign In' : 'Create Account';
-      document.getElementById('authSubtitle').textContent = isLogin ? 'Welcome back to Circles' : 'Get started with Circles';
-      document.getElementById('authSubmit').textContent = isLogin ? 'Sign In' : 'Create Account';
-      document.getElementById('authToggleText').textContent = isLogin ? "Don't have an account? " : 'Already have an account? ';
-      document.getElementById('authToggleLink').textContent = isLogin ? 'Register' : 'Sign In';
-      document.getElementById('nameGroup').style.display = isLogin ? 'none' : 'block';
-      document.getElementById('roleGroup').style.display = isLogin ? 'none' : 'block';
+      // Login only modal now
+      document.getElementById('authTitle').textContent = 'Sign In';
+      document.getElementById('authSubtitle').textContent = 'Welcome back to Circles';
+      document.getElementById('authSubmit').textContent = 'Sign In';
       document.getElementById('authError').style.display = 'none';
     }
 
@@ -527,43 +506,22 @@
       btn.disabled = true;
 
       try {
-        let url, body;
-        if (authMode === 'login') {
-          url = '/api/auth/login';
-          body = { email, password };
-        } else {
-          const name = document.getElementById('authName').value.trim();
-          const role = document.getElementById('authRole').value;
-          if (!name) {
-            errEl.textContent = 'Please enter your name.';
-            errEl.style.display = 'block';
-            btn.textContent = 'Create Account';
-            btn.disabled = false;
-            return;
-          }
-          url = '/api/auth/register';
-          body = { email, password, name, role };
-        }
-
-        const res = await fetch(url, {
+        const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
+          body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(data.error || data.errors?.[0]?.message || 'Something went wrong');
+          throw new Error(data.error || 'Invalid email or password');
         }
 
-        // Save token and user info
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('role', data.user.role);
 
-        closeAuthModal();
-
-        // Redirect based on role
         if (data.user.role === 'ADMIN') {
           window.location.href = '/dashboard';
         } else {
@@ -573,7 +531,7 @@
         errEl.textContent = err.message;
         errEl.style.display = 'block';
       } finally {
-        btn.textContent = authMode === 'login' ? 'Sign In' : 'Create Account';
+        btn.textContent = 'Sign In';
         btn.disabled = false;
       }
     }

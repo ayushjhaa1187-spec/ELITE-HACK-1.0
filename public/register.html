@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circles — Register</title>
+    <style>
+        :root {
+            --ink-0: #0d0c1a;
+            --ink-1: rgba(13, 12, 26, 0.85);
+            --ink-2: rgba(13, 12, 26, 0.65);
+            --base: #f4f3fb;
+            --surface: #ffffff;
+            --border: rgba(13, 12, 26, 0.08);
+            --violet: #6040f0;
+            --grad: linear-gradient(135deg, #6040f0 0%, #1a96d8 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Geist', system-ui, sans-serif;
+            background: var(--base);
+            color: var(--ink-0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-card {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(13, 12, 26, 0.05);
+            width: 100%;
+            max-width: 440px;
+            border: 1px solid var(--border);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--ink-2);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ink-1);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input,
+        .select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--base);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input:focus,
+        .select:focus {
+            border-color: var(--violet);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            background: var(--grad);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--ink-2);
+        }
+
+        .footer-link a {
+            color: var(--violet);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        #error {
+            color: #ef4444;
+            background: #fee2e2;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-card">
+        <h1 class="title">Get Started</h1>
+        <p class="subtitle">Create your Circles account in seconds.</p>
+
+        <div id="error"></div>
+
+        <form id="registerForm">
+            <div class="field">
+                <label class="label">Full Name</label>
+                <input class="input" id="name" placeholder="John Doe" required />
+            </div>
+            <div class="field">
+                <label class="label">Email Address</label>
+                <input class="input" id="email" type="email" placeholder="name@company.com" required />
+            </div>
+            <div class="field">
+                <label class="label">Password</label>
+                <input class="input" id="password" type="password" placeholder="••••••••" required />
+            </div>
+            <div class="field">
+                <label class="label">Role</label>
+                <select class="select" id="role">
+                    <option value="ADMIN">Event Organizer</option>
+                    <option value="PARTICIPANT">Attendee</option>
+                </select>
+            </div>
+            <button class="btn" type="submit" id="submitBtn">Create Account</button>
+        </form>
+
+        <p class="footer-link">Already have an account? <a href="/">Sign In</a></p>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const err = document.getElementById('error');
+
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+            err.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value,
+                        role: document.getElementById('role').value
+                    })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    // Save token if returned, or just redirected
+                    if (data.token) {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                    }
+                    window.location.href = '/';
+                } else {
+                    err.textContent = data.error || 'Registration failed. Please try again.';
+                    err.style.display = 'block';
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
+                }
+            } catch (e) {
+                err.textContent = 'Network error. Please check your connection.';
+                err.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        });
+    </script>
+</body>
+
+</html>
