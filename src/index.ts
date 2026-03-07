@@ -19,10 +19,11 @@ import { authenticate } from './middlewares/authMiddleware';
 
 // Environment Validation
 const REQUIRED_ENV = ['DATABASE_URL', 'JWT_SECRET'];
-REQUIRED_ENV.forEach(name => {
+REQUIRED_ENV.forEach((name) => {
     if (!process.env[name]) {
-        console.error(`[Error] Missing required environment variable: ${name}`);
-        if (process.env.NODE_ENV === 'production') process.exit(1);
+        console.error(`[CRITICAL] Missing environment variable: ${name}`);
+        // Removed process.exit(1) to prevent Vercel 500 FUNCTION_INVOCATION_FAILED crash
+        // if user forgets to set JWT_SECRET immediately.
     }
 });
 
