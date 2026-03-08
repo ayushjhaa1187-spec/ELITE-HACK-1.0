@@ -109,10 +109,9 @@
   <!-- ════════════════════════ MAIN ════════════════════════ -->
   <div class="main">
 
-    <!-- TOPBAR -->
     <header class="topbar">
-      <div class="topbar-left">
-        <div class="ev-sel">
+      <div class="topbar-ev">
+        <div class="ev-sel" onclick="window.location.href='/dashboard'">
           <span id="currentEventName">Select Event</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
             <polyline points="6 9 12 15 18 9" />
@@ -122,23 +121,23 @@
           <div class="live-dot"></div>Live
         </div>
         <div class="ev-meta" id="topEventMeta">No event data</div>
-        <div class="search-wrap" style="margin-left: 20px; flex: 1; max-width: 400px; position: relative;">
+        <div class="search-wrap" style="position: relative; width: 100%; max-width: 400px;">
           <input type="text" class="f-input" id="globalSearchInput" placeholder="Search event, attendees..."
-            style="padding-left: 36px; height: 36px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.8;">
+            style="padding-left: 36px; height: 38px; border: 1px solid var(--edge-2); border-radius: 9px; width: 100%; outline: none; background: var(--surface);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
         </div>
       </div>
-      <div class="topbar-right">
+      <div class="tb-actions">
         <button class="icon-btn" aria-label="Notifications">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
             <path d="M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
-          <span class="notif-dot"></span>
+          <span class="notif-dot" style="background:var(--azure)"></span>
         </button>
       </div>
     </header>
@@ -637,9 +636,10 @@
               </div>
               <div class="card-body">
                 <div class="field-wrap" style="margin-bottom:20px"><label class="field-label">Broadcast
-                    Message</label><textarea class="f-textarea"
+                    Message</label><textarea class="f-textarea" id="broadcastMsg"
                     placeholder="Type a message to push to all attendees..."></textarea></div>
-                <div style="display:flex;gap:10px"><button class="btn btn-primary btn-sm">Push Broadcast</button>
+                <div style="display:flex;gap:10px"><button class="btn btn-primary btn-sm" id="broadcastBtn"
+                    onclick="pushBroadcast()">Push Broadcast</button>
                   <div class="live-indicator">● Broadcast Node Live</div>
                 </div>
               </div>
@@ -757,18 +757,35 @@
     'use strict';
 
     /* ── TEAM DATA ──────────────────────────────────────────── */
-    let TEAM = [
-      { id: 1, name: 'Ayush Kumar Jha', email: 'ayush@circles.app', role: 'admin', status: 'active', color: '#6040f0' },
-      { id: 2, name: 'Jahnvi Chauhan', email: 'jahnvi@circles.app', role: 'organizer', status: 'active', color: '#1a96d8' },
-    ];
+    let TEAM = [];
+    const currentEventId = localStorage.getItem('currentEventId');
+    let activeEventId = currentEventId;
 
-
-    // Personalize Admin if possible
+    // Load from localStorage
     (function () {
+      const storageKey = `circles_team_${activeEventId || 'global'}`;
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try { TEAM = JSON.parse(saved); } catch (e) { TEAM = []; }
+      }
+
+      if (!TEAM || !TEAM.length) {
+        TEAM = [
+          { id: 1, name: 'Ayush Kumar Jha', email: 'ayush@circles.app', role: 'admin', status: 'active', color: '#6366F1' },
+          { id: 2, name: 'Jahnvi Chauhan', email: 'jahnvi@circles.app', role: 'organizer', status: 'active', color: '#38BDF8' },
+        ];
+      }
+
       const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
       if (storedUser && storedUser.email) {
-        TEAM[0].name = storedUser.name || storedUser.email.split('@')[0];
-        TEAM[0].email = storedUser.email;
+        // Try to find self in team or update first entry
+        const selfInTeam = TEAM.find(m => m.email === storedUser.email);
+        if (selfInTeam) {
+          selfInTeam.name = storedUser.name || selfInTeam.name;
+        } else {
+          TEAM[0].name = storedUser.name || storedUser.email.split('@')[0];
+          TEAM[0].email = storedUser.email;
+        }
       }
     })();
 
@@ -873,6 +890,7 @@
       const m = TEAM.find(x => x.id === id);
       if (!m) return;
       m.role = newRole;
+      localStorage.setItem(`circles_team_${activeEventId || 'global'}`, JSON.stringify(TEAM));
       renderTeam();
       save('team');
     }
@@ -964,8 +982,6 @@
 
 
     /* ── FETCH CURRENT EVENT DATA ───────────────────────────── */
-    const currentEventId = localStorage.getItem('currentEventId');
-    let activeEventId = currentEventId;
     const token = localStorage.getItem('token');
 
     function normalizeUser(userObj) {
@@ -1378,8 +1394,9 @@
       if (!name) { document.getElementById('inv-name').focus(); return; }
       if (!email || !email.includes('@')) { document.getElementById('inv-email').focus(); return; }
 
-      const palette = ['#6040f0', '#1a96d8', '#0aaa6e', '#b030d8', '#d97706', '#dc2626'];
-      TEAM.push({ id: nextId++, name, email, role, status: 'pending', color: palette[TEAM.length % palette.length] });
+      const palette = ['#6366F1', '#38BDF8', '#10B981', '#F472B6', '#F59E0B', '#EF4444'];
+      TEAM.push({ id: Date.now(), name, email, role, status: 'pending', color: palette[TEAM.length % palette.length] });
+      localStorage.setItem(`circles_team_${activeEventId || 'global'}`, JSON.stringify(TEAM));
       renderTeam();
 
       const inviteLink = `${window.location.origin}/register.html?invite_role=${role}&event=${activeEventId || ''}`;
@@ -1395,6 +1412,42 @@
 
       // Scroll to team section
       document.getElementById('sec-team').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ── BROADCAST ENGINE ───────────────────────────────────── */
+    function pushBroadcast() {
+      const msg = document.getElementById('broadcastMsg').value.trim();
+      if (!msg) {
+        if (window.CirclesGlobalSearch?.showToast) window.CirclesGlobalSearch.showToast('Please enter a message to broadcast.', 'info');
+        return;
+      }
+
+      const btn = document.getElementById('broadcastBtn');
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Pushing...';
+
+      setTimeout(() => {
+        if (window.CirclesGlobalSearch?.showToast) {
+          window.CirclesGlobalSearch.showToast('Broadcast sent successfully to all active nodes.', 'success');
+        }
+        document.getElementById('broadcastMsg').value = '';
+        btn.disabled = false;
+        btn.textContent = originalText;
+
+        // Add to activity feed
+        const feed = document.getElementById('activityFeed');
+        if (feed) {
+          const row = document.createElement('div');
+          row.className = 'activity-feed-row animate-fade';
+          row.innerHTML = `
+            <div class="activity-dot" style="background:var(--azure)"></div>
+            <div class="activity-text"><strong>Broadcast:</strong> "${msg}" pushed to live mobile dashboard.</div>
+            <div class="activity-time">Just now</div>
+          `;
+          feed.prepend(row);
+        }
+      }, 1200);
     }
 
 

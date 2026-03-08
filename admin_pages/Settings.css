@@ -3,7 +3,10 @@
 .page-hdr {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
+  align-items: flex-start;
+  text-align: left;
+  margin-bottom: 32px;
 }
 
 .page-title {
