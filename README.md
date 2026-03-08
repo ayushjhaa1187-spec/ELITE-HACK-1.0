@@ -1,8 +1,8 @@
-# Círcles 🚀 — Intelligent Multi-Event Management Platform
+# Circles 🚀 — Intelligent Multi-Event Management Platform
 
 ![Circles Banner](./public/circles.png)
 
-> **Círcles** is a high-performance, enterprise-ready event management ecosystem. Designed for speed, scalability, and seamless user experience, it replaces fragmented spreadsheets and manual tracking with a unified, real-time command center.
+> **Circles** is a high-performance, enterprise-ready event management ecosystem. Designed for speed, scalability, and seamless user experience, it replaces fragmented spreadsheets and manual tracking with a unified, real-time command center.
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -14,7 +14,7 @@
 
 ## 🏗️ System Architecture
 
-Círcles follows a modern **decoupled architecture** optimized for cloud-native deployment:
+Circles follows a modern **decoupled architecture** optimized for cloud-native deployment:
 
 -   **Business Logic Layer**: A robust Node.js/Express backend written in TypeScript, ensuring type safety across all API boundaries.
 -   **Data Persistence**: A relational PostgreSQL database managed via Prisma ORM for efficient schema migrations and type-safe queries.
@@ -53,16 +53,17 @@ sequenceDiagram
     participant Database
     participant Participant
 
-    Admin->>System: Create Event (Settings, Custom Fields)
-    System->>Database: Persist Event Schema
-    Participant->>System: Register / Form Team
-    System->>Database: Validate & Commit Registration
-    System-->>Participant: Issue Ticket (QR Code)
-    Participant->>Admin: Entry Scan
-    Admin->>System: Scan QR (Auth & Check-in)
-    System->>Database: Update Check-in State
-    System-->>Admin: Update Analytics (Live Pulse)
+    Admin->>System: "Create Event (Settings, Custom Fields)"
+    System->>Database: "Persist Event Schema"
+    Participant->>System: "Register / Form Team"
+    System->>Database: "Validate & Commit Registration"
+    System-->>Participant: "Issue Ticket (QR Code)"
+    Participant->>Admin: "Entry Scan"
+    Admin->>System: "Scan QR (Auth & Check-in)"
+    System->>Database: "Update Check-in State"
+    System-->>Admin: "Update Analytics (Live Pulse)"
 ```
+
 
 ---
 
@@ -119,4 +120,15 @@ npm run dev
 
 ---
 
-*Círcles — Built for the next generation of event management.*
+---
+
+## 🤝 Team CoCreate
+
+Circles was designed and developed by **Team CoCreate**:
+
+-   **Ayush Jha** — Full Stack Development & Architecture
+-   **[Member Name]** — [Work Contribution]
+-   **[Member Name]** — [Work Contribution]
+
+*Circles — Built for the next generation of event management.*
+

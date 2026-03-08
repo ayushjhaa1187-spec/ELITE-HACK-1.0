@@ -3,7 +3,16 @@
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "public/**",
+          "admin_pages/**",
+          "participant_pages/**",
+          "swagger.yaml",
+          "prisma/schema.prisma"
+        ]
+      }
     }
   ],
   "routes": [
@@ -12,52 +21,8 @@
       "dest": "src/index.ts"
     },
     {
-      "src": "/privacy",
-      "dest": "public/Privacy.html"
-    },
-    {
-      "src": "/terms",
-      "dest": "public/Terms.html"
-    },
-    {
-      "src": "/status",
-      "dest": "public/Status.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "public/Dashboard.html"
-    },
-    {
-      "src": "/scanner",
-      "dest": "public/Scanner.html"
-    },
-    {
-      "src": "/events",
-      "dest": "admin_pages/Events.html"
-    },
-    {
-      "src": "/attendees",
-      "dest": "admin_pages/Attendees.html"
-    },
-    {
-      "src": "/analytics",
-      "dest": "admin_pages/Analytics.html"
-    },
-    {
-      "src": "/settings",
-      "dest": "admin_pages/Settings.html"
-    },
-    {
-      "src": "/profile",
-      "dest": "admin_pages/Profile.html"
-    },
-    {
-      "src": "/participant",
-      "dest": "participant_pages/MyEvents.html"
-    },
-    {
       "src": "/(.*)",
-      "dest": "public/$1"
+      "dest": "src/index.ts"
     }
   ]
 }
