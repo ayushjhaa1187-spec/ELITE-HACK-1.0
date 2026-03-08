@@ -55,7 +55,7 @@ sequenceDiagram
 
     Admin->>System: "Create Event (Settings, Custom Fields)"
     System->>Database: "Persist Event Schema"
-    Participant->>System: "Register / Form Team"
+    Participant->>System: "Register or Form Team"
     System->>Database: "Validate & Commit Registration"
     System-->>Participant: "Issue Ticket (QR Code)"
     Participant->>Admin: "Entry Scan"
