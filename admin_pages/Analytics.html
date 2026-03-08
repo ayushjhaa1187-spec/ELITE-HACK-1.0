@@ -918,39 +918,12 @@
       }
     });
 
-    /* ─── REFERRERS LIST ────────────────────────────────── */
-    const REFS = [
-      { source: 'Direct / Email', views: 0, conv: '0%' },
-      { source: 'LinkedIn Search', views: 0, conv: '0%' },
-      { source: 'Twitter Promo', views: 0, conv: '0%' },
-      { source: 'Google Organic', views: 0, conv: '0%' }
-    ];
-    document.getElementById('refList').innerHTML = REFS.map(r => `
-      <div class="ref-row">
-        <span>${r.source}</span>
-        <span>${r.views} <span style="color:var(--ink-4);margin-left:8px;font-size:12px">${r.conv}</span></span>
-      </div>
-    `).join('');
-
-    /* ─── ⑤ GEO — renamed title in HTML, data here ──────── */
-    const CITIES = [
-      { name: 'New Delhi', val: 0 },
-      { name: 'Mumbai', val: 0 },
-      { name: 'Bengaluru', val: 0 },
-      { name: 'Hyderabad', val: 0 },
-      { name: 'Pune', val: 0 },
-    ];
-    const geoMax = Math.max(...CITIES.map(c => c.val));
-    document.getElementById('geoList').innerHTML = CITIES.map(c => `
-  <div class="bar-row">
-    <div class="bar-row-top"><span class="bar-row-name">${c.name}</span><span class="bar-row-val">${c.val.toLocaleString()}</span></div>
-    <div class="bar-track"><div class="bar-fill emerald" style="width:${geoMax > 0 ? (c.val / geoMax * 100).toFixed(1) : 0}%"></div></div>
-  </div>`).join('');
-
     /* ─── INITIALIZATION ──────────── */
     function applyAnalyticsSearch(query) {
       const searchQuery = String(query || '').trim().toLowerCase();
-      ['refList', 'geoList'].forEach(listId => {
+      // Only search what exists in current view
+      const validLists = ['fieldStatsList'].filter(id => document.getElementById(id));
+      validLists.forEach(listId => {
         document.querySelectorAll(`#${listId} .bar-row`).forEach(row => {
           const show = !searchQuery || row.textContent.toLowerCase().includes(searchQuery);
           row.style.display = show ? '' : 'none';
@@ -973,14 +946,17 @@
     const initials = displayName.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'AD';
     document.getElementById('userInitials').textContent = initials;
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('currentEventId');
-        window.location.href = '/';
-      }
-    });
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          localStorage.removeItem('currentEventId');
+          window.location.href = '/';
+        }
+      });
+    }
 
     // Update event badge count
     async function updateEventBadge() {
@@ -1142,11 +1118,12 @@
           document.querySelectorAll('.mc-val')[1].textContent = data.checkIns.toLocaleString();
           document.querySelectorAll('.mc-val')[2].textContent = Math.round(data.attendanceRate) + '%';
 
-          // Venue
-          const capacity = 5000;
-          document.querySelectorAll('.mc-val')[3].textContent = data.activeNow.toLocaleString();
-          const fillWidth = Math.min(100, (data.activeNow / 100) * 100);
+          // Venue Occupancy
+          const capacity = data.capacity || 500;
+          document.querySelectorAll('.mc-val')[3].textContent = capacity.toLocaleString();
+          const fillWidth = Math.min(100, (data.activeNow / capacity) * 100);
           document.getElementById('activeFill').style.width = fillWidth + '%';
+          if (document.getElementById('activeTrend')) document.getElementById('activeTrend').textContent = Math.round(fillWidth) + '% active';
           document.getElementById('activeNowVal').textContent = data.activeNow;
 
           // Funnel (Real Data)
@@ -1160,6 +1137,19 @@
           fConvs[1].textContent = '100% of registered';
           fConvs[2].textContent = (data.totalRegistrations > 0 ? Math.round((data.checkIns / data.totalRegistrations) * 100) : 0) + '% of arrived';
           fConvs[3].textContent = (data.checkIns > 0 ? Math.round((data.activeNow / data.checkIns) * 100) : 0) + '% of checked-in';
+
+          // Health Factors (Real Data)
+          const regGrowth = data.totalRegistrations > 0 ? 80 : 0; // Simple logic
+          document.getElementById('hfRegBar').style.width = regGrowth + '%';
+          document.getElementById('hfRegScore').textContent = '+' + Math.round(regGrowth / 10);
+
+          const engage = Math.round(data.attendanceRate) || 0;
+          document.getElementById('hfEngBar').style.width = engage + '%';
+          document.getElementById('hfEngScore').textContent = '+' + Math.round(engage / 10);
+
+          const util = Math.round((data.checkIns / capacity) * 100) || 0;
+          document.getElementById('hfVenBar').style.width = util + '%';
+          document.getElementById('hfVenScore').textContent = '+' + Math.round(util / 10);
 
           // Inline stats
           document.getElementById('istatTotal').textContent = data.totalRegistrations.toLocaleString();

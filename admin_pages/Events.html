@@ -399,7 +399,7 @@
         const dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
         const regsCount = event._count?.registrations || 0;
-        const capacity = event.capacity || event.maxTeamSize * 10 || 1000;
+        const capacity = event.capacity || 500;
         const fillPercentage = Math.min(100, Math.round((regsCount / capacity) * 100));
 
         return `
@@ -538,7 +538,8 @@
         registrationStart: registrationStart.toISOString(),
         registrationEnd: registrationEnd.toISOString(),
         venue: venueInput,
-        maxTeamSize: 1
+        maxTeamSize: 1,
+        capacity: parseInt(capacityInput) || 500
       };
 
       // The schema allows additional capacity mapped to maxTeamSize for now or ignored since it's missing in DB natively? The schema has maxTeamSize. I'll pass capacity as maxTeamSize for now, but usually it's different.

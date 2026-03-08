@@ -47,6 +47,7 @@ model Event {
   endDate       DateTime
   venue         String?
   maxTeamSize       Int            @default(1)
+  capacity          Int            @default(500)
   registrationStart DateTime
   registrationEnd   DateTime
   domain            String?        // e.g., "Web", "AI", "Blockchain"

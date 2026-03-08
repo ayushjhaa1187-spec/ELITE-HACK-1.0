@@ -340,6 +340,7 @@ export const getEventStats = async (req: Request, res: Response) => {
             checkIns,
             activeNow,
             recentCheckins,
+            capacity: event.capacity || 500,
             attendanceRate: totalRegistrations > 0 ? (checkIns / totalRegistrations) * 100 : 0,
             dailyRegistrations,
             hourlyCheckins,

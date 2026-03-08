@@ -19,6 +19,7 @@ export const eventSchema = z.object({
     endDate: z.string().datetime(),
     venue: z.string().optional(),
     maxTeamSize: z.number().int().min(1).optional(),
+    capacity: z.number().int().min(1).optional(),
     registrationStart: z.string().datetime(),
     registrationEnd: z.string().datetime(),
     domain: z.string().optional(),
