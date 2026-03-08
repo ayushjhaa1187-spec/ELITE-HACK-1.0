@@ -14,11 +14,21 @@ class NotificationService {
      * In a production environment, this would integrate with SendGrid, Resend, or Nodemailer.
      */
     async sendEmail(recipient: string, subject: string, body: string): Promise<void> {
-        console.log(`\n📧 [EMAIL SERVICE] TO: ${recipient}`);
+        console.log(`\n\uD83D\uDCE7 [EMAIL SERVICE] TO: ${recipient}`);
         console.log(`   SUBJECT: ${subject}`);
         console.log(`   BODY: ${body}`);
         console.log(`--------------------------------------------------\n`);
     }
+
+    /**
+     * Sends a simulated WhatsApp message.
+     */
+    async sendWhatsApp(phone: string, message: string): Promise<void> {
+        console.log(`\n\uD83D\uDCAC [WHATSAPP SERVICE] TO: ${phone}`);
+        console.log(`   MESSAGE: ${message}`);
+        console.log(`--------------------------------------------------\n`);
+    }
+
 
     /**
      * Broadcasts a notification to a list of users.

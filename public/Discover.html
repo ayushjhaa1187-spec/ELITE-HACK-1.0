@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Discover Events — Circles</title>
+    <style>
+        :root {
+            --ink-0: #0d0c1a;
+            --ink-1: rgba(13, 12, 26, 0.85);
+            --ink-2: rgba(13, 12, 26, 0.65);
+            --base: #f4f3fb;
+            --base-2: #eceaf7;
+            --surface: rgba(255, 255, 255, 0.80);
+            --surface-2: rgba(255, 255, 255, 0.97);
+            --edge: rgba(13, 12, 26, 0.08);
+            --edge-2: rgba(13, 12, 26, 0.14);
+            --violet: #6040f0;
+            --violet-l: rgba(96, 64, 240, 0.09);
+            --grad: linear-gradient(128deg, #6040f0 0%, #1a96d8 100%);
+            --font-d: 'Instrument Serif', Georgia, serif;
+            --font-u: 'Geist', system-ui, sans-serif;
+            --nav-h: 68px;
+            --radius: 14px;
+            --shadow-md: 0 4px 20px rgba(13, 12, 26, 0.09);
+        }
+
+        body {
+            font-family: var(--font-u);
+            background: var(--base);
+            color: var(--ink-0);
+            font-size: 13px;
+            line-height: 1.55;
+            min-height: 100vh;
+        }
+
+        .topnav {
+            height: var(--nav-h);
+            background: rgba(244, 243, 251, 0.93);
+            backdrop-filter: blur(28px);
+            border-bottom: 1px solid var(--edge);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 0 max(24px, calc(50vw - 580px));
+            gap: 16px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--ink-0);
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .nav-spacer {
+            flex: 1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+        }
+
+        .nav-link {
+            padding: 8px 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-2);
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            color: var(--violet);
+            background: var(--violet-l);
+        }
+
+        .nav-av {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--grad);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+
+        .page {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        .title {
+            font-family: var(--font-d);
+            font-size: 42px;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .title span {
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--surface-2);
+            border: 1px solid var(--edge);
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-img {
+            height: 160px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--violet);
+            opacity: 0.5;
+        }
+
+        .card-body {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-title {
+            font-family: var(--font-d);
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .card-meta {
+            font-size: 12px;
+            color: var(--ink-2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-foot {
+            padding: 20px 24px;
+            border-top: 1px solid var(--edge);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 9px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .btn-pri {
+            background: var(--grad);
+            color: #fff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="topnav">
+        <a href="/" class="nav-brand">Circles</a>
+        <div class="nav-spacer"></div>
+        <div class="nav-links">
+            <a href="/participant" class="nav-link">My Events</a>
+            <a href="/discover" class="nav-link active">Discover</a>
+            <a href="/" class="nav-link">Home</a>
+        </div>
+        <div class="nav-av" id="navAv">U</div>
+    </nav>
+    <div class="page">
+        <h1 class="title">Explore <span>Events.</span></h1>
+        <p style="color:var(--ink-2); font-size:15px">Hand-picked experiences for you.</p>
+        <div id="grid" class="events-grid"></div>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script>
+        const tk = localStorage.getItem('token');
+        const u = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!tk) window.location.href = '/';
+        if (u.name) document.getElementById('navAv').textContent = u.name[0].toUpperCase();
+
+        function showT(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+
+        async function load() {
+            const res = await fetch('/api/events');
+            const evs = await res.json();
+            const myRes = await fetch('/api/auth/me/registrations', { headers: { 'Authorization': 'Bearer ' + tk } });
+            const myData = await myRes.json();
+            const myIds = (myData.registrations || []).map(r => r.eventId);
+
+            const grid = document.getElementById('grid');
+            grid.innerHTML = evs.map(e => {
+                const reg = myIds.includes(e.id);
+                const d = new Date(e.startDate).toLocaleDateString();
+                return `
+          <div class="card">
+            <div class="card-img"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+            <div class="card-body">
+              <h3 class="card-title">${e.title}</h3>
+              <div class="card-meta">${d} • ${e.venue || 'Virtual'}</div>
+            </div>
+            <div class="card-foot">
+              <span style="font-weight:600; color:var(--ink-2)">\${reg?'Already Registered':'Available'}</span>
+              \${reg ? '<a href="/participant" class="btn btn-pri" style="background:#0aaa6e">Ticket</a>' : '<button class="btn btn-pri" onclick="regEv(\\''+e.id+'\\')">Register</button>'}
+            </div>
+          </div>
+        `;
+            }).join('');
+        }
+
+        async function regEv(id) {
+            const res = await fetch('/api/events/' + id + '/register', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fieldValues: [] })
+            });
+            if (res.ok) { showT('Registered!'); setTimeout(() => window.location.href = '/participant', 1000); }
+            else alert('Failed to register');
+        }
+        document.getElementById('navAv').onclick = () => { localStorage.clear(); window.location.href = '/'; };
+        load();
+    </script>
+</body>
+
+</html>

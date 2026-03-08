@@ -6,13 +6,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>My Events — Circles</title>
   <style>
-    /* ── DESIGN TOKENS ── */
     :root {
       --ink-0: #0d0c1a;
       --ink-1: rgba(13, 12, 26, 0.85);
       --ink-2: rgba(13, 12, 26, 0.65);
-      --ink-3: rgba(13, 12, 26, 0.46);
-      --ink-4: rgba(13, 12, 26, 0.08);
       --base: #f4f3fb;
       --base-2: #eceaf7;
       --surface: rgba(255, 255, 255, 0.80);
@@ -21,29 +18,12 @@
       --edge-2: rgba(13, 12, 26, 0.14);
       --violet: #6040f0;
       --violet-l: rgba(96, 64, 240, 0.09);
-      --azure: #1a96d8;
-      --emerald: #0aaa6e;
-      --amber: #d97706;
       --grad: linear-gradient(128deg, #6040f0 0%, #1a96d8 100%);
-      --grad-soft: linear-gradient(160deg, #f0eeff 0%, #e8f4ff 100%);
       --font-d: 'Instrument Serif', Georgia, serif;
       --font-u: 'Geist', system-ui, sans-serif;
       --nav-h: 68px;
       --radius: 14px;
-      --shadow-sm: 0 1px 4px rgba(13, 12, 26, 0.06);
       --shadow-md: 0 4px 20px rgba(13, 12, 26, 0.09);
-    }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
@@ -51,23 +31,9 @@
       background: var(--base);
       color: var(--ink-0);
       font-size: 13px;
-      line-height: 1.55;
       min-height: 100vh;
     }
 
-    /* noise */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 200px;
-      opacity: 0.015;
-    }
-
-    /* ── TOP NAV ── */
     .topnav {
       height: var(--nav-h);
       background: rgba(244, 243, 251, 0.93);
@@ -83,20 +49,10 @@
     }
 
     .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--ink-0);
       font-weight: 700;
       font-size: 15px;
-      letter-spacing: -0.02em;
-    }
-
-    .logo-svg {
-      width: 26px;
-      height: 26px;
-      flex-shrink: 0;
+      text-decoration: none;
+      color: var(--ink-0);
     }
 
     .nav-spacer {
@@ -105,35 +61,16 @@
 
     .nav-links {
       display: flex;
-      align-items: center;
-      gap: 2px;
+      gap: 4px;
     }
 
     .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 7px 13px;
-      border-radius: 8px;
+      padding: 8px 14px;
+      border-radius: 9px;
       font-size: 13px;
       font-weight: 600;
       color: var(--ink-2);
-      cursor: pointer;
       text-decoration: none;
-      background: none;
-      border: none;
-      font-family: inherit;
-      transition: background .12s, color .12s;
-    }
-
-    .nav-link svg {
-      width: 15px;
-      height: 15px;
-    }
-
-    .nav-link:hover {
-      background: var(--base-2);
-      color: var(--ink-0);
     }
 
     .nav-link.active {
@@ -142,130 +79,44 @@
     }
 
     .nav-av {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: var(--grad);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
       font-weight: 700;
-      color: #fff;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(96, 64, 240, 0.25);
-      border: 2px solid rgba(255, 255, 255, 0.6);
-      transition: transform .15s, box-shadow .15s;
+      border: 2px solid #fff;
     }
 
-    .nav-av:hover {
-      transform: scale(1.06);
-      box-shadow: 0 4px 14px rgba(96, 64, 240, .35);
-    }
-
-    /* ── PAGE ── */
     .page {
       max-width: 1160px;
       margin: 0 auto;
       padding: 48px 24px 80px;
-      display: flex;
-      flex-direction: column;
-      gap: 48px;
-    }
-
-    .welcome-title {
-      font-family: var(--font-d);
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      font-weight: 400;
-      line-height: 1.08;
-      letter-spacing: -0.025em;
-      color: var(--ink-0);
-      margin-bottom: 12px;
-    }
-
-    .welcome-title span {
-      background: var(--grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .welcome-sub {
-      font-size: 14px;
-      color: var(--ink-2);
-      line-height: 1.65;
-      max-width: 480px;
     }
 
     .hero-empty {
-      background: var(--grad-soft);
-      border: 1px solid rgba(96, 64, 240, 0.12);
-      border-radius: 20px;
+      background: #fff;
+      border: 1px solid var(--edge);
       padding: 80px 40px;
-      display: flex;
+      border-radius: 20px;
+      text-align: center;
+      display: none;
       flex-direction: column;
       align-items: center;
-      text-align: center;
+      gap: 20px;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 24px;
     }
 
-    .empty-title {
-      font-family: var(--font-d);
-      font-size: 2.2rem;
-      font-weight: 400;
-      color: var(--ink-0);
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 12px 24px;
-      border-radius: 9px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all .14s;
-      border: none;
-      font-family: inherit;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: var(--grad);
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: var(--surface-2);
-      color: var(--ink-0);
-      border: 1px solid var(--edge-2);
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%) translateY(12px);
-      background: var(--ink-0);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 99px;
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: 0 8px 28px rgba(13, 12, 26, .3);
-      opacity: 0;
-      transition: all .2s;
-      pointer-events: none;
-      z-index: 9000;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .event-card {
+    .card {
       background: var(--surface-2);
       border: 1px solid var(--edge);
       border-radius: var(--radius);
@@ -273,33 +124,15 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
+      cursor: default;
     }
 
-    .event-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .ec-tag {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 4px 8px;
-      border-radius: 4px;
-      align-self: flex-start;
-    }
-
-    .ec-title {
+    .card-title {
       font-family: var(--font-d);
-      font-size: 22px;
-      font-weight: 400;
-      color: var(--ink-0);
+      font-size: 26px;
     }
 
-    .ec-meta {
+    .card-meta {
       font-size: 12px;
       color: var(--ink-2);
       display: flex;
@@ -307,213 +140,254 @@
       gap: 6px;
     }
 
-    .ec-status {
-      margin-top: auto;
+    .btn {
+      padding: 10px 18px;
+      border-radius: 9px;
       font-weight: 700;
-      display: flex;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .btn-pri {
+      background: var(--grad);
+      color: #fff;
+    }
+
+    .btn-sec {
+      background: var(--base-2);
+      color: var(--ink-1);
+    }
+
+    .team-box {
+      background: var(--base-2);
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 8px;
+      border: 1px dashed var(--edge-2);
+    }
+
+    .team-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      background: #fff;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--violet);
+      margin-bottom: 8px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 32px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #000;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      opacity: 0;
+      transition: 0.3s;
+      pointer-events: none;
+      z-index: 2000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
   </style>
 </head>
 
 <body>
-
   <nav class="topnav">
-    <a href="/" class="nav-brand">
-      <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
-        <defs>
-          <linearGradient id="lg" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#6040f0" />
-            <stop offset="1" stop-color="#1a96d8" />
-          </linearGradient>
-        </defs>
-        <circle cx="13" cy="13" r="10.5" stroke="url(#lg)" stroke-width="1.6" />
-        <circle cx="13" cy="13" r="6" stroke="url(#lg)" stroke-width="1.2" opacity=".55" />
-        <circle cx="13" cy="13" r="2.2" fill="url(#lg)" />
-      </svg>
-      Circles
-    </a>
+    <a href="/" class="nav-brand">Circles</a>
     <div class="nav-spacer"></div>
     <div class="nav-links">
       <a href="/participant" class="nav-link active">My Events</a>
+      <a href="/discover" class="nav-link">Discover</a>
       <a href="/" class="nav-link">Home</a>
     </div>
-    <div class="nav-av" id="navAv" title="User">U</div>
+    <div class="nav-av" id="navAv">U</div>
   </nav>
 
   <div class="page">
-    <div class="welcome-box">
-      <h1 class="welcome-title" id="welcomeTitle">Welcome, <span>Explorer.</span><br>Your events await.</h1>
-      <p class="welcome-sub">Explore upcoming conferences, workshops and meetups. Your registered events will appear
-        here.</p>
+    <h1 style="font-family:var(--font-d); font-size:42px; margin-bottom:32px;">My <span>Journey.</span></h1>
+
+    <div id="empty" class="hero-empty">
+      <h2 style="font-family:var(--font-d); font-size:28px;">No registrations yet</h2>
+      <p style="color:var(--ink-2)">You haven't registered for any events yet. Start your journey by exploring available
+        events.</p>
+      <a href="/discover" class="btn btn-pri">Discover Events</a>
     </div>
 
-    <div class="hero-empty" id="emptyState" style="display:none;">
-      <h2 class="empty-title">No events yet</h2>
-      <p class="empty-sub" style="color:var(--ink-2); max-width: 400px;">Your event calendar is empty. Discover what's
-        happening and grab your first ticket today.</p>
-      <div style="display:flex; gap:12px;">
-        <a href="/" class="btn btn-primary">Discover Events</a>
-        <button class="btn btn-secondary" onclick="logout()">Logout</button>
-      </div>
-    </div>
+    <div id="grid" class="events-grid"></div>
+  </div>
 
-    <div class="events-grid" id="eventsGrid">
-      <!-- Dynamic Content -->
+  <!-- QR Modal -->
+  <div id="qrModal" class="modal" onclick="if(event.target==this)this.style.display='none'">
+    <div class="modal-content" style="text-align:center">
+      <h3 id="qrTitle" style="font-family:var(--font-d); font-size:24px; margin-bottom:16px;">Ticket</h3>
+      <img id="qrImg" style="width:200px; height:200px; margin:10px auto; display:block">
+      <p style="font-size:12px; color:var(--ink-2); margin-top:16px;">Show this QR code at the entrance.</p>
+      <button class="btn btn-sec" style="margin-top:20px; width:100%"
+        onclick="document.getElementById('qrModal').style.display='none'">Close</button>
     </div>
   </div>
 
-  <!-- QR Ticket Modal -->
-  <div id="qrModal"
-    style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
-    <div
-      style="background:#fff; padding:32px; border-radius:18px; max-width:400px; width:95%; text-align:center; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-      <button onclick="closeQR()"
-        style="position:absolute; top:16px; right:16px; border:none; background:none; font-size:24px; cursor:pointer; color:var(--ink-3);">✕</button>
-      <h3 id="qrEventTitle" style="font-family:var(--font-d); font-size:28px; margin-bottom:12px; color:var(--ink-0);">
-        Event Name</h3>
-      <div id="qrContainer" style="margin:20px 0; background:#f9f9f9; padding:20px; border-radius:12px;">
-        <img id="qrImg" src="" alt="Ticket QR" style="width:220px; height:220px; object-fit:contain;">
-      </div>
-      <div id="qrStatusBadge"
-        style="display:inline-block; padding:6px 16px; border-radius:99px; font-weight:700; font-size:12px; text-transform:uppercase;">
-        Status: REGISTERED</div>
-      <p style="font-size:13px; color:var(--ink-2); margin-top:16px; line-height:1.5;">Present this QR code at the event
-        entrance for seamless check-in.</p>
+  <!-- Team Modal -->
+  <div id="teamModal" class="modal" onclick="if(event.target==this)this.style.display='none'">
+    <div class="modal-content">
+      <h3 id="tmTitle" style="font-family:var(--font-d); font-size:24px; margin-bottom:16px;">Team Action</h3>
+      <div id="tmBody"></div>
+      <button class="btn btn-sec" style="margin-top:20px; width:100%"
+        onclick="document.getElementById('teamModal').style.display='none'">Cancel</button>
     </div>
   </div>
 
-  <div class="toast" id="toast">Action successful</div>
+  <div id="toast" class="toast"></div>
 
   <script>
-    // ── Auth Check ──
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const tk = localStorage.getItem('token');
+    const u = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!tk) window.location.href = '/';
+    if (u.name) document.getElementById('navAv').textContent = u.name[0].toUpperCase();
 
-    if (!token || !user) {
-      window.location.href = '/';
-    }
+    function showT(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
 
-    // ── Update UI ──
-    if (user) {
-      const title = document.getElementById('welcomeTitle');
-      const name = user.name || user.fullName || user.email.split('@')[0];
-      if (title) title.innerHTML = `Welcome, <span>${name}.</span><br>Your journey starts here.`;
+    async function load() {
+      const res = await fetch('/api/auth/me/registrations', { headers: { 'Authorization': 'Bearer ' + tk } });
+      const data = await res.json();
+      const grid = document.getElementById('grid');
+      const empty = document.getElementById('empty');
 
-      const navAv = document.getElementById('navAv');
-      if (navAv) {
-        navAv.textContent = name.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2);
-        navAv.title = name;
+      if (!data.registrations || data.registrations.length === 0) {
+        empty.style.display = 'flex';
+        grid.style.display = 'none';
+        return;
       }
-    }
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
-    }
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
 
-    function logout() {
-      if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/';
-      }
-    }
+      grid.innerHTML = data.registrations.map(reg => {
+        const e = reg.event;
+        const myTeam = data.teams.find(tm => tm.team.eventId === e.id);
+        const canTeam = e.maxTeamSize > 1;
 
-    async function fetchMyEvents() {
-      try {
-        const res = await fetch('/api/auth/me/registrations', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error('Fetch failed');
-        const data = await res.json();
-
-        const grid = document.getElementById('eventsGrid');
-        const empty = document.getElementById('emptyState');
-
-        if (!data.registrations || data.registrations.length === 0) {
-          grid.style.display = 'none';
-          empty.style.display = 'flex';
-          return;
-        }
-
-        grid.style.display = 'grid';
-        empty.style.display = 'none';
-
-        grid.innerHTML = data.registrations.map(reg => {
-          const e = reg.event;
-          const d = new Date(e.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-          const isCI = reg.status === 'CHECKED_IN';
-
-          return `
-            <div class="event-card" onclick="viewTicket('${e.id}', '${e.title}', '${reg.status}')">
-              <div class="ec-tag" style="background:${isCI ? 'var(--emerald)22' : 'var(--violet)22'}; color:${isCI ? 'var(--emerald)' : 'var(--violet)'}">
-                ${e.category || 'General'}
-              </div>
-              <h3 class="ec-title">${e.title}</h3>
-              <div class="ec-meta">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                ${d}
-              </div>
-              <div class="ec-meta">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                ${e.venue || 'Virtual'}
-              </div>
-              <div class="ec-status" style="color:${isCI ? 'var(--emerald)' : 'var(--ink-2)'}">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  ${isCI ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
-              : '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>'}
-                </svg>
-                ${isCI ? 'Checked In' : 'Registered'}
-              </div>
+        return `
+          <div class="card">
+            <div class="card-title">${e.title}</div>
+            <div class="card-meta">${new Date(e.startDate).toLocaleDateString()} • ${e.venue || 'Virtual'}</div>
+            
+            <div style="display:flex; gap:10px; margin-top:8px">
+              <button class="btn btn-pri" style="flex:1" onclick="viewT('${e.id}', '${e.title}')">View Ticket</button>
+              ${canTeam && !myTeam ? `<button class="btn btn-sec" onclick="teamOp('${e.id}', 'options')">Team</button>` : ''}
+              ${myTeam ? `<button class="btn btn-sec" onclick="teamOp('${e.id}', 'view', '${myTeam.team.id}')">My Team</button>` : ''}
             </div>
-          `;
-        }).join('');
 
-      } catch (err) {
-        console.error(err);
-        showToast('Failed to load events');
+            ${myTeam ? `
+              <div class="team-box">
+                <span class="team-badge">TEAM: ${myTeam.team.name}</span>
+                <div style="font-size:11px; color:var(--ink-2)">Invite Code: <strong style="color:var(--violet); font-family:monospace">${myTeam.team.inviteCode}</strong></div>
+                <div style="font-size:11px; color:var(--ink-3); margin-top:4px">${myTeam.team.members.length}/${e.maxTeamSize} members</div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function viewT(id, title) {
+      const res = await fetch('/api/events/' + id + '/ticket/qr', { headers: { 'Authorization': 'Bearer ' + tk } });
+      const data = await res.json();
+      document.getElementById('qrTitle').textContent = title;
+      document.getElementById('qrImg').src = data.qrCode;
+      document.getElementById('qrModal').style.display = 'flex';
+    }
+
+    function teamOp(evId, op, tmId) {
+      const modal = document.getElementById('teamModal');
+      const body = document.getElementById('tmBody');
+      const title = document.getElementById('tmTitle');
+      modal.style.display = 'flex';
+
+      if (op === 'options') {
+        title.textContent = 'Team Options';
+        body.innerHTML = `
+          <p style="margin-bottom:20px; color:var(--ink-2)">Form a team to collaborate with others.</p>
+          <button class="btn btn-pri" style="width:100%; margin-bottom:10px" onclick="teamOp('${evId}', 'create')">Create New Team</button>
+          <button class="btn btn-sec" style="width:100%" onclick="teamOp('${evId}', 'join')">Join Existing Team</button>
+        `;
+      } else if (op === 'create') {
+        title.textContent = 'Create Team';
+        body.innerHTML = `
+          <input type="text" id="tmName" placeholder="Enter Team Name" style="width:100%; padding:12px; border:1px solid var(--edge-2); border-radius:8px; margin-bottom:16px">
+          <button class="btn btn-pri" style="width:100%" onclick="doCreate('${evId}')">Create & Generate Invite</button>
+        `;
+      } else if (op === 'join') {
+        title.textContent = 'Join Team';
+        body.innerHTML = `
+          <input type="text" id="tmCode" placeholder="Enter Invite Code" style="width:100%; padding:12px; border:1px solid var(--edge-2); border-radius:8px; margin-bottom:16px">
+          <button class="btn btn-pri" style="width:100%" onclick="doJoin()">Join Team</button>
+        `;
+      } else if (op === 'view') {
+        title.textContent = 'Team Details';
+        body.innerHTML = '<p style="text-align:center; padding:20px; color:var(--ink-3)">Loading team info...</p>';
+        // Detailed view could be added here
+        document.getElementById('teamModal').style.display = 'none';
+        showT('Team info displayed on card');
       }
     }
 
-    async function viewTicket(eventId, title, status) {
-      try {
-        const res = await fetch(`/api/events/${eventId}/ticket/qr`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error('QR failed');
-        const data = await res.json();
-
-        document.getElementById('qrEventTitle').textContent = title;
-        document.getElementById('qrImg').src = data.qrCode;
-
-        const badge = document.getElementById('qrStatusBadge');
-        if (status === 'CHECKED_IN') {
-          badge.textContent = 'Status: CHECKED IN';
-          badge.style.background = 'var(--emerald)22';
-          badge.style.color = 'var(--emerald)';
-        } else {
-          badge.textContent = 'Status: REGISTERED';
-          badge.style.background = 'var(--violet)22';
-          badge.style.color = 'var(--violet)';
-        }
-
-        document.getElementById('qrModal').style.display = 'flex';
-      } catch (err) {
-        console.error(err);
-        showToast('Failed to load ticket');
-      }
+    async function doCreate(evId) {
+      const name = document.getElementById('tmName').value;
+      if (!name) return alert('Name required');
+      const res = await fetch('/api/events/' + evId + '/teams', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      });
+      if (res.ok) { showT('Team created!'); document.getElementById('teamModal').style.display = 'none'; load(); }
+      else { const d = await res.json(); alert(d.error || 'Failed'); }
     }
 
-    function closeQR() {
-      document.getElementById('qrModal').style.display = 'none';
+    async function doJoin() {
+      const inviteCode = document.getElementById('tmCode').value;
+      if (!inviteCode) return alert('Code required');
+      const res = await fetch('/api/teams/join', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inviteCode })
+      });
+      if (res.ok) { showT('Joined team!'); document.getElementById('teamModal').style.display = 'none'; load(); }
+      else { const d = await res.json(); alert(d.error || 'Failed'); }
     }
 
-    document.getElementById('navAv').onclick = logout;
-    fetchMyEvents();
+    load();
   </script>
 </body>
 

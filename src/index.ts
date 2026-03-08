@@ -126,6 +126,11 @@ app.get('/participant', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'participant_pages', 'MyEvents.html'));
 });
 
+app.get('/discover', (req, res) => {
+    res.sendFile(path.join(publicPath, 'Discover.html'));
+});
+
+
 // Admin Redirect
 app.get('/admin', (req, res) => {
     res.redirect('/dashboard');
