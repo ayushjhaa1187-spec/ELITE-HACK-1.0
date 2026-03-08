@@ -123,7 +123,7 @@ app.get('/status', (req, res) => {
 
 // Participant Pages
 app.get('/participant', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'participant_pages', 'participantBlank.html'));
+    res.sendFile(path.join(process.cwd(), 'participant_pages', 'MyEvents.html'));
 });
 
 // Admin Redirect

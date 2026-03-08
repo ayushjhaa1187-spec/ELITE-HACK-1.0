@@ -195,8 +195,14 @@ export const getGlobalStats = async (req: Request, res: Response) => {
         const totalRegistrations = await prisma.registration.count();
         const checkIns = await prisma.registration.count({ where: { status: 'CHECKED_IN' } });
 
-        // Active Now: Simple simulation - 15% of checked-in users are usually "active" at once
-        const activeNow = Math.round(checkIns * 0.42) || 0;
+        // Active Now: Users checked in within the last 15 minutes globally
+        const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
+        const activeNow = await prisma.registration.count({
+            where: {
+                status: 'CHECKED_IN',
+                updatedAt: { gte: fifteenMinutesAgo }
+            }
+        });
 
         res.json({
             totalRegistrations,

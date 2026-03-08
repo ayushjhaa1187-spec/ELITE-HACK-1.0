@@ -53,7 +53,7 @@
     },
     {
       "src": "/participant",
-      "dest": "participant_pages/participantBlank.html"
+      "dest": "participant_pages/MyEvents.html"
     },
     {
       "src": "/(.*)",

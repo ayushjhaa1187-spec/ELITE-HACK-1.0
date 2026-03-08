@@ -264,6 +264,56 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    .event-card {
+      background: var(--surface-2);
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .ec-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 8px;
+      border-radius: 4px;
+      align-self: flex-start;
+    }
+
+    .ec-title {
+      font-family: var(--font-d);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink-0);
+    }
+
+    .ec-meta {
+      font-size: 12px;
+      color: var(--ink-2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ec-status {
+      margin-top: auto;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
   </style>
 </head>
 
@@ -299,7 +349,7 @@
         here.</p>
     </div>
 
-    <div class="hero-empty">
+    <div class="hero-empty" id="emptyState" style="display:none;">
       <h2 class="empty-title">No events yet</h2>
       <p class="empty-sub" style="color:var(--ink-2); max-width: 400px;">Your event calendar is empty. Discover what's
         happening and grab your first ticket today.</p>
@@ -307,6 +357,30 @@
         <a href="/" class="btn btn-primary">Discover Events</a>
         <button class="btn btn-secondary" onclick="logout()">Logout</button>
       </div>
+    </div>
+
+    <div class="events-grid" id="eventsGrid">
+      <!-- Dynamic Content -->
+    </div>
+  </div>
+
+  <!-- QR Ticket Modal -->
+  <div id="qrModal"
+    style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+    <div
+      style="background:#fff; padding:32px; border-radius:18px; max-width:400px; width:95%; text-align:center; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+      <button onclick="closeQR()"
+        style="position:absolute; top:16px; right:16px; border:none; background:none; font-size:24px; cursor:pointer; color:var(--ink-3);">✕</button>
+      <h3 id="qrEventTitle" style="font-family:var(--font-d); font-size:28px; margin-bottom:12px; color:var(--ink-0);">
+        Event Name</h3>
+      <div id="qrContainer" style="margin:20px 0; background:#f9f9f9; padding:20px; border-radius:12px;">
+        <img id="qrImg" src="" alt="Ticket QR" style="width:220px; height:220px; object-fit:contain;">
+      </div>
+      <div id="qrStatusBadge"
+        style="display:inline-block; padding:6px 16px; border-radius:99px; font-weight:700; font-size:12px; text-transform:uppercase;">
+        Status: REGISTERED</div>
+      <p style="font-size:13px; color:var(--ink-2); margin-top:16px; line-height:1.5;">Present this QR code at the event
+        entrance for seamless check-in.</p>
     </div>
   </div>
 
@@ -349,7 +423,97 @@
       }
     }
 
+    async function fetchMyEvents() {
+      try {
+        const res = await fetch('/api/auth/me/registrations', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Fetch failed');
+        const data = await res.json();
+
+        const grid = document.getElementById('eventsGrid');
+        const empty = document.getElementById('emptyState');
+
+        if (!data.registrations || data.registrations.length === 0) {
+          grid.style.display = 'none';
+          empty.style.display = 'flex';
+          return;
+        }
+
+        grid.style.display = 'grid';
+        empty.style.display = 'none';
+
+        grid.innerHTML = data.registrations.map(reg => {
+          const e = reg.event;
+          const d = new Date(e.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          const isCI = reg.status === 'CHECKED_IN';
+
+          return `
+            <div class="event-card" onclick="viewTicket('${e.id}', '${e.title}', '${reg.status}')">
+              <div class="ec-tag" style="background:${isCI ? 'var(--emerald)22' : 'var(--violet)22'}; color:${isCI ? 'var(--emerald)' : 'var(--violet)'}">
+                ${e.category || 'General'}
+              </div>
+              <h3 class="ec-title">${e.title}</h3>
+              <div class="ec-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                ${d}
+              </div>
+              <div class="ec-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                ${e.venue || 'Virtual'}
+              </div>
+              <div class="ec-status" style="color:${isCI ? 'var(--emerald)' : 'var(--ink-2)'}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  ${isCI ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
+              : '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>'}
+                </svg>
+                ${isCI ? 'Checked In' : 'Registered'}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error(err);
+        showToast('Failed to load events');
+      }
+    }
+
+    async function viewTicket(eventId, title, status) {
+      try {
+        const res = await fetch(`/api/events/${eventId}/ticket/qr`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('QR failed');
+        const data = await res.json();
+
+        document.getElementById('qrEventTitle').textContent = title;
+        document.getElementById('qrImg').src = data.qrCode;
+
+        const badge = document.getElementById('qrStatusBadge');
+        if (status === 'CHECKED_IN') {
+          badge.textContent = 'Status: CHECKED IN';
+          badge.style.background = 'var(--emerald)22';
+          badge.style.color = 'var(--emerald)';
+        } else {
+          badge.textContent = 'Status: REGISTERED';
+          badge.style.background = 'var(--violet)22';
+          badge.style.color = 'var(--violet)';
+        }
+
+        document.getElementById('qrModal').style.display = 'flex';
+      } catch (err) {
+        console.error(err);
+        showToast('Failed to load ticket');
+      }
+    }
+
+    function closeQR() {
+      document.getElementById('qrModal').style.display = 'none';
+    }
+
     document.getElementById('navAv').onclick = logout;
+    fetchMyEvents();
   </script>
 </body>
 

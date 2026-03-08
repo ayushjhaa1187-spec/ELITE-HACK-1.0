@@ -270,14 +270,49 @@ export const getEventStats = async (req: Request, res: Response) => {
         const totalRegistrations = await prisma.registration.count({ where: { eventId } });
         const checkIns = await prisma.registration.count({ where: { eventId, status: 'CHECKED_IN' } });
 
-        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+        const thirtyMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
+        const activeNow = await prisma.registration.count({
+            where: {
+                eventId,
+                status: 'CHECKED_IN',
+                updatedAt: { gte: thirtyMinutesAgo }
+            }
+        });
+
         const recentCheckins = await prisma.registration.count({
             where: {
                 eventId,
                 status: 'CHECKED_IN',
-                updatedAt: { gte: fiveMinutesAgo }
+                updatedAt: { gte: new Date(Date.now() - 5 * 60 * 1000) }
             }
         });
+
+        // Time-series data for Registration Growth (last 7 days)
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        sevenDaysAgo.setHours(0, 0, 0, 0);
+
+        const dailyRegistrations = await prisma.$queryRaw`
+            SELECT 
+                DATE_TRUNC('day', "createdAt") as day,
+                COUNT(*)::int as count
+            FROM "Registration"
+            WHERE "eventId" = ${eventId} AND "createdAt" >= ${sevenDaysAgo}
+            GROUP BY 1
+            ORDER BY 1 ASC
+        `;
+
+        // Time-series data for Check-in Timeline (Hourly for last 12 hours)
+        const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
+        const hourlyCheckins = await prisma.$queryRaw`
+            SELECT 
+                DATE_TRUNC('hour', "updatedAt") as hour,
+                COUNT(*)::int as count
+            FROM "Registration"
+            WHERE "eventId" = ${eventId} AND "status" = 'CHECKED_IN' AND "updatedAt" >= ${twelveHoursAgo}
+            GROUP BY 1
+            ORDER BY 1 ASC
+        `;
 
         // Optimized Custom Field Aggregation
         const fieldIds = event.customFields.map(f => f.id);
@@ -303,8 +338,11 @@ export const getEventStats = async (req: Request, res: Response) => {
         res.json({
             totalRegistrations,
             checkIns,
+            activeNow,
             recentCheckins,
             attendanceRate: totalRegistrations > 0 ? (checkIns / totalRegistrations) * 100 : 0,
+            dailyRegistrations,
+            hourlyCheckins,
             customFieldBreakdown: fieldStats
         });
     } catch (error: any) {
@@ -362,14 +400,14 @@ export const getLiveActivity = async (req: Request, res: Response) => {
             return res.status(403).json({ error: 'You do not have permission to view activity for this event.' });
         }
 
-        const recentRegistrations = await prisma.registration.findMany({
+        const recentActivity = await prisma.registration.findMany({
             where: { eventId },
             orderBy: { updatedAt: 'desc' },
-            take: 12,
+            take: 15,
             include: { user: { select: { profile: true, email: true } } }
         });
 
-        const activityFeed = recentRegistrations.map(reg => {
+        const activityFeed = recentActivity.map(reg => {
             let name = 'Unknown';
             if (reg.user.profile && reg.user.profile.name) {
                 name = reg.user.profile.name;
@@ -378,10 +416,12 @@ export const getLiveActivity = async (req: Request, res: Response) => {
             }
 
             return {
+                id: reg.id,
                 type: reg.status === 'CHECKED_IN' ? 'ci' : 'reg',
                 name: name,
                 detail: reg.status === 'CHECKED_IN' ? 'Checked in' : 'Registered',
-                timestamp: reg.updatedAt
+                timestamp: reg.updatedAt,
+                email: reg.user.email
             };
         });
 
