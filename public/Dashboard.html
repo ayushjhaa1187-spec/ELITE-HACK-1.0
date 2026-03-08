@@ -7,6 +7,7 @@
   <title>Circles — Dashboard</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <script src="/admin-global-search.js"></script>
+  <link rel="stylesheet" href="/admin-shared.css">
   <link rel="stylesheet" href="Dashboard.css">
   <script>
     if (!localStorage.getItem('token')) {
@@ -192,7 +193,7 @@
     <main class="content" id="dashboardContent">
       <div class="page-hdr">
         <div>
-          <div class="page-title">Dashboard</div>
+          <h1 class="page-title">Dashboard</h1>
           <div class="page-sub">Operational overview · Live view</div>
         </div>
         <div class="hdr-actions">
@@ -784,6 +785,10 @@
           <label class="f-lbl">Primary Venue</label>
           <input type="text" id="evVenue" class="f-input" placeholder="e.g. Grand Plaza Hotel">
         </div>
+        <div>
+          <label class="f-lbl">Capacity</label>
+          <input type="number" id="evCapacity" class="f-input" placeholder="e.g. 500">
+        </div>
       </div>
       <div class="modal-ftr" style="padding: 20px 28px 28px; display: flex; gap: 12px;">
         <button class="btn btn-sec" style="flex:1" onclick="closeModal()">Cancel</button>
@@ -814,6 +819,8 @@
         endDate: new Date(Date.now() + 7 * 86400000 + 4 * 3600000).toISOString(),
         registrationStart: new Date().toISOString(),
         registrationEnd: new Date(Date.now() + 7 * 86400000).toISOString(),
+        description: 'New event from dashboard',
+        capacity: parseInt(document.getElementById('evCapacity').value) || 500,
         tags: document.querySelector('.type-btn.active')?.textContent.trim() || 'General'
       };
       if (btn) { btn.disabled = true; btn.innerHTML = 'Publishing...'; }

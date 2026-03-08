@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Circles — Analytics</title>
+  <link rel="stylesheet" href="/admin-shared.css">
   <link rel="stylesheet" href="Analytics.css">
   <script src="/admin-global-search.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
@@ -502,7 +503,7 @@
           <div class="panel-body">
             <div class="donut-wrap">
               <div class="donut-svg-wrap">
-                <svg id="donutSvg" width="136" height="136" viewBox="0 0 136 136"></svg>
+                <canvas id="donutChart" width="136" height="136"></canvas>
                 <div class="donut-center">
                   <div class="donut-center-val" id="donutCenterVal">0</div>
                   <div class="donut-center-lbl">Attendees</div>
@@ -855,7 +856,8 @@
         }
       }
     });
-
+    /* ─── BAR CHART (CHECK-INS) ─────────────────────────── */
+    const ciCtx = document.getElementById('ciChart').getContext('2d');
     const ciChart = new Chart(ciCtx, {
       type: 'bar',
       data: {
