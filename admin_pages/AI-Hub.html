@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circles — AI Mode</title>
+  <link rel="stylesheet" href="/admin-shared.css">
+  <link rel="stylesheet" href="AI-Hub.css">
+  <script src="/admin-global-search.js"></script>
+  <script>
+    if (!localStorage.getItem('token')) {
+      window.location.href = '/';
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="/" class="nav-logo">
+        <svg class="logo-svg" viewBox="0 0 26 26" fill="none">
+          <defs>
+            <linearGradient id="lg-sb" x1="2" y1="2" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6040f0" />
+              <stop offset="1" stop-color="#1a96d8" />
+            </linearGradient>
+          </defs>
+          <circle cx="13" cy="13" r="10.5" stroke="url(#lg-sb)" stroke-width="1.6" />
+          <circle cx="13" cy="13" r="6" stroke="url(#lg-sb)" stroke-width="1.2" opacity=".55" />
+          <circle cx="13" cy="13" r="2.2" fill="url(#lg-sb)" />
+        </svg>
+        Circles
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-lbl">Main</div>
+      <div class="nav-item" onclick="window.location.href='/dashboard'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="window.location.href='/events'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Events <span class="nav-badge" id="sidebarEventCount" style="display:none;">0</span>
+      </div>
+      <div class="nav-item" onclick="window.location.href='/attendees'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>
+        Attendees
+      </div>
+      <div class="nav-lbl">Management</div>
+      <div class="nav-item" onclick="window.location.href='/scanner'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+          <circle cx="12" cy="13" r="4" />
+        </svg>
+        Scanner
+      </div>
+      <div class="nav-item active" onclick="window.location.href='/ai-mode'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+          <path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
+        </svg>
+        AI mode
+      </div>
+      <div class="nav-item" onclick="window.location.href='/settings'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        Settings
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sb-user">
+        <div class="av-sm" id="userInitials">AD</div>
+        <div style="flex:1;min-width:0">
+          <div class="u-name" id="userName">Admin</div>
+          <div class="u-role">Event Admin</div>
+        </div>
+        <button id="logoutBtn" class="icon-btn" style="color:var(--danger); margin-left: auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════ MAIN ══════════════════════ -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-ev" style="flex: 1; display: flex; align-items: center;">
+        <div
+          style="font-size: 14px; font-weight: 700; color: var(--violet); display: flex; align-items: center; gap: 8px;">
+          <span class="live-dot"></span> AI Hub Active
+        </div>
+      </div>
+      <div class="tb-actions">
+        <div class="topbar-ev-ctx"
+          style="display: flex; align-items: center; gap: 12px; margin-right: 16px; border-right: 1px solid var(--edge); padding-right: 16px;">
+          <div class="ev-sel" id="evCtxBtn"
+            style="background: var(--surface); border: 1px solid var(--edge-2); padding: 5px 12px; border-radius: 8px; font-weight: 600; font-size: 13.5px; display: flex; align-items: center; gap: 7px; cursor: pointer;">
+            <span id="currentEventName" style="color: var(--ink-0);">Loading...</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+        </div>
+        <button class="icon-btn" id="logoutBtnTop">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="content animate-fade">
+
+      <!-- AI MODE HEADER -->
+      <div class="page-hdr-refined" style="margin-bottom: 32px;">
+        <div style="display:flex; align-items:center; gap:16px; margin-bottom:12px">
+          <div
+            style="width:48px; height:48px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; color:#fff">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div>
+            <h1 style="font-size: 32px; font-weight: 850; letter-spacing: -0.04em; color: var(--ink-0);">AI Mode</h1>
+            <p style="font-size: 15px; color: var(--ink-3);">Harness Gemini 1.5 Flash to optimize your event
+              communications and intelligence.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+
+        <!-- FEATURE: INTELLIGENCE REPORT -->
+        <div class="card ai-card">
+          <div class="card-head-refined">
+            <div class="card-title">Intelligence Hub</div>
+            <div class="card-sub">Synthesize peak metrics and attendance patterns into an executive report.</div>
+          </div>
+          <div class="card-body">
+            <div
+              style="background: var(--base-2); border-radius:12px; padding:20px; text-align:center; min-height:200px; display:flex; flex-direction:column; justify-content:center; border: 1px dashed var(--edge);">
+              <div id="reportPlaceholder" style="color:var(--ink-3); font-size:14px;">No report generated yet. Ready to
+                analyze.</div>
+              <div id="reportPreview"
+                style="display:none; text-align:left; font-size:13px; line-height:1.6; color:var(--ink-1); max-height:300px; overflow-y:auto; white-space:pre-wrap;">
+              </div>
+            </div>
+          </div>
+          <div class="action-ftr">
+            <button class="btn btn-primary" id="genReportBtn" onclick="generateAIHubReport()" style="width:100%">Analyze
+              & Generate Report</button>
+            <button class="btn btn-secondary" id="copyReportBtn" onclick="copyAIHubReport()"
+              style="width:100%; display:none; margin-top:8px">Copy to Clipboard</button>
+          </div>
+        </div>
+
+        <!-- FEATURE: SMART BROADCAST WRITER -->
+        <div class="card ai-card">
+          <div class="card-head-refined">
+            <div class="card-title">Smart Broadcast Writer</div>
+            <div class="card-sub">Transform raw intent into high-engagement attendee messages.</div>
+          </div>
+          <div class="card-body">
+            <div class="field-wrap" style="margin-bottom:16px">
+              <label class="field-label">Your Intent</label>
+              <textarea class="f-textarea" id="aiIntent"
+                placeholder="e.g. 'Tell everyone the hackathon judging starts in 10 mins at the main hall'"
+                style="height:80px"></textarea>
+            </div>
+            <div id="broadcastResult"
+              style="display:none; background:var(--violet-soft); border:1px solid var(--violet); padding:16px; border-radius:12px; margin-top:16px;">
+              <div
+                style="font-size:11px; font-weight:800; color:var(--violet); text-transform:uppercase; margin-bottom:8px">
+                Gemini Polished Draft</div>
+              <div id="polishedDraft" style="font-size:14px; color:var(--ink-0); line-height:1.5"></div>
+            </div>
+          </div>
+          <div class="action-ftr">
+            <button class="btn btn-primary" id="genBroadcastBtn" onclick="generateAIHubBroadcast()"
+              style="width:100%">Draft Professional Message</button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('token');
+    let activeEventId = localStorage.getItem('currentEventId');
+
+    async function generateAIHubReport() {
+      if (!activeEventId) return alert('Please select an event first.');
+
+      const btn = document.getElementById('genReportBtn');
+      const placeholder = document.getElementById('reportPlaceholder');
+      const preview = document.getElementById('reportPreview');
+      const copyBtn = document.getElementById('copyReportBtn');
+
+      btn.disabled = true;
+      btn.textContent = 'Processing with Gemini...';
+      placeholder.textContent = 'Aggregating metrics and synthesizing growth patterns...';
+
+      try {
+        const res = await fetch('/api/ai/report/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ eventId: activeEventId })
+        });
+
+        if (!res.ok) throw new Error('AI Hub Synthesis Failed');
+        const data = await res.json();
+
+        placeholder.style.display = 'none';
+        preview.style.display = 'block';
+        preview.textContent = data.report;
+        copyBtn.style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        placeholder.textContent = 'Failed to generate report. Ensure event has registration data.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Re-Analyze & Update Report';
+      }
+    }
+
+    function copyAIHubReport() {
+      const text = document.getElementById('reportPreview').textContent;
+      navigator.clipboard.writeText(text);
+      alert('Report copied to clipboard!');
+    }
+
+    async function generateAIHubBroadcast() {
+      const intent = document.getElementById('aiIntent').value.trim();
+      const btn = document.getElementById('genBroadcastBtn');
+      const resultBox = document.getElementById('broadcastResult');
+      const draftEl = document.getElementById('polishedDraft');
+
+      if (!intent) return alert('Please enter your intent.');
+
+      btn.disabled = true;
+      btn.textContent = 'Gemini is writing...';
+
+      try {
+        const res = await fetch('/api/ai/broadcast/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            raw_intent: intent,
+            event: { name: document.getElementById('currentEventName').textContent || 'Event', date: 'Upcoming', venue: 'Main Hall' }
+          })
+        });
+
+        if (!res.ok) throw new Error('AI Generation Failed');
+        const data = await res.json();
+
+        resultBox.style.display = 'block';
+        draftEl.textContent = data.whatsapp_body || data.email_body;
+      } catch (err) {
+        console.error(err);
+        alert('AI unavailable. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Draft Professional Message';
+      }
+    }
+
+    // Context Loading
+    async function loadContext() {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user.name) {
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userInitials').textContent = user.name.split(' ').map(n => n[0]).join('').slice(0, 2);
+      }
+
+      const res = await fetch('/api/admin/events', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const events = await res.json();
+      const curr = events.find(e => e.id === activeEventId);
+      if (curr) {
+        document.getElementById('currentEventName').textContent = curr.title;
+      } else if (events.length > 0) {
+        activeEventId = events[0].id;
+        localStorage.setItem('currentEventId', activeEventId);
+        document.getElementById('currentEventName').textContent = events[0].title;
+      }
+    }
+
+    loadContext();
+
+    document.getElementById('logoutBtn').onclick = () => { localStorage.clear(); window.location.href = '/'; };
+  </script>
+
+</body>
+
+</html>

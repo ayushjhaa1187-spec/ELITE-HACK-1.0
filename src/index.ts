@@ -97,8 +97,8 @@ app.get('/attendees', (req, res) => {
     res.sendFile(path.join(adminPagesPath, 'Attendees.html'));
 });
 
-app.get('/analytics', (req, res) => {
-    res.sendFile(path.join(adminPagesPath, 'Analytics.html'));
+app.get('/ai-mode', (req, res) => {
+    res.sendFile(path.join(adminPagesPath, 'AI-Hub.html'));
 });
 
 app.get('/settings', (req, res) => {

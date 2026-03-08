@@ -70,11 +70,12 @@
         </svg>
         Scanner
       </div>
-      <div class="nav-item" onclick="window.location.href='/analytics'" style="cursor:pointer">
+      <div class="nav-item" onclick="window.location.href='/ai-mode'" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+          <path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
         </svg>
-        Analytics
+        AI mode
       </div>
       <div class="nav-item" onclick="window.location.href='/settings'" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -108,15 +109,7 @@
 
     <header class="topbar">
       <div class="topbar-ev" style="flex: 1; display: flex; align-items: center;">
-        <div class="search-wrap" style="position: relative; width: 100%; max-width: 400px; margin-left: 0;">
-          <input type="text" class="f-input" id="globalSearchInput" placeholder="Search attendees, metrics..."
-            style="padding-left: 36px; height: 38px; border: 1px solid var(--edge-2); border-radius: 9px; width: 100%; outline: none; background: var(--surface);">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-        </div>
+        <!-- Space reserved for header depth -->
       </div>
 
       <div class="tb-actions">
@@ -150,28 +143,22 @@
 
       <!-- ③ DATA TABLE — with zoom entrance -->
       <div class="panel animate-zoom" style="margin-top: 24px;">
-        <div class="page-title-block">
-          <div class="page-breadcrumb">
+        <div class="page-title-block" style="margin-bottom: 28px;">
+          <div class="page-breadcrumb" style="margin-bottom: 8px;">
             <a href="/dashboard" class="page-breadcrumb-link">Dashboard</a>
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
               <polyline points="9 6 15 12 9 18" />
             </svg>
             <span id="breadcrumbEventName" style="color: var(--violet); font-weight: 600;">Event Name</span>
           </div>
-          <div class="page-title">Attendees</div>
+          <div class="page-title"
+            style="font-size: 42px; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 8px;">Attendees</div>
           <div class="page-event-name" id="pageEventName" style="display:none;">Event Title</div>
-          <div class="page-sub">Comprehensive overview of registrations and live check-in performance</div>
+          <div class="page-sub" style="font-size: 15px; color: var(--ink-2); opacity: 0.8;">Comprehensive overview of
+            registrations and live check-in performance</div>
         </div>
-        <div class="hdr-actions">
-          <div class="search-wrap">
-            <svg class="search-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2.5">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input class="search-input" type="text" id="searchInput" placeholder="Search name, email or ticket ID"
-              oninput="applyFilters()">
-          </div>
+        <div class="hdr-actions" style="display: flex; align-items: center; gap: 20px;">
+          <div style="flex: 1;"></div>
           <select class="filter-select" id="statusFilter" onchange="applyFilters()">
             <option value="all">All Statuses</option>
             <option value="checked">Checked In</option>
@@ -715,8 +702,10 @@
 
     // ── applyFilters: search + status filter ──
     function applyFilters() {
-      const searchQuery = (document.getElementById('searchInput').value || '').toLowerCase();
-      const statusFilter = document.getElementById('statusFilter').value;
+      const searchEl = document.getElementById('searchInput');
+      const searchQuery = searchEl ? (searchEl.value || '').toLowerCase() : '';
+      const statusFilterSelection = document.getElementById('statusFilter');
+      const statusFilter = statusFilterSelection ? statusFilterSelection.value : 'all';
 
       const filtered = currentAttendees.filter(a => {
         const matchSearch = !searchQuery ||

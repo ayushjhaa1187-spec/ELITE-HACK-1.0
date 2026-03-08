@@ -1,0 +1,89 @@
+/* AI Hub Specific Styles */
+
+.ai-card {
+  border: 1px solid var(--edge);
+  box-shadow: 0 10px 30px rgba(96, 64, 240, 0.05);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s;
+}
+
+.ai-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(96, 64, 240, 0.1);
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.f-textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1.5px solid var(--edge-2);
+  padding: 14px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: none;
+  background: var(--surface);
+  transition: border-color 0.12s;
+  outline: none;
+}
+
+.f-textarea:focus {
+  border-color: var(--violet);
+}
+
+.btn-primary {
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  border: 1px solid var(--edge-2);
+  color: var(--ink-1);
+  font-weight: 600;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes pulse-violet {
+  0% {
+    box-shadow: 0 0 0 0 rgba(96, 64, 240, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(96, 64, 240, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(96, 64, 240, 0);
+  }
+}
+
+.ai-active-glow {
+  animation: pulse-violet 2s infinite;
+}
+
+/* Scrollbar Refinement */
+#reportPreview::-webkit-scrollbar {
+  width: 6px;
+}
+
+#reportPreview::-webkit-scrollbar-track {
+  background: var(--base-2);
+}
+
+#reportPreview::-webkit-scrollbar-thumb {
+  background: var(--edge-2);
+  border-radius: 10px;
+}
