@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   TOKENS  (Circles design system)
+   TOKENS  (Circles unified design system)
 ═══════════════════════════════════════════════════════ */
 :root {
   --ink-0: #111827;
@@ -7,9 +7,9 @@
   --ink-2: #6B7280;
   --ink-3: #9CA3AF;
   --ink-4: #E5E7EB;
-  --base: #F9FAFB;
-  --base-2: #F3F4F6;
-  --surface: #FFFFFF;
+  --base: #FFFFFF;
+  --base-2: #F9FAFB;
+  --surface: rgba(255, 255, 255, 0.9);
   --surface-2: #FFFFFF;
   --edge: #E5E7EB;
   --edge-2: #D1D5DB;
@@ -49,15 +49,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body::before {
+body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  opacity: 0.016;
+  background:
+    radial-gradient(ellipse 100% 100% at 0% 50%, rgba(96, 64, 240, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 100% 50%, rgba(26, 150, 216, 0.03) 0%, transparent 55%);
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9997;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -138,14 +138,15 @@ body::before {
 }
 
 .nav-item.active {
-  background: var(--violet);
+  background: var(--grad);
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(100, 80, 255, 0.3);
 }
 
 .nav-item svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   opacity: 0.8;
 }
@@ -154,9 +155,9 @@ body::before {
   margin-left: auto;
   background: var(--violet);
   color: #fff;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
   border-radius: 20px;
 }
 
