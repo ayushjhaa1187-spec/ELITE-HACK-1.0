@@ -111,9 +111,11 @@
 
     <header class="topbar">
       <div class="topbar-ev">
-        <div class="ev-sel" onclick="window.location.href='/dashboard'">
-          <span id="currentEventName">Select Event</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <div class="ev-sel" onclick="window.location.href='/dashboard'" style="max-width: 200px;">
+          <span id="currentEventName" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Select
+            Event</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            style="flex-shrink:0;">
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </div>
@@ -291,9 +293,11 @@
           <!-- ─────────────── SECTION: OPERATIONS HUB ─────────────── -->
           <section id="sec-operations" class="settings-section active">
             <div class="card">
-              <div class="card-head-refined">
-                <div class="card-title">Operations Control Tower</div>
-                <div class="card-sub">Monitor all operational modules and sync settings across the platform.</div>
+              <div style="padding: 24px 32px 20px; border-bottom: 1px solid var(--edge);">
+                <div style="font-size: 24px; font-weight: 800; color: var(--ink-0); letter-spacing: -0.02em;">Operations
+                  Control Tower</div>
+                <div style="font-size: 13.5px; color: var(--ink-3); margin-top: 4px;">Monitor all operational modules
+                  and sync settings across the platform.</div>
               </div>
               <div class="card-body">
                 <div class="ops-grid">

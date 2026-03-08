@@ -32,20 +32,23 @@
 ═══════════════════════════════════════════════════════ */
 .settings-wrap {
   display: grid;
-  grid-template-columns: 230px 1fr;
-  gap: 32px;
+  grid-template-columns: 240px 1fr;
+  gap: 40px;
   align-items: start;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 /* ─── Settings sidebar nav ─── */
 .settings-nav {
   background: var(--surface-2);
-  border: 1px solid var(--edge);
+  border: 1px solid var(--edge-2);
   border-radius: var(--radius);
   overflow: hidden;
   position: sticky;
-  top: calc(var(--topbar-h) + 24px);
-  box-shadow: var(--shadow-sm);
+  top: calc(var(--topbar-h) + 32px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
 }
 
 .snav-item {
@@ -140,19 +143,20 @@
 ═══════════════════════════════════════════════════════ */
 .card {
   background: var(--surface-2);
-  border: 1px solid var(--edge);
+  border: 1px solid var(--edge-2);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s;
 }
 
 .card-hdr {
-  padding: 20px 24px 18px;
+  padding: 24px 32px 20px;
   border-bottom: 1px solid var(--edge);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
 }
 
 .card-title {
@@ -169,17 +173,17 @@
 }
 
 .card-body {
-  padding: 0 24px;
+  padding: 0 32px;
 }
 
 .card-footer {
-  padding: 14px 24px;
+  padding: 18px 32px;
   border-top: 1px solid var(--edge);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
-  background: rgba(244, 243, 251, .5);
+  gap: 12px;
+  background: rgba(244, 243, 251, .03);
 }
 
 /* Operations hub */
