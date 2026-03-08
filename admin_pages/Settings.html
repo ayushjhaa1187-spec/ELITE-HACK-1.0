@@ -300,11 +300,24 @@
           <!-- ─────────────── SECTION: OPERATIONS HUB ─────────────── -->
           <section id="sec-operations" class="settings-section active">
             <div class="card">
-              <div style="padding: 24px 32px 20px; border-bottom: 1px solid var(--edge);">
-                <div style="font-size: 24px; font-weight: 800; color: var(--ink-0); letter-spacing: -0.02em;">Operations
-                  Control Tower</div>
-                <div style="font-size: 13.5px; color: var(--ink-3); margin-top: 4px;">Monitor all operational modules
-                  and sync settings across the platform.</div>
+              <div
+                style="padding: 24px 32px 20px; border-bottom: 1px solid var(--edge); display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-size: 24px; font-weight: 800; color: var(--ink-0); letter-spacing: -0.02em;">
+                    Operations Control Tower</div>
+                  <div style="font-size: 13.5px; color: var(--ink-3); margin-top: 4px;">Monitor all operational modules
+                    and sync settings across the platform.</div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="generateAIReport()" style="gap:8px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
+                  AI Report
+                </button>
               </div>
               <div class="card-body">
                 <div class="ops-grid">
@@ -664,9 +677,26 @@
                 <div class="card-sub">Push real-time notifications to the live attendee mobile dashboard.</div>
               </div>
               <div class="card-body">
-                <div class="field-wrap" style="margin-bottom:20px"><label class="field-label">Broadcast
-                    Message</label><textarea class="f-textarea" id="broadcastMsg"
-                    placeholder="Type a message to push to all attendees..."></textarea></div>
+                <div class="field-wrap" style="margin-bottom:20px">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+                    <label class="field-label" style="margin:0">Broadcast Message</label>
+                    <button class="btn btn-secondary btn-sm" onclick="toggleAIComposer()"
+                      style="padding:4px 12px; font-size:11px">✨ Compose with AI</button>
+                  </div>
+                  <!-- AI Composer Pane (hidden by default) -->
+                  <div id="aiComposerPane"
+                    style="display:none; background:var(--base-2); padding:16px; border-radius:12px; margin-bottom:16px; border:1px solid var(--edge)">
+                    <div style="font-size:12px; font-weight:700; color:var(--violet); margin-bottom:8px">AI MESSAGE
+                      WRITER</div>
+                    <textarea class="f-textarea" id="aiIntent"
+                      placeholder="What's the intent of your message? (e.g. 'remind people about parking at Gate 3')"
+                      style="height:60px; margin-bottom:12px"></textarea>
+                    <button class="btn btn-primary btn-sm" id="aiGenBtn" onclick="generateAIBroadcast()"
+                      style="width:100%">Generate Polished Draft</button>
+                  </div>
+                  <textarea class="f-textarea" id="broadcastMsg"
+                    placeholder="Type a message to push to all attendees..."></textarea>
+                </div>
                 <div style="display:flex;gap:10px"><button class="btn btn-primary btn-sm" id="broadcastBtn"
                     onclick="pushBroadcast()">Push Broadcast</button>
                   <div class="live-indicator">● Broadcast Node Live</div>
@@ -1557,6 +1587,90 @@
       document.getElementById('sec-team').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+    /* ── AI INTELLIGENCE ────────────────────────────────────── */
+    function toggleAIComposer() {
+      const pane = document.getElementById('aiComposerPane');
+      const isHidden = pane.style.display === 'none';
+      pane.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) document.getElementById('aiIntent').focus();
+    }
+
+    async function generateAIBroadcast() {
+      const intent = document.getElementById('aiIntent').value.trim();
+      const btn = document.getElementById('aiGenBtn');
+      if (!intent) return window.CirclesGlobalSearch?.showToast('Please enter a message intent.', 'info');
+
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+
+      try {
+        const eventName = document.getElementById('currentEventName')?.textContent || 'This Event';
+        const res = await fetch('/api/ai/broadcast/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            raw_intent: intent,
+            event: { name: eventName, date: 'Upcoming', venue: 'Main Stage' }
+          })
+        });
+
+        if (!res.ok) throw new Error('AI Generation Failed');
+        const data = await res.json();
+
+        // Populate the main broadcast field with WhatsApp body by default (shorter)
+        document.getElementById('broadcastMsg').value = data.whatsapp_body || data.email_body;
+        window.CirclesGlobalSearch?.showToast('AI Draft generated! Review and Push.', 'success');
+        toggleAIComposer();
+      } catch (err) {
+        console.error(err);
+        window.CirclesGlobalSearch?.showToast('AI unavailable, please type manually.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Generate Polished Draft';
+      }
+    }
+
+    async function generateAIReport() {
+      if (!activeEventId) return window.CirclesGlobalSearch?.showToast('No active event selected.', 'info');
+
+      const btn = event.currentTarget;
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spin">●</span> Processing...';
+
+      try {
+        const res = await fetch('/api/ai/report/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ eventId: activeEventId })
+        });
+
+        if (!res.ok) throw new Error('Report Generation Failed');
+        const data = await res.json();
+
+        document.getElementById('aiReportContent').textContent = data.report;
+        document.getElementById('aiReportModal').style.display = 'flex';
+      } catch (err) {
+        console.error(err);
+        window.CirclesGlobalSearch?.showToast('Failed to generate report.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }
+    }
+
+    function copyAIReport() {
+      const text = document.getElementById('aiReportContent').textContent;
+      navigator.clipboard.writeText(text);
+      window.CirclesGlobalSearch?.showToast('Report copied to clipboard.', 'success');
+    }
+
     /* ── BROADCAST ENGINE ───────────────────────────────────── */
     /* ── BROADCAST ENGINE ───────────────────────────────────── */
     function pushBroadcast() {
@@ -1786,6 +1900,36 @@
       });
     }
   </script>
+
+  <div id="aiReportModal" class="modal"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:24px;">
+    <div
+      style="background:var(--surface); width:100%; max-width:700px; border-radius:24px; display:flex; flex-direction:column; max-height:90vh; box-shadow:0 30px 60px rgba(0,0,0,0.3); overflow:hidden;">
+      <div
+        style="padding:24px 32px; border-bottom:1px solid var(--edge); display:flex; justify-content:space-between; align-items:center; background:var(--base-2);">
+        <div>
+          <div style="font-size:18px; font-weight:800; color:var(--ink-0);">Intelligence Report</div>
+          <div style="font-size:12px; color:var(--ink-3);" id="aiReportMeta">Generated by Gemini 1.5 Flash</div>
+        </div>
+        <button onclick="document.getElementById('aiReportModal').style.display='none'"
+          style="background:none; border:none; color:var(--ink-3); cursor:pointer;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div id="aiReportContent"
+        style="padding:40px 48px; overflow-y:auto; font-size:15px; line-height:1.7; color:var(--ink-1); white-space:pre-wrap; font-family:'Inter', sans-serif;">
+      </div>
+      <div
+        style="padding:20px 32px; border-top:1px solid var(--edge); background:var(--base-2); display:flex; justify-content:flex-end; gap:12px;">
+        <button class="btn btn-secondary btn-sm" onclick="copyAIReport()">Copy Text</button>
+        <button class="btn btn-primary btn-sm"
+          onclick="document.getElementById('aiReportModal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 

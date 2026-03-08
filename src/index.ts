@@ -11,6 +11,7 @@ import eventRoutes from './routes/eventRoutes';
 import adminEventRoutes from './routes/adminEventRoutes';
 import teamRoutes from './routes/teamRoutes';
 import adminRegistrationRoutes from './routes/adminRegistrationRoutes';
+import aiRoutes from './routes/aiRoutes';
 import prisma from './utils/prisma';
 
 // Import controllers for additional routes
@@ -59,6 +60,7 @@ app.use('/api/events', eventRoutes);
 app.use('/api/admin/events', adminEventRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/admin/registrations', adminRegistrationRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Additional user routes
 app.get('/api/users/me/notifications', authenticate, getNotifications);
