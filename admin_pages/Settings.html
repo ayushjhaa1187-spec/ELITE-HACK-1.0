@@ -132,24 +132,7 @@
         </div>
       </div>
       <div class="tb-actions">
-        <button class="icon-btn" id="themeToggle" aria-label="Toggle Theme">
-          <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.5">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-          <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.5" style="display:none;">
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="4.22" x2="19.78" y2="5.64" />
-          </svg>
-        </button>
+        <!-- Global theme toggle injected by admin-global-search.js -->
         <button class="icon-btn" aria-label="Notifications">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -180,14 +163,12 @@
             <div class="sub">Manage event configuration and platform preferences</div>
           </div>
 
-          <!-- Admin / Attendee Tab Switcher -->
-          <div class="tab-switcher">
-            <button class="tab-btn active" id="tabAdmin" onclick="switchTab('admin')">Admin</button>
-            <button class="tab-btn" id="tabAttendee" onclick="switchTab('attendee')">Attendee</button>
-          </div>
 
-          <!-- Admin Navigation Group -->
-          <div id="navAdmin" class="settings-nav-group active">
+          <!-- Combined Settings Navigation -->
+          <div id="navSettings" class="settings-nav-group active">
+            <div class="nav-lbl"
+              style="padding:12px 15px 4px; font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em;">
+              Administration</div>
             <div class="snav-item active" onclick="showSection('operations', this)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -245,10 +226,10 @@
               </svg>
               Share & Visibility
             </div>
-          </div>
 
-          <!-- Attendee Navigation Group -->
-          <div id="navAttendee" class="settings-nav-group">
+            <div class="nav-lbl"
+              style="padding:16px 15px 4px; font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; border-top:1px solid var(--edge); margin-top:8px;">
+              Personal Hub</div>
             <div class="snav-item" onclick="showSection('attendee_team', this)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
@@ -953,22 +934,13 @@
     })();
 
 
-    /* --- ADMIN / ATTENDEE TAB SWITCHER --- */
-    function switchTab(tab) {
-      // Toggle buttons
-      document.getElementById('tabAdmin').classList.toggle('active', tab === 'admin');
-      document.getElementById('tabAttendee').classList.toggle('active', tab === 'attendee');
-
-      // Toggle nav groups
-      document.querySelectorAll('.settings-nav-group').forEach(g => g.classList.remove('active'));
-      const group = document.getElementById('nav' + tab.charAt(0).toUpperCase() + tab.slice(1));
-      if (group) group.classList.add('active');
-
-      // Default section for tab
-      const defaultSection = tab === 'admin' ? 'operations' : 'attendee_team';
-      const defaultNav = group.querySelector('.snav-item');
-      showSection(defaultSection, defaultNav);
-    }
+    /* --- INITIALIZATION --- */
+    (function init() {
+      // Default to operations on load
+      const defSection = 'operations';
+      const defNav = document.querySelector(`.snav-item[onclick*="'${defSection}'"]`);
+      if (defNav) showSection(defSection, defNav);
+    })();
 
     /* --- SECTION NAVIGATION --- */
     function showSection(id, navEl) {
@@ -1107,12 +1079,6 @@
       const sectionId = getSectionForQuery(query);
       if (!sectionId) return;
 
-      // Detemine if section is Admin or Attendee
-      const adminSections = ['operations', 'general', 'event', 'team', 'notifications', 'admin_broadcast', 'admin_share'];
-      const attendeeSections = ['attendee_team', 'attendee_share', 'attendee_ticket', 'attendee_announcements'];
-
-      if (adminSections.includes(sectionId)) switchTab('admin');
-      else if (attendeeSections.includes(sectionId)) switchTab('attendee');
 
       const navEl = Array.from(document.querySelectorAll('.snav-item'))
         .find(item => (item.getAttribute('onclick') || '').includes(`'${sectionId}'`));
