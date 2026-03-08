@@ -204,8 +204,8 @@
           <div class="page-sub">Operational overview · Live view</div>
         </div>
         <div class="hdr-actions">
-          <button class="btn btn-sec">Export CSV</button>
-          <button class="btn btn-pri">Check-in Mode</button>
+          <button class="btn btn-sec" id="exportCsvBtn">Export CSV</button>
+          <button class="btn btn-pri" id="checkinBtn">Check-in Mode</button>
         </div>
       </div>
 
@@ -579,39 +579,48 @@
 
 
     // ── Button: Export CSV ──
-    document.querySelector('.btn-sec').addEventListener('click', async function () {
-      if (!currentEventId) return alert('No event selected');
-      this.textContent = 'Exporting...';
-      try {
-        const res = await fetch('/api/admin/events/' + currentEventId + '/attendees', {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        const data = await res.json();
-        if (!data.registrations || data.registrations.length === 0) {
-          alert('No registrations to export');
-          this.textContent = 'Export CSV';
-          return;
+    const exportBtn = document.getElementById('exportCsvBtn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', async function () {
+        if (!currentEventId) return showToast('No event selected');
+        this.textContent = 'Exporting...';
+        try {
+          const res = await fetch('/api/admin/events/' + currentEventId + '/attendees', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          const data = await res.json();
+          if (!data.registrations || data.registrations.length === 0) {
+            showToast('No registrations to export');
+            this.textContent = 'Export CSV';
+            return;
+          }
+
+          let csv = 'Name,Email,Status,Registration ID\n';
+          data.registrations.forEach(reg => {
+            const name = reg.user?.profile?.name || 'N/A';
+            const email = reg.user?.email || 'N/A';
+            csv += `"${name}","${email}","${reg.status}","${reg.id}"\n`;
+          });
+
+          const blob = new Blob([csv], { type: 'text/csv' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'attendees_export.csv';
+          a.click();
+          URL.revokeObjectURL(url);
+        } catch (e) {
+          showToast('Export failed');
         }
+        this.textContent = 'Export CSV';
+      });
+    }
 
-        let csv = 'Name,Email,Status,Registration ID\n';
-        data.registrations.forEach(reg => {
-          const name = reg.user?.profile?.name || 'N/A';
-          const email = reg.user?.email || 'N/A';
-          csv += `"${name}","${email}","${reg.status}","${reg.id}"\n`;
-        });
-
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'attendees_export.csv';
-        a.click();
-        URL.revokeObjectURL(url);
-      } catch (e) {
-        alert('Export failed: ' + e.message);
-      }
-      this.textContent = 'Export CSV';
-    });
+    // ── Button: Check-in Mode ──
+    const checkinBtn = document.getElementById('checkinBtn');
+    if (checkinBtn) {
+      checkinBtn.addEventListener('click', () => window.location.href = '/scanner');
+    }
 
     // ── Action Cards ──
     const acCards = document.querySelectorAll('.ac-card');
@@ -621,7 +630,10 @@
 
     // Export Data
     if (acCards[1]) acCards[1].style.cursor = 'pointer';
-    if (acCards[1]) acCards[1].addEventListener('click', () => document.querySelector('.btn-sec').click());
+    if (acCards[1]) acCards[1].addEventListener('click', () => {
+      const eb = document.getElementById('exportCsvBtn');
+      if (eb) eb.click();
+    });
 
     // Broadcast
     if (acCards[2]) acCards[2].style.cursor = 'pointer';
@@ -750,11 +762,8 @@
         }
       });
     }
-
-    // ── Init ──
-    setupGlobalSearch();
-    loadEvents();
   </script>
+
   <!-- ── Create Event Modal ── -->
   <div class="backdrop" id="modalBackdrop">
     <div class="modal">
@@ -796,7 +805,7 @@
       </div>
       <div class="modal-ftr" style="padding: 20px 28px 28px; display: flex; gap: 12px;">
         <button class="btn btn-sec" style="flex:1" onclick="closeModal()">Cancel</button>
-        <button class="btn btn-pri" id="submitEventBtn" style="flex:1" onclick="createEvent()">Create & Publish</button>
+        <button class="btn btn-pri" id="submitEventBtn" style="flex:1">Create & Publish</button>
       </div>
     </div>
   </div>
@@ -804,6 +813,7 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    // ── Modal Actions ──
     function openModal() {
       const mb = document.getElementById('modalBackdrop');
       if (mb) mb.classList.add('open');
@@ -814,71 +824,104 @@
     }
 
     // Handle Type Selection
-    function initTypeBtns() {
-      document.querySelectorAll('.type-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-        });
+    document.querySelectorAll('.type-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
       });
+    });
+
+    const submitEventBtn = document.getElementById('submitEventBtn');
+    if (submitEventBtn) {
+      submitEventBtn.addEventListener('click', createEvent);
     }
-    initTypeBtns();
 
     async function createEvent() {
       const titleEl = document.getElementById('evTitle');
       const venueEl = document.getElementById('evVenue');
-      const capacityEl = document.getElementById('evCapacity');
-      const btn = document.getElementById('submitEventBtn');
+      const capEl = document.getElementById('evCapacity');
+      const submitBtn = document.getElementById('submitEventBtn');
+      const authToken = localStorage.getItem('token');
 
-      if (!titleEl || !titleEl.value.trim()) return showToast('Please enter an event title');
+      if (!titleEl?.value.trim()) {
+        showToast('Please enter an event title');
+        return;
+      }
 
       const title = titleEl.value.trim();
-      const venue = venueEl ? venueEl.value.trim() : 'Venue TBD';
-      const capacity = capacityEl ? (parseInt(capacityEl.value) || 500) : 500;
+      const venue = venueEl?.value.trim() || 'Venue TBD';
+      const capacity = capEl?.value ? parseInt(capEl.value) : 500;
       const type = document.querySelector('.type-btn.active')?.textContent.trim() || 'Conference';
 
       const payload = {
         title,
-        venue: venue || 'Venue TBD',
+        venue,
         startDate: new Date(Date.now() + 7 * 86400000).toISOString(),
         endDate: new Date(Date.now() + 7 * 86400000 + 4 * 3600000).toISOString(),
         registrationStart: new Date().toISOString(),
         registrationEnd: new Date(Date.now() + 7 * 86400000).toISOString(),
-        description: 'New event from dashboard',
+        description: 'Premium event organized via Circles Dashboard: ' + title,
         capacity: capacity,
         tags: type
       };
-      if (btn) { btn.disabled = true; btn.innerHTML = 'Publishing...'; }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Publishing...';
+      }
+
       try {
+        console.log('[Dashboard] Submission payload:', payload);
         const res = await fetch('/api/admin/events', {
           method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(payload)
         });
+
         if (res.ok) {
           const event = await res.json();
           localStorage.setItem('currentEventId', event.id);
-          showToast('🎉 Created!');
-          setTimeout(() => window.location.reload(), 1000);
+          showToast('🎉 Event Published Successfully!');
+          setTimeout(() => window.location.reload(), 1500);
         } else {
           const err = await res.json();
-          showToast('Error: ' + (err.error || 'Failed'));
-          if (btn) { btn.disabled = false; btn.innerHTML = 'Create & Publish'; }
+          console.error('[Dashboard] API Error:', err);
+          showToast('Failed: ' + (err.error || 'Check fields'));
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Create & Publish';
+          }
         }
       } catch (e) {
-        showToast('Error');
-        if (btn) { btn.disabled = false; btn.innerHTML = 'Create & Publish'; }
+        console.error('[Dashboard] Fetch Exception:', e);
+        showToast('Network error: Unable to reach server');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Create & Publish';
+        }
       }
     }
+
     function showToast(msg) {
       const t = document.getElementById('toast');
-      if (!t) return alert(msg);
+      if (!t) { alert(msg); return; }
       t.innerHTML = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
     }
+
+    // ── Global Exports ──
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.createEvent = createEvent;
+
+    // ── Init ──
+    setupGlobalSearch();
+    loadEvents();
   </script>
 </body>
-
 
 </html>
