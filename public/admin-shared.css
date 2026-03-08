@@ -6,30 +6,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --ink-0: #F9FAFB;
-    --ink-1: #E5E7EB;
+    --ink-0: #F3F4F6;
+    --ink-1: #D1D5DB;
     --ink-2: #9CA3AF;
     --ink-3: #6B7280;
     --ink-4: #374151;
-    --base: #0B0E14;
-    --base-2: #11141B;
-    --surface: rgba(17, 20, 27, 0.85);
-    --surface-2: #161922;
-    --edge: rgba(255, 255, 255, 0.08);
-    --edge-2: rgba(255, 255, 255, 0.12);
-    --violet: #2563EB;
-    --violet-d: #1D4ED8;
-    --azure: #3B82F6;
+    --base: #020617;
+    --base-2: #0F172A;
+    --surface: rgba(15, 23, 42, 0.75);
+    --surface-2: #1E293B;
+    --edge: rgba(255, 255, 255, 0.05);
+    --edge-2: rgba(255, 255, 255, 0.08);
+    --violet: #6366F1;
+    --violet-d: #4F46E5;
+    --azure: #38BDF8;
     --emerald: #10B981;
-    --rose: #EC4899;
-    --grad: linear-gradient(135deg, #6040F0 0%, #1A96D8 100%);
+    --rose: #F472B6;
+    --grad: linear-gradient(135deg, #6366F1 0%, #3B82F6 100%);
     --font-u: 'Inter', system-ui, sans-serif;
     --font-d: 'Instrument Serif', Georgia, serif;
     --sidebar-w: 260px;
     --topbar-h: 72px;
     --radius: 20px;
     --pill: 9999px;
-    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
     --danger: #EF4444;
 }
 
@@ -57,11 +57,11 @@ body::after {
     content: '';
     position: fixed;
     inset: 0;
+    z-index: -1;
     background:
-        radial-gradient(ellipse 100% 100% at 0% 50%, rgba(96, 64, 240, 0.04) 0%, transparent 55%),
-        radial-gradient(ellipse 100% 100% at 100% 50%, rgba(26, 150, 216, 0.03) 0%, transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
     pointer-events: none;
-    z-index: 9997;
 }
 
 /* ── Sidebar ── */

@@ -661,7 +661,9 @@
     // Add Team (info)
     if (acCards[3]) acCards[3].style.cursor = 'pointer';
     if (acCards[3]) acCards[3].addEventListener('click', () => {
-      alert('Teams are managed per-event. Share your event link with participants so they can create and join teams!');
+      if (window.CirclesGlobalSearch?.showToast) {
+        window.CirclesGlobalSearch.showToast('Teams are managed per-event via invitations.', 'info');
+      }
     });
 
 
@@ -682,25 +684,9 @@
       });
     }
 
-    // ── Event Selector Dropdown ──
+    // ── Event Selector ──
+    // Click logic moved to global-search.js for unified experience
     document.querySelector('.ev-sel').style.cursor = 'pointer';
-    document.querySelector('.ev-sel').addEventListener('click', function () {
-      if (adminEvents.length <= 1) return;
-      const names = adminEvents.map((e, i) => `${i + 1}. ${e.title}`).join('\n');
-      const choice = prompt('Select event number:\n' + names);
-      const idx = parseInt(choice) - 1;
-      if (idx >= 0 && idx < adminEvents.length) {
-        currentEventId = adminEvents[idx].id;
-        localStorage.setItem('currentEventId', currentEventId);
-        this.querySelector('span').textContent = adminEvents[idx].title;
-        const meta = document.querySelector('.ev-meta');
-        const d = new Date(adminEvents[idx].startDate);
-        meta.innerHTML = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
-          ' <span class="ev-meta-sep">•</span> ' + (adminEvents[idx].venue || 'Virtual');
-        loadStats(currentEventId);
-        loadRecentCheckins(currentEventId);
-      }
-    });
 
     // ── Chart ──
     const ctx = document.getElementById('chart').getContext('2d');
@@ -734,21 +720,7 @@
     });
 
     // ── Notification bell ──
-    document.querySelector('[aria-label="Notifications"]').addEventListener('click', async function () {
-      try {
-        const res = await fetch('/api/users/me/notifications', {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        const notifs = await res.json();
-        if (notifs.length === 0) {
-          alert('No new notifications');
-        } else {
-          alert('Notifications:\n' + notifs.slice(0, 5).map(n => `• ${n.title}: ${n.message}`).join('\n'));
-        }
-      } catch (e) {
-        alert('Could not load notifications');
-      }
-    });
+    // Click logic moved to global-search.js for unified experience
 
     // ── Logout ──
     const logoutBtn = document.getElementById('logoutBtn');
